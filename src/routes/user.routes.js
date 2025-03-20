@@ -7,14 +7,14 @@ const {
     updateUser,
     deleteUser
 } = require("../controllers/user.controller.js");
-const { isLoggedIn } = require("../middlewares/auth.middleware.js");
+const { isLoggedIn, saveRedirectUrl } = require("../middlewares/auth.middleware.js");
 
 const router = express.Router();
 
 // User routes using router.route()
 router.route("/register").post(registerUser);
 
-router.route("/login").post(
+router.route("/login").post(saveRedirectUrl,
     passport.authenticate("local", {
         failureRedirect: "/login",
         failureFlash: true,

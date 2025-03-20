@@ -121,6 +121,11 @@
         <div class="meta-info">
             <span>👤 <%= article.author.name %></span>
             <span>📅 <%= article.createdAt.toDateString() %></span>
+
+            <!-- edit option if req.user is owner of article -->
+            <% if (currentUser && currentUser._id.toString()===article.author._id.toString()) { %>
+                <a href="/articles/<%= article._id %>/edit"><button class="btn btn-secondary">Edit</button></a>
+                <% } %>
         </div>
 
         <!-- ✅ Article Content -->

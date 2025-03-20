@@ -15,7 +15,7 @@ const createArticle = asyncHandler(async (req, res) => {
 
     const article = await Article.create({ title, content, tags, author });
 
-    res.status(201).json(new ApiResponse(201, article, "Article created successfully"));
+    res.redirect('/articles');
 });
 
 
@@ -54,17 +54,12 @@ const updateArticle = asyncHandler(async (req, res) => {
         throw new ApiError(403, 'Unauthorized: You can only update your own articles');
     }
 
-    const updateData = {};
-    if (title?.trim()) updateData.title = title;
-    if (content?.trim()) updateData.content = content;
-    if (tags) updateData.tags = tags;
+    article.title = title?.trim() || article.title;
+    article.content = content?.trim() || article.content;
+    article.tags = tags.split(',').map(tag => tag.trim()) || article.tags;
 
-    const updatedArticle = await Article.findByIdAndUpdate(req.params.id, updateData, {
-        new: true,
-        runValidators: true
-    });
-
-    res.status(200).json(new ApiResponse(200, updatedArticle, 'Article updated successfully'));
+    await article.save();
+    res.redirect(`/api/articles/${article._id}`);
 });
 
 // ✅ Delete Article (Only Author or Admin Can Delete)
@@ -83,7 +78,16 @@ const deleteArticle = asyncHandler(async (req, res) => {
 
     await Article.findByIdAndDelete(req.params.id);
 
-    res.status(200).json(new ApiResponse(200, null, 'Article deleted successfully'));
+    res.redirect('/articles');
+});
+
+const publishArticle = asyncHandler(async (req, res) => {
+    res.render('pages/article-form')
+});
+
+const renderEditForm = asyncHandler(async (req, res) => {
+    const article = await Article.findById(req.params.id);
+    res.render('pages/edit-article', { article });
 });
 
 module.exports = {
@@ -92,4 +96,6 @@ module.exports = {
     getArticleById,
     updateArticle,
     deleteArticle,
+    publishArticle,
+    renderEditForm,
 };

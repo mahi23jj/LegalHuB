@@ -20,8 +20,15 @@ const isAdmin = (req, res, next) => {
 
     next(); // ✅ If secret is correct, proceed to the route
 };
+const saveRedirectUrl = (req, res, next) => {
+    if (req.session.redirectUrl) {
+        res.locals.redirectUrl = req.session.redirectUrl;
+    }
+    next();
+};
 
 module.exports = {
     isLoggedIn,
-    isAdmin
+    isAdmin,
+    saveRedirectUrl
 };
