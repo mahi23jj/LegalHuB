@@ -1,0 +1,221 @@
+<% layout("layouts/boilerplate") %>
+    <style>
+        /* About Container */
+        .about-container {
+            max-width: 1200px;
+            margin: 40px auto;
+            padding: 20px;
+        }
+
+        /* ✅ Section Styling */
+        .section {
+            margin-bottom: 40px;
+            padding: 30px;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 12px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
+            transition: transform 0.3s ease;
+        }
+
+        .section h1,
+        .section h2 {
+            color: #9c27b0;
+            margin-bottom: 20px;
+        }
+
+        .section:hover {
+            transform: translateY(-5px);
+        }
+
+        /* ✅ Project Overview */
+        .project-overview img.illustration {
+            width: 100%;
+            max-width: 500px;
+            margin-top: 20px;
+            border-radius: 10px;
+        }
+
+        /* ✅ Key Features */
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+            gap: 20px;
+        }
+
+        .feature-item {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 20px;
+            border-radius: 10px;
+            text-align: center;
+            transition: transform 0.3s ease;
+        }
+
+        .feature-item span {
+            font-size: 2rem;
+        }
+
+        .feature-item:hover {
+            transform: translateY(-5px);
+            background: rgba(156, 39, 176, 0.2);
+        }
+
+        /* ✅ Team Section */
+        .team-grid {
+            display: flex;
+            gap: 20px;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        .team-member {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 20px;
+            border-radius: 10px;
+            text-align: center;
+            width: 180px;
+            transition: transform 0.3s ease;
+        }
+
+        .team-member img {
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            object-fit: cover;
+            margin-bottom: 10px;
+            border: 3px solid #9c27b0;
+        }
+
+        .team-member h3 {
+            font-size: 1.2em;
+            color: white;
+        }
+
+        .team-member p {
+            color: #bdbdbd;
+        }
+
+        .team-member:hover {
+            transform: translateY(-5px);
+        }
+
+        /* ✅ Contact Info */
+        .contact-box {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .contact-box a {
+            color: #9c27b0;
+            font-weight: bold;
+            text-decoration: none;
+        }
+
+        .contact-box a:hover {
+            text-decoration: underline;
+        }
+
+        /* ✅ Responsive Fixes */
+        @media (max-width: 768px) {
+            .features-grid {
+                grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+            }
+
+            .team-grid {
+                flex-direction: column;
+                align-items: center;
+            }
+
+            .section {
+                padding: 20px;
+            }
+        }
+    </style>
+    <section class="about-container">
+        <!-- ✅ Project Overview -->
+        <!-- ✅ Project Overview -->
+        <div class="section project-overview">
+            <h1>About <span>LegalHub</span></h1>
+            <p>
+                LegalHub is a comprehensive platform designed to simplify legal concepts, provide essential legal
+                documents, and educate users about their rights. From an easy-to-use legal dictionary to step-by-step
+                document generation and expert legal insights, we strive to make legal resources more accessible and
+                user-friendly.
+                <br><br>
+                <img src="/pic/about_banner.jpg" alt="LegalHub Overview" class="illustration"><br><br>
+                We are a passionate team of five enthusiastic students dedicated to making legal knowledge accessible to
+                everyone. With diverse backgrounds in law, technology, and research, we collaborate to bridge the gap
+                between complex legal jargon and everyday understanding.
+            </p>
+        </div>
+
+        <!-- ✅ Key Features -->
+        <div class="section key-features">
+            <h2>Key Features</h2>
+            <div class="features-grid">
+                <div class="feature-item">
+                    <span>🔎</span>
+                    <strong>Smart Search</strong>
+                    <p>Instantly find relevant legal information and resources.</p>
+                </div>
+                <div class="feature-item">
+                    <span>📑</span>
+                    <strong>Downloadable Legal Forms</strong>
+                    <p>Access state-specific forms directly from the platform.</p>
+                </div>
+                <div class="feature-item">
+                    <span>📚</span>
+                    <strong>Legal Dictionary</strong>
+                    <p>Understand complex legal terms with simple explanations.</p>
+                </div>
+                <div class="feature-item">
+                    <span>📝</span>
+                    <strong>Articles & Guides</strong>
+                    <p>Read expert-written legal guides and case studies.</p>
+                </div>
+                <div class="feature-item">
+                    <span>🛡️</span>
+                    <strong>Fundamental Rights</strong>
+                    <p>Learn about your constitutional rights and protections.</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- ✅ Our Team -->
+        <div class="section our-team">
+            <h2>Meet the Team</h2>
+            <div class="team-grid">
+                <div class="team-members">
+                    <div class="team-member">
+                        <img src="pic/WhatsApp Image 2025-03-18 at 5.25.16 PM.jpeg" alt="Member 1">
+                        Member 1
+                    </div>
+                    <div class="team-member">
+                        <img src="pic/WhatsApp Image 2025-03-18 at 5.26.12 PM.jpeg" alt="Member 2">
+                        Member 2
+                    </div>
+                    <div class="team-member">
+                        <img src="pic/WhatsApp Image 2025-03-18 at 5.25.00 PM.jpeg" alt="Member 3">
+                        Member 3
+                    </div>
+                    <div class="team-member">
+                        <img src="pic/WhatsApp Image 2025-03-18 at 5.24.43 PM.jpeg" alt="Member 4">
+                        Member 4
+                    </div>
+                    <div class="team-member">
+                        <img src="pic/WhatsApp Image 2025-03-18 at 5.24.30 PM.jpeg" alt="Member 5">
+                        Member 5
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ✅ Contact Info -->
+        <div class="section contact">
+            <h2>Contact Us</h2>
+            <div class="contact-box">
+                <p>📧 Email: <a href="mailto:support@legalhub.com">support@legalhub.com</a></p>
+                <p>📞 Phone: +91 973-456-7890</p>
+            </div>
+        </div>
+    </section>

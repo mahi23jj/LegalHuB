@@ -1,0 +1,209 @@
+<% layout("layouts/boilerplate") %>
+
+    <style>
+        .law_container {
+            max-width: 1100px;
+            margin: 40px auto;
+            padding: 30px;
+            background: rgba(30, 30, 30, 0.8);
+            border-radius: 16px;
+            box-shadow: 0px 12px 24px rgba(0, 0, 0, 0.3);
+            backdrop-filter: blur(20px);
+        }
+
+        h1 {
+            text-align: center;
+            color: #9c27b0;
+            font-size: 2.4rem;
+            margin-bottom: 20px;
+            font-weight: 700;
+        }
+
+        /* 🔎 Search Bar */
+        .search-lawyer {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 30px;
+            gap: 12px;
+        }
+
+        .search-lawyer input {
+            width: 65%;
+            padding: 14px;
+            border: none;
+            border-radius: 12px;
+            background: #26263e;
+            color: #fff;
+            font-size: 16px;
+            outline: none;
+            transition: background 0.3s ease;
+        }
+
+        .search-lawyer input:focus {
+            background: #33334d;
+        }
+
+        .search-lawyer button {
+            background: #9c27b0;
+            color: #fff;
+            padding: 14px 24px;
+            border: none;
+            border-radius: 12px;
+            font-size: 16px;
+            cursor: pointer;
+            transition: background 0.3s ease;
+            box-shadow: 0 4px 8px rgba(156, 39, 176, 0.4);
+        }
+
+        .search-lawyer button:hover {
+            background: #7218c2;
+        }
+
+        /* 📜 Lawyer List Grid */
+        .lawyer-list {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 24px;
+        }
+
+        /* 📄 Lawyer Card */
+        .lawyer-card {
+            background: rgba(36, 36, 62, 0.9);
+            padding: 24px;
+            border-radius: 16px;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            backdrop-filter: blur(12px);
+            border: 1px solid transparent;
+            background-clip: padding-box;
+            position: relative;
+            overflow: hidden;
+        }
+
+
+        .lawyer-card:hover::before {
+            opacity: 1;
+        }
+
+        .lawyer-card:hover {
+            transform: translateY(-6px);
+            box-shadow: 0 12px 24px rgba(156, 39, 176, 0.5);
+        }
+
+        .lawyer-card h3 {
+            color: #e040fb;
+            margin-bottom: 10px;
+            font-size: 1.6rem;
+            font-weight: 600;
+        }
+
+        .lawyer-card p {
+            color: #bbb;
+            font-size: 1rem;
+            margin-bottom: 8px;
+            font-weight: 400;
+        }
+
+        .contact-link {
+            color: #7c4dff;
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.3s ease;
+        }
+
+        .contact-link:hover {
+            color: #e040fb;
+        }
+
+        /* ✅ Verified Badge */
+        .verified-badge {
+            color: #4caf50;
+            font-weight: bold;
+            margin-top: 5px;
+            display: inline-block;
+        }
+
+        /* ✅ Connect Button (inside div) */
+        .connect-wrapper {
+            margin-top: 20px;
+            display: flex;
+            justify-content: center;
+        }
+
+        .connect-btn {
+            padding: 12px 24px;
+            background: linear-gradient(135deg, #9c27b0, #4a00e0);
+            color: #fff;
+            font-size: 16px;
+            border-radius: 12px;
+            text-align: center;
+            text-decoration: none;
+            font-weight: 500;
+            transition: background 0.3s ease, transform 0.2s ease;
+            box-shadow: 0 4px 12px rgba(156, 39, 176, 0.4);
+            display: inline-block;
+        }
+
+        .connect-btn:hover {
+            background: linear-gradient(135deg, #7218c2, #4a00e0);
+            transform: scale(1.05);
+        }
+    </style>
+
+    <div class="law_container">
+        <h1>🔎 Connect with a Lawyer</h1>
+
+        <!-- ✅ Search Bar -->
+        <div class="search-lawyer">
+            <input type="text" id="search-input" placeholder="Search by Name, Specialization or Email">
+            <button onclick="searchLawyer()">Search</button>
+        </div>
+
+        <!-- ✅ Lawyer Cards -->
+        <div class="lawyer-list">
+            <% lawyers.forEach(lawyer=> { %>
+                <div class="lawyer-card">
+                    <h3>
+                        <%= lawyer.name %>
+                    </h3>
+                    <p><strong>Specialization:</strong>
+                        <%= lawyer.specialization %>
+                    </p>
+                    <p><strong>Email:</strong> <a href="mailto:<%= lawyer.email %>" class="contact-link">
+                            <%= lawyer.email %>
+                        </a></p>
+                    <p><strong>Rating:</strong> ⭐ <%= lawyer.rating %>/5</p>
+
+                    <% if (!lawyer.verified) { %>
+                        <span class="verified-badge">⚠️ Not Verified</span>
+                        <% } else { %>
+                            <span class="verified-badge">✔ Verified</span>
+                            <% } %>
+
+                                <!-- ✅ Connect Button (in div) -->
+                                <div class="connect-wrapper">
+                                    <a href="/lawyers/<%= lawyer._id %>" class="connect-btn">Connect</a>
+                                </div>
+                </div>
+                <% }) %>
+        </div>
+    </div>
+
+    <script>
+        function searchLawyer() {
+            const input = document.getElementById('search-input').value.toLowerCase();
+            const cards = document.querySelectorAll('.lawyer-card');
+
+            cards.forEach(card => {
+                const name = card.querySelector('h3').textContent.toLowerCase();
+                const specialization = card.querySelector('p:nth-child(2)').textContent.toLowerCase();
+                const email = card.querySelector('p:nth-child(3)').textContent.toLowerCase();
+
+                if (name.includes(input) || specialization.includes(input) || email.includes(input)) {
+                    card.style.display = "block";
+                } else {
+                    card.style.display = "none";
+                }
+            });
+        }
+    </script>

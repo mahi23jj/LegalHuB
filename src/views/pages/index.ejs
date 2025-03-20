@@ -1,0 +1,280 @@
+<% layout("layouts/boilerplate") %>
+    <style>
+        /* ✅ FAQ Container */
+        .faq-container {
+            display: flex;
+            justify-content: space-between;
+            padding: 50px;
+            gap: 40px;
+        }
+
+        /* ✅ Left Section */
+        .faq-left {
+            background: rgba(255, 255, 255, 0.08);
+            padding: 30px;
+            width: 30%;
+            border-radius: 12px;
+            box-shadow: 0 6px 14px rgba(0, 0, 0, 0.5);
+            transition: transform 0.3s ease;
+        }
+
+        .faq-left h2 {
+            font-size: 2rem;
+            color: #ffffff;
+            font-weight: 700;
+            margin-bottom: 15px;
+        }
+
+        .faq-left p {
+            font-size: 1rem;
+            color: #bdbdbd;
+            margin-bottom: 20px;
+            line-height: 1.6;
+        }
+
+        .faq-left .contact-info {
+            margin-top: 15px;
+        }
+
+        .faq-left .contact-info span {
+            display: flex;
+            align-items: center;
+            font-size: 1rem;
+            color: #bdbdbd;
+            gap: 10px;
+        }
+
+        .faq-left .contact-info i {
+            color: #9c27b0;
+            font-size: 1.4rem;
+        }
+
+        .faq-left .contact-info a {
+            color: #9c27b0;
+            font-weight: 600;
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+
+        .faq-left .contact-info a:hover {
+            color: #1e1d1f;
+        }
+
+        /* ✅ Right Section */
+        .faq-right {
+            width: 65%;
+        }
+
+        .faq-item {
+            background: rgba(255, 255, 255, 0.05);
+            padding: 18px;
+            border-radius: 10px;
+            margin-bottom: 15px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            cursor: pointer;
+        }
+
+        .faq-item:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.4);
+        }
+
+        .faq-item h3 {
+            display: flex;
+            justify-content: space-between;
+            font-size: 1.1rem;
+            color: #ffffff;
+            margin: 0;
+            align-items: center;
+        }
+
+        .faq-item h3 i {
+            font-size: 1.4rem;
+            color: #9c27b0;
+            transition: transform 0.3s ease;
+        }
+
+        .faq-item.open h3 i {
+            transform: rotate(180deg);
+        }
+
+        .faq-answer {
+            max-height: 0;
+            overflow: hidden;
+            padding-top: 5px;
+            font-size: 1rem;
+            color: #dbe3e9;
+            line-height: 1.6;
+            transition: max-height 0.5s ease;
+        }
+
+        .faq-item.open .faq-answer {
+            max-height: 300px;
+        }
+
+        .faq-answer p {
+            font-size: 1rem;
+            color: #bdbdbd;
+            line-height: 1.6;
+            margin-top: 10px;
+        }
+
+        /* ✅ Responsive Design */
+        @media (max-width: 992px) {
+            .faq-container {
+                flex-direction: column;
+                padding: 30px;
+                gap: 20px;
+            }
+
+            .faq-left {
+                width: 100%;
+                padding: 20px;
+            }
+
+            .faq-right {
+                width: 100%;
+            }
+
+            .faq-item h3 {
+                font-size: 1.1rem;
+            }
+
+            .faq-answer p {
+                font-size: 0.95rem;
+            }
+        }
+
+        @media (max-width: 600px) {
+            .faq-left h2 {
+                font-size: 1.8rem;
+            }
+
+            .faq-item h3 {
+                font-size: 1rem;
+            }
+
+            .faq-answer p {
+                font-size: 0.9rem;
+            }
+        }
+    </style>
+
+    <body>
+
+        <section class="hero">
+            <h1>⚖️ Empower Yourself with Legal Knowledge</h1>
+            <p>We simplify complex laws and empower individuals with the right legal tools to protect their rights and
+                make informed decisions.</p>
+            <a href="/dictionary" class="cta-button">Get Started →</a>
+        </section>
+
+
+
+        <section class="quick-links">
+            <h2>Simplifying Legal Jargon, One Step at a Time</h2>
+
+            <div class="buttons">
+                <a href="/dictionary">Dictionary</a>
+                <a href="/documents">Documents</a>
+                <a href="/articles">Articles and Guide</a>
+                <a href="/rights">Fundamental Rights</a>
+                <a href="/#FAQs">Q&A</a>
+                <a href="/lawyers">Connect with a lawyer</a>
+                <!-- <a href="/account">User Profile</a> -->
+            </div>
+        </section>
+
+        <!-- FAQ SECTION -->
+        <div class="faq-container container" id="faq">
+            <div class="faq-left">
+                <h2>Frequently Asked Questions</h2>
+                <p>Get answers to all your legal queries!
+                    <img src="https://fonts.gstatic.com/s/e/notoemoji/latest/1f9d0/512.gif" alt="🤔" width="28"
+                        height="28">
+                    <img src="https://fonts.gstatic.com/s/e/notoemoji/latest/2728/512.gif" alt="✨" width="28"
+                        height="28">
+                </p>
+                <div class="contact-info">
+                    <span><i class="fas fa-envelope"></i> Have more questions?</span>
+                    <a href="mailto:support@legalhub.com">support@legalhub.com</a>
+                </div>
+            </div>
+
+            <!-- RIGHT SIDE -->
+            <div class="faq-right" id="FAQs">
+                <!-- ✅ FAQ 1 -->
+                <div class="faq-item">
+                    <h3>What is LegalHub and how does it work? <i class="fas fa-chevron-down"></i></h3>
+                    <div class="faq-answer">
+                        <p>LegalHub is an online platform providing free access to legal resources, forms, and guides.
+                            You can explore state-specific legal forms and understand legal terms easily. 🏛️</p>
+                    </div>
+                </div>
+
+                <!-- ✅ FAQ 2 -->
+                <div class="faq-item">
+                    <h3>Can I download legal forms from LegalHub? <i class="fas fa-chevron-down"></i></h3>
+                    <div class="faq-answer">
+                        <p>Yes! LegalHub allows you to download state-specific legal forms directly from our database.
+                            You can also find instructions on how to fill them correctly. 📄</p>
+                    </div>
+                </div>
+
+                <!-- ✅ FAQ 3 -->
+                <div class="faq-item">
+                    <h3>How can I search for specific legal terms? <i class="fas fa-chevron-down"></i></h3>
+                    <div class="faq-answer">
+                        <p>You can use the smart search feature to look up legal terms. The integrated AI will provide
+                            detailed explanations and related resources. 🔍</p>
+                    </div>
+                </div>
+
+                <!-- ✅ FAQ 4 -->
+                <div class="faq-item">
+                    <h3>Is the information on LegalHub accurate and up-to-date? <i class="fas fa-chevron-down"></i></h3>
+                    <div class="faq-answer">
+                        <p>Yes. We source information from verified legal authorities and update it regularly to reflect
+                            the latest legal changes. ✅</p>
+                    </div>
+                </div>
+
+                <!-- ✅ FAQ 5 -->
+                <div class="faq-item">
+                    <h3>Is LegalHub free to use? <i class="fas fa-chevron-down"></i></h3>
+                    <div class="faq-answer">
+                        <p>Absolutely! LegalHub is completely free to use, and you can access all resources without
+                            signing up. 🎯</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </body>
+    <script>
+        // FAQ Open/Close Functionality
+        document.querySelectorAll('.faq-item').forEach(item => {
+            item.addEventListener('click', () => {
+                const faqAnswer = item.querySelector('.faq-answer');
+
+                item.classList.toggle('open');
+
+                if (item.classList.contains('open')) {
+                    faqAnswer.style.maxHeight = faqAnswer.scrollHeight + "px";
+                    faqAnswer.style.opacity = 1;
+                } else {
+                    faqAnswer.style.maxHeight = 0;
+                    faqAnswer.style.opacity = 0;
+                }
+
+                document.querySelectorAll('.faq-item').forEach(otherItem => {
+                    if (otherItem !== item && otherItem.classList.contains('open')) {
+                        otherItem.classList.remove('open');
+                        otherItem.querySelector('.faq-answer').style.maxHeight = 0;
+                        otherItem.querySelector('.faq-answer').style.opacity = 0;
+                    }
+                });
+            });
+        });
+
+    </script>

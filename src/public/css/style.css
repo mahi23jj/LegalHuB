@@ -1,0 +1,465 @@
+/* 🌌 General Styling */
+body {
+    background: linear-gradient(
+        135deg,
+        #1a1a2e,
+        #16213e
+    ); /* Dark blue gradient for consistency */
+    color: #f4f4f9;
+    font-family: rakkas;
+    text-align: center;
+    overflow-x: hidden;
+    margin: 0;
+}
+
+/* ✅ Navbar */
+nav {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 18px 40px;
+    background: #1a1a2e; /* Dark Blue */
+    border-bottom: 2px solid #6a1b9a; /* Dark Purple */
+}
+
+.navbar-brand a {
+    color: #9c27b0; /* Light Purple */
+    font-size: 1.8rem;
+    font-weight: bold;
+    text-decoration: none;
+}
+
+/* ✅ Left Section */
+.left-section {
+    display: flex;
+    align-items: center;
+    gap: 30px;
+}
+
+nav ul {
+    list-style: none;
+    display: flex;
+    gap: 20px;
+    padding: 0;
+    margin: 0;
+}
+
+nav ul li a {
+    color: #f4f4f9;
+    text-decoration: none;
+    font-weight: bold;
+    transition: color 0.3s ease;
+    font-size: 1em;
+}
+
+nav ul li a:hover {
+    color: #9c27b0; /* Light Purple */
+}
+
+/* ✅ Auth Links */
+.auth-links {
+    margin-left: auto;
+}
+
+.auth-links a {
+    color: #f4f4f9;
+    text-decoration: none;
+    font-size: 1em;
+    font-weight: bold;
+    transition: color 0.3s ease;
+    margin-left: 15px;
+}
+
+.auth-links a:hover {
+    color: #9c27b0;
+}
+
+/* ✅ Hero Section */
+.hero {
+    padding: 100px 20px;
+    background: url("/pic") center/cover no-repeat;
+    background: linear-gradient(135deg, #1a1a2e, #16213e);
+    color: #f4f4f9;
+    text-align: center;
+    animation: fadeInUp 1s ease;
+}
+
+.hero h1 {
+    font-size: 3rem;
+    color: #e040fb;
+    margin-bottom: 20px;
+}
+
+.cta-button {
+    display: inline-block;
+    background: #8a179e;
+    color: #ffffff;
+    padding: 12px 32px;
+    border-radius: 8px;
+    font-size: 1.2rem;
+    font-weight: bold;
+    margin-top: 20px;
+    box-shadow: 0px 4px 12px rgba(224, 64, 251, 0.2);
+    transition:
+        background 0.3s ease,
+        transform 0.2s;
+    text-decoration: none;
+}
+
+.cta-button:hover {
+    background: #7a228a;
+    transform: translateY(-3px);
+}
+
+.hero p {
+    font-size: 1.2em;
+    line-height: 1.5;
+    margin-top: 10px;
+    color: #dbe3e9;
+}
+
+.hero .subtext {
+    font-size: 1em;
+    color: #bdbdbd;
+    margin-top: 10px;
+}
+
+/* ✅ Quick Links */
+.quick-links {
+    background: #16213e;
+    padding: 40px;
+}
+
+.buttons a {
+    background: #6a1b9a;
+    color: white;
+    padding: 14px 28px;
+    border-radius: 8px;
+    transition:
+        background 0.3s ease,
+        transform 0.2s;
+    box-shadow: 0px 4px 12px rgba(106, 27, 154, 0.2);
+}
+
+.buttons a:hover {
+    background: #e040fb;
+    transform: translateY(-4px);
+}
+
+.buttons {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 15px;
+    justify-content: center;
+}
+
+.buttons a {
+    background: #6a1b9a; /* Dark Purple */
+    color: white;
+    padding: 14px 28px;
+    border-radius: 8px;
+    text-decoration: none;
+    font-weight: bold;
+    transition:
+        background 0.3s ease,
+        transform 0.2s;
+    box-shadow: 0px 4px 12px rgba(106, 27, 154, 0.2);
+}
+
+.buttons a:hover {
+    background: #9c27b0; /* Light Purple */
+    transform: translateY(-3px);
+}
+
+/* ✅ Our Team */
+.our-team {
+    padding: 40px 20px;
+    background: #16213e;
+}
+
+.team-members {
+    display: flex;
+    gap: 20px;
+    justify-content: center;
+    flex-wrap: wrap;
+}
+
+.team-member {
+    background: #1a1a2e;
+    padding: 20px;
+    border-radius: 12px;
+    width: 180px;
+    box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease;
+}
+
+.team-member:hover {
+    transform: translateY(-5px);
+}
+
+.team-member img {
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    object-fit: cover;
+    margin-bottom: 12px;
+}
+
+.team-member span {
+    font-size: 1em;
+    color: #f4f4f9;
+}
+
+/* ✅ About Section */
+.about {
+    padding: 40px;
+    margin: 20px auto;
+    max-width: 900px;
+    background: #1a1a2e;
+    border-radius: 12px;
+    box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.1);
+    line-height: 1.7;
+    font-size: 1.2em;
+    color: #f4f4f9;
+}
+
+/* ✅ Follow Us */
+.follow-us {
+    margin-top: 40px;
+}
+
+.follow-us a {
+    background: #6a1b9a;
+    color: white;
+    padding: 12px 24px;
+    border-radius: 8px;
+    margin: 10px;
+    display: inline-block;
+    text-decoration: none;
+    font-weight: bold;
+    transition:
+        background 0.3s ease,
+        transform 0.2s;
+}
+
+.follow-us a:hover {
+    background: #9c27b0;
+    transform: translateY(-3px);
+}
+
+/* ✅ Animations */
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* ✅ Responsive Fixes */
+@media (max-width: 768px) {
+    nav {
+        flex-direction: column;
+        align-items: flex-start;
+        padding: 15px;
+    }
+
+    .left-section {
+        flex-direction: column;
+        gap: 10px;
+    }
+
+    nav ul {
+        flex-direction: column;
+        gap: 10px;
+        margin-top: 10px;
+    }
+
+    .auth-links {
+        margin-left: 0;
+        margin-top: 10px;
+    }
+
+    .buttons {
+        flex-direction: column;
+    }
+
+    .team-members {
+        flex-direction: column;
+    }
+}
+
+/* ✅ Footer Container (Fixed) */
+.footer-container {
+    background: linear-gradient(
+        135deg,
+        #1a1a2e,
+        #16213e
+    ); /* Same as body gradient */
+    color: #e0e0e0;
+    padding: 40px 20px;
+    box-shadow: 0 -4px 12px rgba(0, 0, 0, 0.3);
+}
+
+/* ✅ Add Container to Limit Width */
+.footer-container .container {
+    max-width: 1200px;
+    margin: 0 auto;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    gap: 30px;
+}
+
+/* ✅ Left Section */
+.footer-left .brand h3 {
+    color: #ffffff;
+    font-size: 1.8rem;
+    font-weight: 700;
+    margin-bottom: 8px;
+}
+
+.footer-left p {
+    font-size: 1rem;
+    color: #b0b0b0;
+    line-height: 1.5;
+}
+
+/* ✅ Contact Info */
+.contact-info {
+    margin-top: 20px;
+}
+
+.contact-info .email,
+.contact-info .phone {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 12px;
+}
+
+.contact-icon {
+    color: #9c27b0;
+    font-size: 1.5rem;
+    transition: color 0.3s ease;
+}
+
+.contact-info a {
+    color: #d1d1d1;
+    text-decoration: none;
+    font-weight: 500;
+    transition: color 0.3s ease;
+}
+
+.contact-info a:hover {
+    color: #9c27b0;
+}
+
+/* ✅ Middle Section */
+.footer-middle h3 {
+    color: #ffffff;
+    font-size: 1.2rem;
+    margin-bottom: 12px;
+}
+
+.footer-middle ul {
+    list-style: none;
+    padding: 0;
+}
+
+.footer-middle ul li {
+    margin-bottom: 8px;
+}
+
+.footer-middle ul li a {
+    color: #d1d1d1;
+    text-decoration: none;
+    font-size: 1rem;
+    transition: color 0.3s ease;
+}
+
+.footer-middle ul li a:hover {
+    color: #9c27b0;
+}
+
+/* ✅ Right Section */
+.footer-right h3 {
+    color: #ffffff;
+    font-size: 1.2rem;
+    margin-bottom: 12px;
+}
+
+/* ✅ Social Media Icons */
+.social-media {
+    display: flex;
+    gap: 15px;
+    margin-bottom: 15px;
+}
+
+.social-media a {
+    color: #9c27b0;
+    font-size: 1.5rem;
+    transition:
+        color 0.3s ease,
+        transform 0.2s ease;
+}
+
+.social-media a:hover {
+    color: #ffffff;
+    transform: scale(1.1);
+}
+
+/* ✅ Feedback Button */
+#feedback {
+    background-color: #9c27b0;
+    color: #ffffff;
+    padding: 12px 24px;
+    font-size: 1rem;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition:
+        background 0.3s ease,
+        transform 0.2s;
+    box-shadow: 0 4px 12px rgba(107, 33, 168, 0.3);
+}
+
+#feedback:hover {
+    background-color: #7b1fa2;
+    transform: translateY(-3px);
+}
+
+/* ✅ Copyright Section */
+.copyright {
+    text-align: center;
+    padding-top: 12px;
+    font-size: 0.9rem;
+    color: #b0b0b0;
+    border-top: 1px solid #444;
+}
+
+/* ✅ Responsive Fixes */
+@media (max-width: 768px) {
+    .footer-container .container {
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+        gap: 20px;
+    }
+
+    .contact-info {
+        justify-content: center;
+    }
+
+    .social-media {
+        justify-content: center;
+    }
+
+    #feedback {
+        width: 100%;
+        max-width: 250px;
+    }
+}

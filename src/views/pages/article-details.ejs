@@ -1,0 +1,137 @@
+<% layout("layouts/boilerplate") %>
+
+    <style>
+        /* ✅ article_container Styling */
+        .article_container {
+            max-width: 800px;
+            margin: 40px auto;
+            padding: 24px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 12px;
+            box-shadow: 0px 6px 16px rgba(0, 0, 0, 0.2);
+        }
+
+        /* ✅ Title Styling */
+        h1 {
+            font-size: 2.4rem;
+            font-weight: 700;
+            color: #ffffff;
+            margin-bottom: 12px;
+            letter-spacing: 0.5px;
+        }
+
+        /* ✅ Metadata Styling (Author and Date) */
+        .meta-info {
+            font-size: 0.95rem;
+            color: #bbb;
+            margin-bottom: 24px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-weight: 400;
+        }
+
+        .meta-info span {
+            background-color: rgba(255, 255, 255, 0.05);
+            padding: 4px 12px;
+            border-radius: 16px;
+            color: #ccc;
+        }
+
+        /* ✅ Article Content Styling */
+        .article-content {
+            font-size: 1.1rem;
+            line-height: 1.8;
+            color: #ddd;
+            margin-bottom: 24px;
+        }
+
+        /* ✅ Tag Styling */
+        .tags {
+            margin-top: 20px;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+
+        .tag {
+            background-color: rgba(255, 255, 255, 0.15);
+            color: #9c27b0;
+            padding: 6px 14px;
+            border-radius: 16px;
+            font-size: 0.9rem;
+            font-weight: 500;
+            transition: background-color 0.3s ease;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+        }
+
+        .tag:hover {
+            background-color: rgba(255, 255, 255, 0.25);
+        }
+
+        /* ✅ Link Styling */
+        a {
+            color: #9c27b0;
+            text-decoration: none;
+            transition: color 0.3s ease;
+            font-weight: 500;
+        }
+
+        a:hover {
+            color: #b366cc;
+            border-bottom-color: #b366cc;
+        }
+
+        /* ✅ Responsive Styling */
+        @media (max-width: 768px) {
+            .article_container {
+                padding: 16px;
+            }
+
+            h1 {
+                font-size: 2rem;
+            }
+
+            .article-content {
+                font-size: 1rem;
+            }
+
+            .meta-info {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 6px;
+            }
+
+            .tag {
+                font-size: 0.85rem;
+                padding: 4px 10px;
+            }
+        }
+    </style>
+
+    <section class="article_container">
+        <!-- ✅ Title -->
+        <h1>
+            <%= article.title %>
+        </h1>
+
+        <!-- ✅ Author and Date -->
+        <div class="meta-info">
+            <span>👤 <%= article.author.name %></span>
+            <span>📅 <%= article.createdAt.toDateString() %></span>
+        </div>
+
+        <!-- ✅ Article Content -->
+        <div class="article-content">
+            <%= article.content %>
+        </div>
+
+        <!-- ✅ Tags -->
+        <div class="tags">
+            <% article.tags.forEach(tag=> { %>
+                <span class="tag">#<%= tag %></span>
+                <% }) %>
+        </div>
+    </section>

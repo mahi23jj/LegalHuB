@@ -1,0 +1,172 @@
+<% layout("layouts/boilerplate") %>
+
+    <style>
+        /* ✅ Container Styling */
+        .document_container {
+            max-width: 900px;
+            margin: 40px auto;
+            padding: 24px;
+            background: #ffffff;
+            border-radius: 12px;
+            box-shadow: 0px 8px 24px rgba(0, 0, 0, 0.08);
+            transition: transform 0.3s ease;
+        }
+
+        .document_container:hover {
+            transform: translateY(-2px);
+        }
+
+        /* ✅ Title Styling */
+        .title {
+            font-size: 2.2rem;
+            color: #7b1fa2;
+            margin-bottom: 32px;
+            text-align: center;
+            font-weight: 700;
+            letter-spacing: 0.5px;
+        }
+
+        /* ✅ Document Card */
+        .document-card {
+            background: #fafafa;
+            padding: 20px;
+            border: 1px solid #eee;
+            border-radius: 10px;
+            box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.05);
+            margin-bottom: 16px;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .document-card:hover {
+            transform: translateY(-4px);
+            border-color: #ddd;
+            box-shadow: 0px 6px 18px rgba(0, 0, 0, 0.12);
+        }
+
+        .document-card h2 {
+            font-size: 1.5rem;
+            color: #333;
+            margin-bottom: 8px;
+            font-weight: 600;
+        }
+
+        .document-card p {
+            font-size: 1rem;
+            color: #555;
+            margin-bottom: 8px;
+            line-height: 1.6;
+        }
+
+        /* ✅ Button Container - Proper Alignment */
+        .buttons {
+            display: flex;
+            justify-content: flex-start;
+            gap: 12px;
+            margin-top: 12px;
+            flex-wrap: nowrap;
+        }
+
+        /* ✅ General Button Styling */
+        .btn {
+            background-color: #7b1fa2;
+            color: #ffffff;
+            padding: 8px 16px;
+            border-radius: 6px;
+            font-size: 0.9rem;
+            font-weight: 500;
+            border: none;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            text-decoration: none;
+            transition: background-color 0.3s ease, transform 0.2s ease;
+            white-space: nowrap;
+            box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.08);
+        }
+
+        .btn:hover {
+            background-color: #9c27b0;
+            transform: translateY(-2px);
+        }
+
+        /* ✅ Download Button */
+        .download-btn {
+            background-color: #4caf50;
+        }
+
+        .download-btn:hover {
+            background-color: #45a049;
+        }
+
+        /* ✅ Apply Button */
+        .apply-btn {
+            background-color: #ff5722;
+        }
+
+        .apply-btn:hover {
+            background-color: #f44336;
+        }
+
+        /* ✅ Responsive Styling */
+        @media (max-width: 768px) {
+            .document_container {
+                padding: 20px;
+            }
+
+            .document-card {
+                padding: 16px;
+            }
+
+            .buttons {
+                flex-direction: row;
+                gap: 8px;
+            }
+
+            .btn {
+                padding: 6px 12px;
+                font-size: 0.85rem;
+            }
+        }
+    </style>
+
+    <section class="documents">
+        <div class="document_container">
+            <h1 class="title">📄 Download Legal Documents</h1>
+
+            <div id="documents-list">
+                <% if (documents && documents.length===0) { %>
+                    <p style="text-align: center; color: #888;">❌ No documents available.</p>
+                    <% } else if (documents) { %>
+                        <% documents.forEach(doc=> { %>
+                            <div class="document-card">
+                                <h2>
+                                    <%= doc.title %>
+                                </h2>
+                                <p>
+                                    <%= doc.description %>
+                                </p>
+                                <p><strong>State:</strong>
+                                    <%= doc.state %>
+                                </p>
+                                <p><strong>Department:</strong>
+                                    <%= doc.department %>
+                                </p>
+                                <div class="buttons">
+                                    <a href="/api/documents/<%= doc._id %>/download" class="btn download-btn">
+                                        ⬇️ Download
+                                    </a>
+                                    <a href="/api/documents/<%= doc._id %>/apply" class="btn apply-btn">
+                                        📥 Apply Online
+                                    </a>
+                                </div>
+                            </div>
+                            <% }) %>
+                                <% } else { %>
+                                    <p style="text-align: center; color: #888;">❌ Failed to load documents.</p>
+                                    <% } %>
+            </div>
+        </div>
+    </section>
