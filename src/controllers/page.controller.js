@@ -58,10 +58,6 @@ const renderTermsAndConditions = asyncHandler(async (req, res) => {
 });
 
 
-const renderUserProfile = (req, res) => {
-    res.render('pages/user-profile');
-};
-
 const renderLoginForm = async (req, res) => {
     res.render('users/login');
 }
@@ -74,7 +70,6 @@ module.exports = {
     renderFundamental,
     renderPrivacyPolicy,
     renderTermsAndConditions,
-    renderUserProfile,
     renderAbout,
     renderLoginForm,
 };

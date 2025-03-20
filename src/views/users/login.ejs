@@ -1,5 +1,24 @@
 <% layout("/layouts/boilerplate") -%>
+    <style>
+        .btn {
+            width: 100%;
+            padding: 15px 25px;
+            background: linear-gradient(90deg, #4e00ff, #8e00ff);
+            border: none;
+            border-radius: 25px;
+            color: #fff;
+            font-size: 18px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 5px 15px rgba(78, 0, 255, 0.5);
+        }
 
+        .btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 25px rgba(142, 0, 255, 0.7);
+        }
+    </style>
     <div class="frm_container row">
         <div class="col-md-4 offset-md-4 frm_box">
             <!-- Toggle Buttons -->
@@ -43,7 +62,6 @@
                             <label for="register-name" class="form-label">Username</label>
                             <input type="text" id="register-name" name="username" placeholder="Enter your name"
                                 class="form-control" required>
-                            <div class="invalid-feedback">Please enter your username.</div>
                         </div>
                     </div>
                 </div>
@@ -53,7 +71,6 @@
                             <label for="register-email" class="form-label">Email</label>
                             <input type="email" id="register-email" name="email" placeholder="Enter your email"
                                 class="form-control" required>
-                            <div class="invalid-feedback">Please enter a valid email address.</div>
                         </div>
                     </div>
                 </div>
@@ -68,8 +85,8 @@
                     <div class="col-md-6">
                         <div class="input-group form-group">
                             <label for="register-confirm-password" class="form-label">Confirm Password</label>
-                            <input type="password" id="register-confirm-password" placeholder="Confirm your password"
-                                class="form-control" required>
+                            <input type="password" id="register-confirm-password" name="confirmPassword"
+                                placeholder="Confirm your password" class="form-control" required>
                         </div>
                     </div>
                 </div>

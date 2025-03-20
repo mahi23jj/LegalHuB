@@ -6,10 +6,15 @@ const passport = require("passport");
 
 // 📌 Register User
 const registerUser = asyncHandler(async (req, res, next) => {
-    const { username, email, password } = req.body;
+    const { username, email, password, confirmPassword } = req.body;
 
-    if (!username || !email || !password) {
+    if (!username || !email || !password || !confirmPassword) {
         req.flash('error', "All fields are required");
+        return res.redirect('/login');
+    }
+
+    if (password !== confirmPassword) {
+        req.flash('error', "Passwords do not match");
         return res.redirect('/login');
     }
 
@@ -22,8 +27,14 @@ const registerUser = asyncHandler(async (req, res, next) => {
     try {
         const newUser = new User({ username, email });
         const registeredUser = await User.register(newUser, password);
-        req.flash('success', 'Welcome to the platform!');
-        return res.redirect('/');
+        req.login(newUser, (err) => {
+            if (err) {
+                req.flash('error', 'Login failed.');
+                return res.redirect('/login'); // Return here to prevent further execution
+            }
+            req.flash('success', 'Welcome! Account created successfully.');
+            return res.redirect('/'); // Return here for single response
+        });
     } catch (err) {
         req.flash('error', err.message);
         return res.redirect('/login');
@@ -32,8 +43,10 @@ const registerUser = asyncHandler(async (req, res, next) => {
 
 
 
+
 // 📌 Login User
 const loginUser = asyncHandler(async (req, res, next) => {
+    console.log('login');
     req.flash('success', "Logged in successfully!");
     return res.redirect('/'); // ✅ Redirect after login
 });
@@ -61,30 +74,64 @@ const logoutUser = asyncHandler(async (req, res, next) => {
 
 
 // 📌 Get User Profile
-// exports.getUserProfile = asyncHandler(async (req, res, next) => {
-//     const user = await User.findById(req.user._id).select("-password");
-//     if (!user) {
-//         return next(new apiError(404, "User not found"));
-//     }
+const getUserProfile = asyncHandler(async (req, res) => {
+    if (!req.user) {
+        return res.redirect('/login');
+    }
+    const user = await User.findById(req.user._id).select('-password');
+    if (!user) {
+        res.redirect('/login');
+    }
+    res.render('users/profile', { user });
+});
 
-//     res.status(200).json(new apiResponse(200, user, "User profile fetched successfully"));
-// });
+// 📌 render updateform
+const renderUpdateForm = asyncHandler(async (req, res) => {
+    if (!req.user) {
+        return res.redirect('/login');
+    }
+    const user = await User.findById(req.user._id).select('-password');
+    if (!user) {
+        return res.redirect('/login');
+    }
+    res.render('users/updateUser', { user });
+})
 
-// // 📌 Update User
-// exports.updateUser = asyncHandler(async (req, res, next) => {
-//     const { username, email } = req.body;
-//     const user = await User.findById(req.user._id);
+// 📌 Update User
+const updateUser = asyncHandler(async (req, res) => {
+    const { username, name, email, specialization, licenseNumber, experience, profilePicture } = req.body;
+    const user = await User.findById(req.user._id);
 
-//     if (!user) {
-//         return next(new apiError(404, "User not found"));
-//     }
+    if (!user) {
+        return next(new apiError(404, "User not found"));
+    }
 
-//     user.username = username || user.username;
-//     user.email = email || user.email;
-//     await user.save();
+    user.username = username || user.username;
+    user.name = name || user.name;
+    user.email = email || user.email;
+    user.specialization = specialization || user.specialization;
+    user.licenseNumber = licenseNumber || user.licenseNumber;
+    user.experience = experience || user.experience;
+    user.profilePicture = profilePicture || user.profilePicture;
+    await user.save();
+    req.flash('success', "Profile updated successfully!");
+    return res.redirect('/account');
+});
 
-//     res.status(200).json(new apiResponse(200, user, "User updated successfully"));
-// });
+// 📌 Delete User
+const deleteUser = asyncHandler(async (req, res) => {
+    await User.findByIdAndDelete(req.user._id);
+    req.flash('success', "Account deleted successfully!");
+    return res.redirect('/login');
+});
 
 
-module.exports = { registerUser, loginUser, logoutUser };
+module.exports = {
+    registerUser,
+    loginUser,
+    logoutUser,
+    getUserProfile,
+    renderUpdateForm,
+    updateUser,
+    deleteUser,
+};

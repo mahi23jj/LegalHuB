@@ -5,7 +5,8 @@ const asyncHandler = require('../utils/asyncHandler');
 
 const isLoggedIn = (req, res, next) => {
     if (!req.isAuthenticated()) {
-        return res.status(401).json(new apiResponse("401", null, "You must be logged in to access this route"));
+        req.flash('error', 'Please log in first');
+        res.redirect('/login')
     }
     console.log("USER IS LOGGED IN:", req.user);
     next();
@@ -14,7 +15,7 @@ const isAdmin = (req, res, next) => {
     const adminSecret = req.headers['ADMIN_SECRECT_KEY'];  // 🔹 Get Secret from Headers
 
     if (!adminSecret || adminSecret !== process.env.ADMIN_SECRECT_KEY) {
-        return next(new ApiError(403, 'Access denied. Invalid Admin Secret!'));
+
     }
 
     next(); // ✅ If secret is correct, proceed to the route

@@ -21,7 +21,9 @@
     <%- include('../includes/navbar.ejs') %>
 
         <div>
-            <%- body %>
+            <%- include("../includes/flash.ejs") %><!--Add flash message for all page-->
+
+                <%- body %>
         </div>
 
         <%- include('../includes/footer.ejs') %>

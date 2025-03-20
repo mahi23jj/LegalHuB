@@ -4,10 +4,10 @@ const {
     registerUser,
     loginUser,
     logoutUser,
-    // getUserProfile,
-    // updateUser
-} = require("../controllers/user.controller");
-const { isLoggedIn } = require("../middlewares/multer.middleware.js");
+    updateUser,
+    deleteUser
+} = require("../controllers/user.controller.js");
+const { isLoggedIn } = require("../middlewares/auth.middleware.js");
 
 const router = express.Router();
 
@@ -24,7 +24,9 @@ router.route("/login").post(
 
 
 router.route("/logout").get(logoutUser);
-// router.route("/profile").get(isLoggedIn, getUserProfile);
-// router.route("/update").put(isLoggedIn, updateUser);
+
+router.route("/update").put(isLoggedIn, updateUser);
+
+router.route("/delete").delete(isLoggedIn, deleteUser);
 
 module.exports = router;
