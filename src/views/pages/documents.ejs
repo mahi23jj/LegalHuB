@@ -154,9 +154,10 @@
                                 <p><strong>Department:</strong>
                                     <%= doc.department %>
                                 </p>
-                                <div class="buttons">
-                                    <a href="/api/documents/<%= doc._id %>/download" class="btn download-btn">
-                                        ⬇️ Download
+                                <div class="">
+                                    <a href="/api/documents/<%= doc._id %>/download">
+                                        <button class="btn" onclick="trackDownload('<%= doc._id %>')">⬇️
+                                            Download</button>
                                     </a>
                                     <a href="/api/documents/<%= doc._id %>/apply" class="btn apply-btn">
                                         📥 Apply Online
@@ -170,3 +171,21 @@
             </div>
         </div>
     </section>
+
+    <script>
+        function trackDownload(docId) {
+            fetch(`/api/documents/${docId}/track`, {
+                method: "POST"
+            })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        alert("Download tracked successfully!");
+                        location.reload(); // Refresh page to update the download count
+                    } else {
+                        alert("Error tracking download.");
+                    }
+                })
+                .catch(error => console.error("Error:", error));
+        }
+    </script>

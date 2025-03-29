@@ -1,0 +1,111 @@
+<% layout("layouts/boilerplate") %>
+
+    <style>
+        .container_down {
+            max-width: 800px;
+            margin: auto;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 12px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
+            transition: transform 0.3s ease;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        h1 {
+            color: #7b1fa2;
+        }
+
+        .document {
+            border-bottom: 1px solid #ddd;
+            padding: 10px 0;
+        }
+
+        .document:last-child {
+            border-bottom: none;
+        }
+
+        .download-count {
+            color: #4caf50;
+            font-weight: bold;
+        }
+
+        .btn {
+            background-color: #4caf50;
+            color: white;
+            padding: 8px 16px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            text-decoration: none;
+            display: inline-block;
+            margin-top: 10px;
+        }
+
+        .btn:hover {
+            background-color: #45a049;
+        }
+    </style>
+    </head>
+
+    <body>
+        <div class="container_down">
+            <h1>📄 Download Legal Documents</h1>
+
+            <% if (documents.length===0) { %>
+                <p>No documents available.</p>
+                <% } else { %>
+                    <% documents.forEach(doc=> { %>
+                        <div class="document">
+                            <h2>
+                                <%= doc.title %>
+                            </h2>
+                            <p>
+                                <%= doc.description %>
+                            </p>
+                            <p><strong>State:</strong>
+                                <%= doc.state %>
+                            </p>
+                            <p><strong>Department:</strong>
+                                <%= doc.department %>
+                            </p>
+                            <p class="download-count">Downloads: <%= doc.downloadCount || 0 %>
+                            </p>
+                            <% if (doc.downloadedBy.length> 0) { %>
+                                <p><strong>Downloaded By:</strong></p>
+                                <ul>
+                                    <% doc.downloadedBy.forEach(user=> { %>
+                                        <li>
+                                            <%= user.username %> (on <%= new
+                                                    Date(user.downloadedAt).toLocaleDateString() %>)
+                                        </li>
+                                        <% }) %>
+                                </ul>
+                                <% } else { %>
+                                    <p>No registered users have downloaded this document.</p>
+                                    <% } %>
+
+                                        <a href="/api/documents/<%= doc._id %>/download"><button class="btn"
+                                                onclick="trackDownload('<%= doc._id %>')">⬇️ Download</button></a>
+                        </div>
+                        <% }) %>
+                            <% } %>
+        </div>
+        <script>
+            function trackDownload(docId) {
+                fetch(`/api/documents/${docId}/track`, {
+                    method: "POST"
+                })
+                    .then(response => response.json())
+                    .then(data => {
+                        if (data.success) {
+                            alert("Download tracked successfully!");
+                            location.reload(); // Refresh page to update the download count
+                        } else {
+                            alert("Error tracking download.");
+                        }
+                    })
+                    .catch(error => console.error("Error:", error));
+            }
+        </script>

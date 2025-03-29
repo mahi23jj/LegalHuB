@@ -6,7 +6,8 @@ const {
     updateDocument,
     deleteDocument,
     downloadDocument,
-    applyOnline
+    applyOnline,
+    trackDownload
 } = require('../controllers/document.controller.js');
 
 const router = express.Router();
@@ -31,5 +32,8 @@ router.route('/:id/download').get(downloadDocument);
 
 // ✅ Apply Online Link
 router.route('/:id/apply').get(applyOnline);
+
+// ✅ Track Download
+router.route('/:id/track').post(trackDownload);
 
 module.exports = router;

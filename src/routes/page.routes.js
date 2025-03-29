@@ -15,6 +15,7 @@ const {
 const { getLawyers, viewLawyer } = require('../controllers/lawyer.controller.js');
 const { getUserProfile, renderUpdateForm } = require("../controllers/user.controller.js");
 const { publishArticle, renderEditForm } = require('../controllers/article.controller.js');
+const { renderDownCount } = require('../controllers/document.controller.js');
 
 router.get('/', renderHome);
 router.get('/dictionary', renderDictionary);
@@ -31,6 +32,6 @@ router.get('/account', getUserProfile);
 router.get('/account/update', renderUpdateForm);
 router.get('/articles/publish', publishArticle);
 router.get('/articles/:id/edit', renderEditForm);
-
+router.get('/viewdowncount', renderDownCount);
 
 module.exports = router;

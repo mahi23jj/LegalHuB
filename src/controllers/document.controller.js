@@ -98,6 +98,33 @@ const applyOnline = asyncHandler(async (req, res) => {
     res.redirect(document.applyLink);
 });
 
+// Route to track downloads
+const trackDownload = asyncHandler(
+    async (req, res) => {
+        const document = await Document.findById(req.params.id);
+        if (!document) {
+            throw new ApiError(404, "Document not found");
+        }
+        document.downloadCount = (document.downloadCount || 0) + 1; // Increment download count
+
+        // If user is logged in, store username
+        if (req.user) {
+            document.downloadedBy.push({ username: req.user.username });
+        } else {
+            req.flash("error", "You need to log in to store download info.");
+        }
+
+        await document.save();
+        res.status(200).json(new ApiResponse(200, document, "Download tracked successfully"));
+    }
+);
+
+const renderDownCount = asyncHandler(async (req, res) => {
+
+    const documents = await Document.find();
+    res.render('pages/down_doc', { documents });
+});
+
 module.exports = {
     createDocument,
     getAllDocuments,
@@ -105,5 +132,7 @@ module.exports = {
     updateDocument,
     deleteDocument,
     downloadDocument,
-    applyOnline
+    applyOnline,
+    trackDownload,
+    renderDownCount
 };

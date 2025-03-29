@@ -34,6 +34,16 @@ const documentSchema = new mongoose.Schema({
         type: [String],  // Store required documents as an array of strings
         required: true
     },
+    downloadCount: { type: Number, default: 0 }, // New field for tracking downloads
+    downloadedBy: [
+        {
+            username: String, // Store the username of the user who downloaded
+            downloadedAt: {
+                type: Date,
+                default: Date.now, // Track when they downloaded it
+            },
+        }
+    ]
 }, { timestamps: true });
 
 const Document = mongoose.model('Document', documentSchema);
