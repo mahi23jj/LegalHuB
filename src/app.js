@@ -89,6 +89,11 @@ const articleRoutes = require("./routes/article.routes.js");
 const userRoutes = require("./routes/user.routes.js");
 const pageRoutes = require('./routes/page.routes');
 
+
+// ✅ Define the test route first
+app.get("/", (req, res) => {
+    res.status(200).json({ message: "Welcome to the API!" });
+});
 // API Routes
 app.use("/healthcheck", healthCheckRouter);
 app.use("/api/dictionary", dictionaryRoutes);
