@@ -1,161 +1,248 @@
-# LegalHuB
+# 📚 LegalHuB
 
-A web-based platform designed to help users understand legal terms, download state-specific legal documents, access legal rights, read legal guides, and find official application links in a simple and accessible way.
+**LegalHuB** is a web-based platform designed to simplify access to legal resources. Users can explore legal terms, download state-specific legal documents, understand their rights, read comprehensive legal guides, and apply for legal services through official links — all in one place.
 
 ---
 
 ## 🚀 Features
 
-✅ Legal Dictionary – AI-powered explanations of legal terms.  
-✅ Download Legal Forms – Get state-specific legal documents.  
-✅ Apply for Legal Services – Redirect users to official application links.  
-✅ Legal Rights Database – Browse fundamental and employment rights.  
-✅ Legal Articles & Guides – Read structured legal guides.  
-✅ Smart Search – Search across laws, forms, and rights efficiently.
+- ✅ **Legal Dictionary** – AI-powered explanations of complex legal terms.  
+- ✅ **Download Legal Forms** – Access and download state-specific legal documents.  
+- ✅ **Apply for Legal Services** – Redirects to official legal aid application portals.  
+- ✅ **Legal Rights Database** – Browse essential civil, fundamental, and employment rights.  
+- ✅ **Legal Articles & Guides** – Learn from structured and easy-to-read legal content.  
+- ✅ **Smart Search** – Search across legal terms, rights, and documents efficiently.
 
 ---
 
+## 📸 Screenshots
+
+### 🏠 Homepage
+![Homepage](https://github.com/user-attachments/assets/b3a791fe-29b3-4acd-99ba-5fd452cd20d7)
+
+---
+
+### 📘 Legal Dictionary
+![Legal Dictionary](https://github.com/user-attachments/assets/33660235-dc58-4196-8cdc-c450068312e2)
+
+---
+
+![Link](https://github.com/user-attachments/assets/a7f5e868-29c7-44c5-8ef3-e4cce2c8b4dc)
+
+---
+
+![Link](https://github.com/user-attachments/assets/bd66169d-f22a-48d6-8a93-2f89f165b9dc)
+
+---
+
+![Link](https://github.com/user-attachments/assets/bebb21ce-971c-46ab-a8d4-3c072fedb304)
+
+---
+
+![Link](https://github.com/user-attachments/assets/37cbfc4e-6113-435b-be48-50d8b212bcf3)
+
+---
+
+![Link](https://github.com/user-attachments/assets/91a40e6f-7124-42c2-bfa1-beeedeaf7394)
+
+
+---
 ## 🛠️ Tech Stack
 
-- Backend: Node.js, Express.js
-- Database: MongoDB (Free Tier)
-- AI Chatbot: Chatbase
-- Templating Engine: EJS
-- Authentication: passport.js
+- **Backend:** Node.js, Express.js  
+- **Database:** MongoDB (Free Tier or Atlas)  
+- **AI Integration:** Chatbase (for AI chatbot responses)  
+- **Templating Engine:** EJS  
+- **Authentication:** Passport.js  
 
 ---
 
 ## ⚙️ Installation
 
-### Prerequisites
+### 📌 Prerequisites
 
 - [Node.js](https://nodejs.org/)
-- [MongoDB](https://www.mongodb.com/) (or MongoDB Atlas)
-- `.env` file with API keys
+- [MongoDB](https://www.mongodb.com/) (local or [MongoDB Atlas](https://www.mongodb.com/cloud/atlas))
+- `.env` file with necessary API keys
 
-### Setup
+### 📥 Setup Instructions
 
-1. Clone the repository
-
-bash
+```bash
+# 1. Clone the repository
 git clone https://github.com/yourusername/legal-help-platform.git
 cd legal-help-platform
 
-2. Install dependencies
-
-bash
+# 2. Install dependencies
 npm install
 
-3. Set up environment variables  
-   Create a `.env` file and add the following:
+# 3. Set up environment variables
+# Create a .env file in the root directory and add the following:
+```
+## 🧑‍💻 Environment Setup
 
-env
-MONGO_URI=your_mongodb_connection_string
-OPENAI_API_KEY=your_openai_api_key
-PORT=5000
+1. Copy the example environment file:
+---
+```bash
+cp .env.sample .env
+```
+---
+2. Update the .env file with your configuration:
+----
+```bash
+# Server Configuration
+PORT=8000
+SESSION_SECRET=mysecrectkey
 
-4. Start the server
+# CORS Configuration
+CORS_ORIGIN=*
+# CORS_ORIGIN=http://localhost:4000 
 
-bash
-npm start
+#DB_URL=
+DB_URL=mongodb+srv://<username>:<password>@cluster0.weuhr.mongodb.net
+# Uncomment if needed for frontend security
 
+DB_URL=
+
+NODE_ENV=development
+
+MISTRAL_API_KEY=
+
+ADMIN_SECRECT_KEY=mysupersecretkey
+```
+---
+```bash
+#4. Start the server
+npm start or npm run dev
+```
 The server will run on `http://localhost:8000`
 
----
-
-## 📂 Project Structure
-
-legal-help-platform/
-│── controllers/ # Handles business logic  
-│── models/ # Mongoose schemas  
-│── routes/ # API endpoints  
-│── views/ # EJS templates  
-│── public/ # Static files (CSS, JS)  
-│── utils/ # Utility functions  
-│── middleware/ # Custom middleware  
-│── config/ # Database & API config  
-│── app.js # Main Express app  
-│── server.js # Server entry point  
-│── README.md # Project documentation  
-│── package.json # Dependencies & scripts
 
 ---
 
-## 🌍 API Endpoints
+   ## 📂 Project Structure
 
-### Legal Dictionary (AI-powered)
 
-- Search legal term
+```plaintext
+LegalHuB/
+├── init/                   # Seed scripts for rights & documents
+│   ├── documents.data.js
+│   ├── index.documents.js
+│   ├── index.rights.js
+│   └── rights.data.js
+│
+├── src/                    # Main application source
+│   ├── controllers/        # Business logic for each route
+│   ├── db/                 # MongoDB database connection
+│   ├── middlewares/        # Auth, error, upload middleware
+│   ├── models/             # Mongoose schemas
+│   ├── public/             # Static files (CSS, JS, images)
+│   ├── routes/             # Express.js route definitions
+│   ├── uploads/            # Uploaded files (PDFs etc.)
+│   ├── utils/              # Helpers: error handling, responses, Cloudinary
+│   ├── views/              # EJS templates (includes, layouts, pages)
+│   ├── app.js              # Express app config
+│   ├── constants.js        # Global constants
+│   ├── index.js            # Server entry point
+│   └── readme.md           # Dev-specific readme
+│
+├── .env.sample             # Example environment config
+├── .gitignore              # Git ignored files
+├── .prettierrc             # Prettier config
+├── .prettierignore
+├── CODE_OF_CONDUCT.md
+├── LICENSE
+├── package.json
+├── package-lock.json
+└── README.md               # Project overview and setup
+```
+---
 
-http
-GET /api/dictionary/:term
+ ## 🌐 API Endpoints
 
-Response: AI-generated explanation of the legal term
+### 📘 Legal Dictionary
 
-### Legal Forms & Documents
-
-- Get all forms
-
-http
-GET /api/forms
-
-- Get a specific form by ID
-
-http
-GET /api/forms/:id
-
-- Download a form
-
-http
-GET /api/forms/download/:id
-
-### Legal Rights
-
-- Get all rights
-
-http
-GET /api/rights
-
-- Get a specific right by ID
-
-http
-GET /api/rights/:id
-
-### Smart Search
-
-- Search across rights, forms, and dictionary
-
-http
-GET /api/search?q=your_query
+- **GET** `/api/dictionary/:term`  
+  Returns an AI-generated explanation for a legal term.
 
 ---
 
-## 🔍 Smart Search Implementation
+### 📄 Legal Forms & Documents
 
-The smart search works by:
+- **GET** `/api/forms`  
+  Retrieve all available legal forms.
 
-1. Searching legal terms in the dictionary database
-2. Searching rights stored in MongoDB
-3. Searching legal forms and their descriptions
-4. Returning combined results in a ranked order
+- **GET** `/api/forms/:id`  
+  Get a specific form by its ID.
 
-Example API response for `/api/search?q=tenant rights`:
+- **GET** `/api/forms/download/:id`  
+  Download a specific legal form.
 
-json
+---
+
+### 🧾 Legal Rights
+
+- **GET** `/api/rights`  
+  Fetch all legal rights from the database.
+
+- **GET** `/api/rights/:id`  
+  Retrieve a specific legal right by ID.
+
+---
+
+### 🔍 Smart Search
+
+- **GET** `/api/search?q=your_query`  
+  Searches across legal dictionary, rights, and forms.
+
+#### 🔁 Example Response
+
+```json
 {
-"dictionary_results": ["Tenant Rights - Explanation"],
-"rights_results": ["Right to Safe Housing"],
-"form_results": ["Rental Agreement Form"]
+  "dictionary_results": ["Tenant Rights - Explanation"],
+  "rights_results": ["Right to Safe Housing"],
+  "form_results": ["Rental Agreement Form"]
 }
-`
+
+```
+---
+## 🔍 Smart Search Logic
+
+The Smart Search feature performs a unified query across:
+
+- Legal terms in the dictionary database  
+- User rights stored in MongoDB  
+- Legal forms and their descriptions  
+
+The results are ranked and returned in a categorized format to ensure relevance and clarity.
 
 ---
 
 ## 🎨 UI Pages
 
-- Homepage (`/`) – Landing page with navigation.
-- Legal Dictionary (`/dictionary`) – Search legal terms.
-- Legal Forms (`/forms`) – View and download legal documents.
-- Legal Rights (`/rights`) – Browse legal rights and guides.
+- **Home** (`/`) – Introductory landing page with navigation  
+- **Legal Dictionary** (`/dictionary`) – Look up legal terms  
+- **Legal Forms** (`/forms`) – Download or view forms by category  
+- **Legal Rights** (`/rights`) – Explore civil and employment rights  
 
 ---
+
+## 📄 License
+
+This project is licensed under the [MIT License](LICENSE).
+
+---
+
+## 🤝 Contributing
+
+Pull requests are welcome! For significant changes, please open an issue first to discuss your proposed modifications.
+
+---
+
+## 📬 Contact
+
+For support, collaboration, or legal partnerships, please contact:  
+📧 **your.email@example.com**
+
+---
+
+**LegalHuB** – Empowering users with accessible legal information.
