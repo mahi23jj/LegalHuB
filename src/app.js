@@ -91,9 +91,10 @@ const pageRoutes = require('./routes/page.routes');
 
 
 // ✅ Define the test route first
-app.get("/", (req, res) => {
-    res.status(200).json({ message: "Welcome to the API!" });
-});
+// app.get("/", (req, res) => {
+//     res.status(200).json({ message: "Welcome to the API!" });
+// });
+
 // API Routes
 app.use("/healthcheck", healthCheckRouter);
 app.use("/api/dictionary", dictionaryRoutes);
