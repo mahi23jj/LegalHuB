@@ -119,6 +119,21 @@
    ADMIN_SECRECT_KEY=mysupersecretkey
 ```
 ---
+## 🔐 Mistral AI API Integration
+
+### ⚙️ Setting Up Mistral API Key
+
+To enable Mistral AI-powered features in LegalHuB, follow the steps below:
+
+1. Go to the [Mistral AI Platform](https://console.mistral.ai/) and create an account (if you haven't already).
+2. Navigate to **API Keys** and generate a new key.
+3. Add the following entry to your `.env` file:
+
+   ```env
+   MISTRAL_API_KEY=your_mistral_api_key_here
+   ```
+
+---
 3. Start the server
 ```bash
    npm start or npm run dev
