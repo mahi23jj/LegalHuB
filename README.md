@@ -67,54 +67,133 @@
 
 ### 📥 Setup Instructions
 
+#### 1. Clone the repository
 ```bash
-# 1. Clone the repository
-git clone https://github.com/yourusername/legal-help-platform.git
-cd legal-help-platform
-
-# 2. Install dependencies
-npm install
-
-# 3. Set up environment variables
-# Create a .env file in the root directory and add the following:
+   git clone https://github.com/yourusername/legal-help-platform.git
+   
+   cd legal-help-platform
+````
+ #### 2. Install dependencies
+```bash 
+   npm install
 ```
+
+#### 3. Set up environment variables
+  - Create a .env file in the root directory and add the following:
+ ---
+
 ## 🧑‍💻 Environment Setup
 
 1. Copy the example environment file:
 ---
 ```bash
-cp .env.sample .env
+   cp .env.sample .env
 ```
 ---
 2. Update the .env file with your configuration:
 ----
 ```bash
-# Server Configuration
-PORT=8000
-SESSION_SECRET=mysecrectkey
+   # Server Configuration
+   PORT=8000
+   SESSION_SECRET=mysecrectkey
 
-# CORS Configuration
-CORS_ORIGIN=*
-# CORS_ORIGIN=http://localhost:4000 
+   # CORS Configuration
+   CORS_ORIGIN=*
+   # CORS_ORIGIN=http://localhost:4000 
 
-#DB_URL=
-DB_URL=mongodb+srv://<username>:<password>@cluster0.weuhr.mongodb.net
-# Uncomment if needed for frontend security
+   #DB_URL=
+   DB_URL=mongodb+srv://<username>:<password>@cluster0.weuhr.mongodb.net
+   # Uncomment if needed for frontend security
 
-DB_URL=
+   DB_URL=
 
-NODE_ENV=development
+   NODE_ENV=development
 
-MISTRAL_API_KEY=
+   MISTRAL_API_KEY=
 
-ADMIN_SECRECT_KEY=mysupersecretkey
+   ADMIN_SECRECT_KEY=mysupersecretkey
 ```
 ---
+3. Start the server
 ```bash
-#4. Start the server
-npm start or npm run dev
+   npm start or npm run dev
 ```
 The server will run on `http://localhost:8000`
+
+---
+
+## 🤝 How to Contribute
+
+We welcome contributions to help improve **LegalHuB**! 🚀 Whether you're fixing bugs, improving documentation, or building new features — your support makes a difference.
+
+---
+
+### 🍴 Fork the Repository
+
+1. Navigate to the [LegalHuB GitHub repository](https://github.com/dipexplorer/LegalHuB).
+2. Click the **Fork** button in the top-right corner to create a personal copy of the repository.
+
+---
+
+### 🔄 Clone Your Forked Repository
+
+1. Clone the repository to your local machine:
+
+```bash
+   git clone https://github.com/your-username/LegalHuB.git
+```
+2. Navigate to the project directory:
+
+```bash
+   cd LegalHuB
+```
+3. 🌿 Create a New Branch
+   - Create a new branch for your changes:
+```bash
+   git checkout -b feature/your-feature-name
+```
+4. Make Your Changes✏️
+   - Add your desired features, fix bugs, or improve documentation. 🛠️
+
+5. 📦 Stage the Changes
+   - Add modified files to the staging area:
+
+```bash
+   git add .
+```
+
+6. 📝 Commit Your Changes
+   - Commit your changes with a clear, descriptive message:
+
+```bash
+   git commit -m "Add [feature/fix]: short description of what you changed"
+```
+
+7. ⬆️ Push to Your Fork
+   - Push the changes to your forked GitHub repository:
+```bash
+   git push origin feature/your-feature-name
+```
+
+8. 📬 Create a Pull Request
+   - Visit your forked repository on GitHub.
+
+   - Click on "Compare & pull request".
+
+   - Add a title and description of your changes.
+
+   - Submit the pull request for review.
+---
+
+## 💡 Tips for a Great Contribution
+- Follow consistent code style.
+
+- Write descriptive commit messages.
+
+- Make sure the project builds without errors.
+
+- Reference any related issue numbers (e.g., Fixes #123).
+
 
 
 ---
