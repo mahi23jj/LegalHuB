@@ -63,14 +63,46 @@
                 crossorigin="anonymous"></script>
             <script src="/js/login.js"></script>
             <script>
-                window.embeddedChatbotConfig = {
-                    chatbotId: "BT_3UxsXX-_MEsXPixshT",
-                    domain: "www.chatbase.co"
-                }
+                (function(){
+                    // Check if chatbase is already initialized
+                    if(!window.chatbase || window.chatbase("getState") !== "initialized") {
+                        // Queue chatbase commands if not ready yet
+                        window.chatbase = (...arguments) => {
+                            if (!window.chatbase.q) {
+                                window.chatbase.q = [];
+                            }
+                            window.chatbase.q.push(arguments);
+                        };
+
+                        // Setup Proxy for command tracking
+                        window.chatbase = new Proxy(window.chatbase, {
+                            get(target, prop) {
+                                if (prop === "q") {
+                                    return target.q;
+                                }
+                                return (...args) => target(prop, ...args);
+                            }
+                        });
+                    }
+
+                    // Load the actual chatbase embed script after the page loads
+                    const onLoad = function() {
+                        const script = document.createElement("script");
+                        script.src = "https://www.chatbase.co/embed.min.js";
+                        script.id = "vb1bB3pcTaS5bZJbzZhBe"; // This is YOUR chatbot ID
+                        script.domain = "www.chatbase.co";
+                        document.body.appendChild(script);
+                    };
+
+                    // Wait for page load to inject the script
+                    if(document.readyState === "complete") {
+                        onLoad();
+                    } else {
+                        window.addEventListener("load", onLoad);
+                    }
+                })();
             </script>
-            <script src="https://www.chatbase.co/embed.min.js" chatbotId="BT_3UxsXX-_MEsXPixshT"
-                domain="www.chatbase.co" defer>
-                </script>
+
 </body>
 
 </html>
