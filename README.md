@@ -74,9 +74,9 @@
 
 #### 1. Clone the repository
 ```bash
-   git clone https://github.com/yourusername/legal-help-platform.git
+   git clone https://github.com/yourusername/LegalHuB
    
-   cd legal-help-platform
+   cd LegalHuB
 ````
  #### 2. Install dependencies
 ```bash 

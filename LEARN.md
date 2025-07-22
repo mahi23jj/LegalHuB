@@ -252,7 +252,7 @@ We welcome contributions!
 ## 📫 Questions or Suggestions?
 
 - 📧 Email: [dipexplorerid23@gmail.com](mailto:dipexplorerid23@gmail.com)  
-- 🐛 Open an Issue: [GitHub Issues](https://github.com/YOUR-USERNAME/YOUR-REPO/issues) <!-- Replace with your actual repo URL -->
+- 🐛 Open an Issue: [GitHub Issues](https://github.com/YOUR-USERNAME/LegalHuB/issues) <!-- Replace with your actual repo URL -->
 
 ## 🫶 Thank You
 
