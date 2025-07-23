@@ -30,7 +30,10 @@ const getAllDocuments = asyncHandler(async (req, res) => {
     const documents = await Document.find();
 
     // ✅ Render ke andar `documents` pass karna zaroori hai
-    res.render('pages/documents', { documents });
+    // res.render('pages/documents', { documents });
+    res.status(200).json(
+        new ApiResponse(200, documents, "Documents fetched successfully")
+    );
 });
 
 // ✅ Get Document by ID

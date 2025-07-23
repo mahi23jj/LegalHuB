@@ -13,16 +13,17 @@
     "type": "commonjs",
     "main": "src/index.js",
     "scripts": {
-        "test": "jest --coverage --passWithNoTests",
+        "test": "jest --detectOpenHandles",
         "start": "node src/index.js",
         "dev": "nodemon src/index.js",
         "build": "echo 'No build step required for Express.js' && exit 0"
     },
     "devDependencies": {
         "jest": "^29.7.0",
+        "mongodb-memory-server": "^10.1.4",
         "nodemon": "^3.1.9",
         "prettier": "^3.4.2",
-        "supertest": "^7.1.0"
+        "supertest": "^7.1.4"
     },
     "dependencies": {
         "axios": "^1.8.3",

@@ -7,7 +7,7 @@ on:
     branches: [main]
 
 jobs:
-  build-test-deploy:
+  test:
     runs-on: ubuntu-latest
 
     steps:
@@ -25,6 +25,14 @@ jobs:
       - name: 🧪 Run Tests
         run: npm run test || echo "✅ No tests found, skipping test step"
 
-      - name: 🚀 Deploy to Render
-        if: github.ref == 'refs/heads/main' && github.event_name == 'push'
-        run: curl -X POST ${{ secrets.RENDER_DEPLOY_HOOK_URL }}
+  deploy:
+      needs: test
+      if: github.ref == 'refs/heads/main' && github.event_name == 'push'
+      runs-on: ubuntu-latest
+      steps:
+        - name: 📥 Checkout code
+          uses: actions/checkout@v3
+
+        - name: 🚀 Deploy to Render
+          run: |
+            curl -X POST ${{ secrets.RENDER_DEPLOY_HOOK_URL }}

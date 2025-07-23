@@ -23,8 +23,8 @@ const createArticle = asyncHandler(async (req, res) => {
 const getAllArticles = asyncHandler(async (req, res) => {
     const articles = await Article.find().populate('author', 'name email role').sort({ createdAt: -1 });
 
-    // res.status(200).json(new ApiResponse(200, articles, 'Articles fetched successfully'));
-    res.render('pages/articles', { articles });
+    // res.render('pages/articles', { articles });
+    res.status(200).json(new ApiResponse(200, articles, 'Articles fetched successfully'));
 });
 
 // ✅ Get Single Article by ID
