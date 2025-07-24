@@ -4,6 +4,7 @@ const Right = require('../models/rights.model.js');
 const asyncHandler = require('../utils/asyncHandler.js');
 const ApiError = require('../utils/apiError.js');
 const ApiResponse = require('../utils/apiResponse.js');
+const User = require('../models/user.model.js');
 
 const renderHome = (req, res) => {
     res.render('pages/index');
@@ -62,6 +63,11 @@ const renderLoginForm = async (req, res) => {
     res.render('users/login');
 }
 
+const getLawyers = asyncHandler(async (req, res) => {
+    const lawyers = await User.find({});
+    res.render('pages/lawyers', { lawyers });
+});
+
 module.exports = {
     renderHome,
     renderDictionary,
@@ -72,4 +78,5 @@ module.exports = {
     renderTermsAndConditions,
     renderAbout,
     renderLoginForm,
+    getLawyers
 };

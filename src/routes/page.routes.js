@@ -10,9 +10,10 @@ const {
     renderPrivacyPolicy,
     renderTermsAndConditions,
     renderLoginForm,
+    getLawyers
 } = require('../controllers/page.controller.js');
 
-const { getLawyers, viewLawyer } = require('../controllers/lawyer.controller.js');
+const {  viewLawyer } = require('../controllers/lawyer.controller.js');
 const { getUserProfile, renderUpdateForm } = require("../controllers/user.controller.js");
 const { publishArticle, renderEditForm } = require('../controllers/article.controller.js');
 const { renderDownCount } = require('../controllers/document.controller.js');

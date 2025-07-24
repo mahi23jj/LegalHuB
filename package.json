@@ -1,5 +1,5 @@
 {
-    "name": "LegalHuB",
+    "name": "legalhub",
     "version": "1.0.0",
     "description": "A digital platform that allows users to rent items such as appliances,",
     "keywords": [
@@ -47,6 +47,10 @@
         "passport-local-mongoose": "^8.0.0"
     },
     "jest": {
-        "testEnvironment": "node"
+        "setupFilesAfterEnv": ["<rootDir>/test/jest.setup.js"],
+        "globalSetup": "<rootDir>/test/globalSetup.js",
+        "globalTeardown": "<rootDir>/test/globalTeardown.js",
+        "testEnvironment": "node",
+        "testTimeout": 30000
     }
 }

@@ -1,9 +1,11 @@
 const User = require('../models/user.model.js');
 const asyncHandler = require('../utils/asyncHandler');
+const apiError = require('../utils/apiError');
+const apiResponse = require('../utils/apiResponse');
 
 const getLawyers = asyncHandler(async (req, res) => {
     const lawyers = await User.find({});
-    res.render('pages/lawyers', { lawyers });
+    res.status(200).json(new apiResponse(200, lawyers, 'Lawyers fetched successfully'));
 });
 
 const viewLawyer = asyncHandler(async (req, res) => {

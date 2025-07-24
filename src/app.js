@@ -88,6 +88,7 @@ const { smartSearch } = require("./controllers/search.controller.js");
 const articleRoutes = require("./routes/article.routes.js");
 const userRoutes = require("./routes/user.routes.js");
 const pageRoutes = require('./routes/page.routes');
+const lawyerRoutes = require('./routes/lawyer.routes.js');
 
 
 // ✅ Define the test route first
@@ -96,12 +97,13 @@ const pageRoutes = require('./routes/page.routes');
 // });
 
 // API Routes
-app.use("/healthcheck", healthCheckRouter);
+app.use("/api/healthcheck", healthCheckRouter);
 app.use("/api/dictionary", dictionaryRoutes);
 app.use("/api/rights", rightsRoutes);
 app.use("/api/documents", documentsRoutes);
 app.use("/api/articles", articleRoutes);
 app.use("/api/users", userRoutes);
+app.use("/api/lawyers", lawyerRoutes);
 app.use('/', pageRoutes);
 
 // Smart Search
