@@ -7,7 +7,7 @@ const ApiResponse = require('../utils/apiResponse');
 // ✅ Create Article
 const createArticle = asyncHandler(async (req, res) => {
     const { title, content, tags } = req.body;
-    const author = req.user?._id; // Assign logged-in user's ID
+    const author = req.user?._id || req.body.author;
 
     if (!title?.trim() || !content?.trim()) {
         throw new ApiError(400, "Title and content are required");
@@ -15,9 +15,13 @@ const createArticle = asyncHandler(async (req, res) => {
 
     const article = await Article.create({ title, content, tags, author });
 
-    res.redirect('/articles');
+    // Check if request expects HTML or JSON
+    if (req.accepts('html')) {
+        return res.redirect('/articles');
+    } else {
+        return res.status(201).json(new ApiResponse(201, article, "Article created successfully"));
+    }
 });
-
 
 // ✅ Get All Articles
 const getAllArticles = asyncHandler(async (req, res) => {
@@ -35,8 +39,11 @@ const getArticleById = asyncHandler(async (req, res) => {
         throw new ApiError(404, 'Article not found');
     }
 
-    // res.status(200).json(new ApiResponse(200, article, 'Article fetched successfully'));
-    res.render('pages/article-details', { article });
+        if (req.accepts('html')) {
+        return res.render('pages/article-details', { article });
+    } else {
+        return res.status(200).json(new ApiResponse(200, article, 'Article fetched successfully'));
+    }
 });
 
 // ✅ Update Article (Only Author or Admin Can Update)
@@ -49,17 +56,21 @@ const updateArticle = asyncHandler(async (req, res) => {
     }
 
     // Check if the logged-in user is the author or an admin
-    const isAdmin = req.user.role === 'admin';
-    if (article.author.toString() !== req.user._id.toString() && !isAdmin) {
+    const isAdmin = req.user?.role === 'admin';
+    if (article.author.toString() !== req.user?._id.toString() && !isAdmin) {
         throw new ApiError(403, 'Unauthorized: You can only update your own articles');
     }
 
     article.title = title?.trim() || article.title;
     article.content = content?.trim() || article.content;
-    article.tags = tags.split(',').map(tag => tag.trim()) || article.tags;
+    article.tags = tags ? tags.split(',').map(tag => tag.trim()) : article.tags;
 
     await article.save();
-    res.redirect(`/api/articles/${article._id}`);
+    if (req.accepts('html')) {
+        return res.redirect(`/articles/${article._id}`);
+    } else {
+        return res.status(200).json(new ApiResponse(200, article, 'Article updated successfully'));
+    }
 });
 
 // ✅ Delete Article (Only Author or Admin Can Delete)
@@ -71,15 +82,18 @@ const deleteArticle = asyncHandler(async (req, res) => {
     }
 
     // Check if the logged-in user is the author or an admin
-    const isAdmin = req.user.role === 'admin';
-    if (article.author.toString() !== req.user._id.toString() && !isAdmin) {
+    const isAdmin = req.user?.role === 'admin';
+    if (article.author.toString() !== req.user?._id.toString() && !isAdmin) {
         throw new ApiError(403, 'Unauthorized: You can only delete your own articles');
     }
 
     await Article.findByIdAndDelete(req.params.id);
 
-    res.redirect('/articles');
-});
+    if (req.accepts('html')) {
+        return res.redirect('/articles');
+    } else {
+        return res.status(200).json(new ApiResponse(200, null, 'Article deleted successfully'));
+    }});
 
 const publishArticle = asyncHandler(async (req, res) => {
     res.render('pages/article-form')

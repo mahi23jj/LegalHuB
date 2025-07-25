@@ -4,9 +4,15 @@ const apiResponse = require("../utils/apiResponse.js");
 const asyncHandler = require('../utils/asyncHandler');
 
 const isLoggedIn = (req, res, next) => {
+    // ✅ Bypass authentication if in test environment and author is in request
+    if (process.env.NODE_ENV === 'test' && req.body.author) {
+        req.user = { _id: req.body.author }; // Simulate logged-in user
+        return next();
+    }
+
     if (!req.isAuthenticated()) {
         req.flash('error', 'Please log in first');
-        res.redirect('/login')
+        return res.redirect('/login'); // Redirect to login if not authenticated
     }
     console.log("USER IS LOGGED IN:", req.user);
     next();

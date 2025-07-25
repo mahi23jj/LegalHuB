@@ -3,6 +3,6 @@ const router = express.Router();
 const { getLawyers, viewLawyer } = require('../controllers/lawyer.controller.js');
 
 router.get('/', getLawyers);
-// router.get('/lawyers/verify/:id', viewLawyer);
+router.get('/verify/:id', viewLawyer);
 
 module.exports = router;

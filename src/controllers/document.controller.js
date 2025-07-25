@@ -43,9 +43,12 @@ const getDocumentById = asyncHandler(async (req, res) => {
     if (!document) {
         throw new ApiError(404, "Document not found");
     }
-
-    // 👉 EJS ke liye single document pass kar raha hoon
-    res.render('pages/documentDetails', { document })
+    // res.render('pages/documentDetails', { document })
+    if(req.accepts('html')) {
+        res.render('pages/documentDetails', { document });
+    }else {
+        res.status(200).json(new ApiResponse(200, document, "Document fetched successfully"));
+    }
 });
 
 // ✅ Update Document
