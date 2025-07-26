@@ -10,6 +10,7 @@ const path = require("path");
 const methodOverride = require("method-override");
 const ejsMate = require("ejs-mate");
 const session = require("express-session");
+const MongoStore = require("connect-mongo");
 const flash = require("connect-flash");
 
 // Passport Configuration
@@ -49,7 +50,12 @@ app.set("view engine", "ejs");
 const sessionOptions = {
     secret: process.env.SESSION_SECRET || "mysecret",
     resave: false,
-    saveUninitialized: true,//do not change it true
+    saveUninitialized: false,
+    store: MongoStore.create({
+        mongoUrl: process.env.DB_URL,
+        collectionName: "sessions",
+        ttl: 7 * 24 * 60 * 60, // 7 days
+    }),
     cookie: {
         expires: Date.now() + 7 * 24 * 60 * 60 * 1000,
         maxAge: 7 * 24 * 60 * 60 * 1000,
