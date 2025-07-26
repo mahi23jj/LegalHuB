@@ -9,18 +9,30 @@ const registerUser = asyncHandler(async (req, res, next) => {
     const { username, email, password, confirmPassword } = req.body;
 
     if (!username || !email || !password || !confirmPassword) {
-        req.flash('error', "All fields are required");
+        const errorMsg = "All fields are required";
+        if (req.accepts("json")) {
+            throw new apiError(400, errorMsg);
+        }
+        req.flash('error', errorMsg);
         return res.redirect('/login');
     }
 
     if (password !== confirmPassword) {
-        req.flash('error', "Passwords do not match");
+        const errorMsg = "Passwords do not match";
+        if (req.accepts("json")) {
+            throw new apiError(400, errorMsg);
+        }
+        req.flash('error', errorMsg);
         return res.redirect('/login');
     }
 
     const existingUser = await User.findOne({ email });
     if (existingUser) {
-        req.flash('error', "User already exists");
+        const errorMsg = "User already exists";
+        if (req.accepts("json")) {
+            throw new apiError(400, errorMsg);
+        }
+        req.flash('error', errorMsg);
         return res.redirect('/login');
     }
 
@@ -29,20 +41,29 @@ const registerUser = asyncHandler(async (req, res, next) => {
         const registeredUser = await User.register(newUser, password);
         req.login(newUser, (err) => {
             if (err) {
-                req.flash('error', 'Login failed.');
+                const errorMsg = "Login failed after registration";
+                if (req.accepts("json")) {
+                    throw new apiError(500, errorMsg);
+                }
+                req.flash('error', errorMsg);
                 return res.redirect('/login'); // Return here to prevent further execution
             }
-            req.flash('success', 'Welcome! Account created successfully.');
-            return res.redirect('/'); // Return here for single response
-        });
+
+            if (req.accepts("json")) {
+                return res.status(201).json(new apiResponse(201, registeredUser, "User registered successfully"));
+            }
+
+            req.flash("success", "Welcome! Account created successfully.");
+                return res.redirect("/");
+            });
     } catch (err) {
-        req.flash('error', err.message);
-        return res.redirect('/login');
+       if (req.accepts("json")) {
+            throw new apiError(500, err.message);
+        }
+        req.flash("error", err.message);
+        return res.redirect("/login");
     }
 });
-
-
-
 
 // 📌 Login User
 const loginUser = asyncHandler(async (req, res, next) => {
@@ -82,7 +103,12 @@ const getUserProfile = asyncHandler(async (req, res) => {
     if (!user) {
         res.redirect('/login');
     }
-    res.render('users/profile', { user });
+
+    if(req.accepts("html")) {
+        return res.render('users/profile', { user });
+    }else{
+        return res.status(200).json(new apiResponse(200, user, "User profile fetched successfully"));
+    }
 });
 
 // 📌 render updateform
@@ -114,15 +140,24 @@ const updateUser = asyncHandler(async (req, res) => {
     user.experience = experience || user.experience;
     user.profilePicture = profilePicture || user.profilePicture;
     await user.save();
-    req.flash('success', "Profile updated successfully!");
-    return res.redirect('/account');
+    
+    if (req.accepts("html")) {
+        req.flash('success', "Profile updated successfully!");
+        return res.redirect('/account');
+    } else{
+        return res.status(200).json(new apiResponse(200, user, "User profile updated successfully"));
+    }
 });
 
 // 📌 Delete User
 const deleteUser = asyncHandler(async (req, res) => {
     await User.findByIdAndDelete(req.user._id);
-    req.flash('success', "Account deleted successfully!");
-    return res.redirect('/login');
+    if (req.accepts("html")) {
+        req.flash('success', "Account deleted successfully!");
+        return res.redirect('/login');
+    } else {
+        return res.status(200).json(new apiResponse(200, null, "User deleted successfully"));
+    }
 });
 
 

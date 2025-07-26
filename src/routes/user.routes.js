@@ -4,6 +4,8 @@ const {
     registerUser,
     loginUser,
     logoutUser,
+    getUserProfile,
+    renderUpdateForm,
     updateUser,
     deleteUser
 } = require("../controllers/user.controller.js");
@@ -24,6 +26,8 @@ router.route("/login").post(saveRedirectUrl,
 
 
 router.route("/logout").get(logoutUser);
+
+router.route("/profile").get(isLoggedIn, getUserProfile);
 
 router.route("/update").put(isLoggedIn, updateUser);
 

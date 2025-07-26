@@ -14,7 +14,7 @@ const isLoggedIn = (req, res, next) => {
         req.flash('error', 'Please log in first');
         return res.redirect('/login'); // Redirect to login if not authenticated
     }
-    console.log("USER IS LOGGED IN:", req.user);
+    // console.log("USER IS LOGGED IN:", req.user);
     next();
 };
 const isAdmin = (req, res, next) => {
