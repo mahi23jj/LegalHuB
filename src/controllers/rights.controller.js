@@ -24,8 +24,11 @@ const createRight = asyncHandler(async (req, res) => {
 // ✅ Get All Rights
 const getAllRights = asyncHandler(async (req, res) => {
     const rights = await Right.find();
-    // res.status(200).json(new ApiResponse(200, rights, "Rights fetched successfully"));
-    res.render('pages/fundamental', { rights });
+    if(req.accepts('html')) {
+        return res.render('pages/fundamental', { rights });
+    }else {
+        return res.status(200).json(new ApiResponse(200, rights, "Rights fetched successfully"));
+    }
 });
 
 // ✅ Get Right by ID
@@ -36,8 +39,11 @@ const getRightById = asyncHandler(async (req, res) => {
         throw new ApiError(404, "Right not found");
     }
 
-    // res.status(200).json(new ApiResponse(200, right, "Right fetched successfully"));
-    res.render('pages/right-details', { right });
+    if(req.accepts('html')) {
+        return res.render('pages/right-details', { right });
+    }else {
+        return res.status(200).json(new ApiResponse(200, right, "Right fetched successfully"));
+    }
 });
 
 // ✅ Update Right

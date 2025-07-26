@@ -93,7 +93,8 @@ const deleteArticle = asyncHandler(async (req, res) => {
         return res.redirect('/articles');
     } else {
         return res.status(200).json(new ApiResponse(200, null, 'Article deleted successfully'));
-    }});
+    }
+});
 
 const publishArticle = asyncHandler(async (req, res) => {
     res.render('pages/article-form')

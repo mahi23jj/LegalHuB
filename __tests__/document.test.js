@@ -115,4 +115,45 @@ describe("📄 Documents API", () => {
     // console.log("🔎 Checking if document still exists in DB:", check);
     expect(check).toBeNull();
   });
+
+    // ❌ Get document that doesn't exist
+    it("❌ should return 404 for non-existent document ID", async () => {
+      // console.log("❌ Attempting to fetch non-existent document...");
+      const fakeId = "64b4c7fe12f84b1f12345678";
+
+      const res = await request(app).get(`/api/documents/${fakeId}`);
+      // console.log("📥 Response status:", res.statusCode);
+      expect(res.statusCode).toBe(404);
+      expect(res.body.success).toBe(false);
+      expect(res.body.msg).toBe("Document not found");
+      // console.log("📥 Response body:", res.body);
+    });
+
+    // ❌ Update non-existent document
+    it("❌ should return 404 when updating non-existent document", async () => {
+      // console.log("❌ Attempting to update non-existent document...");
+      const fakeId = "64b4c7fe12f84b1f12345678";
+      const res = await request(app).put(`/api/documents/${fakeId}`).send({
+        title: "Should Not Work"
+      });
+
+      // console.log("📥 Response status:", res.statusCode);
+      expect(res.statusCode).toBe(404);
+      expect(res.body.success).toBe(false);
+      expect(res.body.msg).toBe("Document not found");
+      // console.log("📥 Response body:", res.body);
+    });
+
+    // ❌ Delete non-existent document
+    it("❌ should return 404 when deleting non-existent document", async () => {
+      // console.log("❌ Attempting to delete non-existent document...");
+      const fakeId = "64b4c7fe12f84b1f12345678";
+      const res = await request(app).delete(`/api/documents/${fakeId}`);
+
+      // console.log("📥 Response status:", res.statusCode);
+      expect(res.statusCode).toBe(404);
+      expect(res.body.success).toBe(false);
+      expect(res.body.msg).toBe("Document not found");
+      // console.log("📥 Response body:", res.body);
+    });
 });

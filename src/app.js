@@ -116,7 +116,17 @@ app.all("*", (req, res) => {
 
 // Global Error Handler
 app.use((err, req, res, next) => {
-    console.error("Global Error Handler:", err);
+    const isProd = process.env.NODE_ENV === 'production';
+    const isTest = process.env.NODE_ENV === 'test';
+
+    if (!isProd && !isTest) {
+        if (err.name === 'apiError' || err instanceof apiError) {
+            console.error(`❌ ${err.message} [${err.statusCode}]`);
+        } else {
+            console.error("🔥 Unexpected Error:", err);
+        }
+    }
+
     return res.status(err.statusCode || 500).json(
         new apiResponse(err.statusCode || 500, null, err.message || "Internal Server Error")
     );
