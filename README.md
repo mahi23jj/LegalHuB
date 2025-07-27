@@ -8,7 +8,7 @@
 
 - ✅ **Legal Dictionary** – AI-powered explanations of complex legal terms.  
 - ✅ **Download Legal Forms** – Access and download state-specific legal documents.  
-- ✅ **Apply for Legal Services** – Redirects to official legal aid application portals.  
+- ✅ **Apply for Legal Services** – Redirects to official legal application portals.  
 - ✅ **Legal Rights Database** – Browse essential civil, fundamental, and employment rights.  
 - ✅ **Legal Articles & Guides** – Learn from structured and easy-to-read legal content.  
 - ✅ **Smart Search** – Search across legal terms, rights, and documents efficiently.
