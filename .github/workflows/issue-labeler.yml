@@ -1,26 +1,18 @@
-name: 🏷️ Issue + PR Auto Labeler
+name: 🏷️ Issue Auto Labeler
 
 on:
   issues:
     types: [opened, edited]
-  pull_request:
-    types: [opened, edited, synchronize]
 
 permissions:
   issues: write
-  pull-requests: write
   contents: read
 
 jobs:
   autolabel:
     runs-on: ubuntu-latest
     steps:
-      # ✅ This is the missing step!
-      - name: Checkout code
-        uses: actions/checkout@v4
-
-      - name: Run issue labeler
-        uses: github/issue-labeler@v3.3
+      - uses: github/issue-labeler@v3.3
         with:
           repo-token: ${{ secrets.GITHUB_TOKEN }}
           configuration-path: .github/issue-labeler.yml
