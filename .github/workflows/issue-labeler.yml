@@ -1,8 +1,10 @@
-name: 🏷️ Issue Auto Labeler
+name: 🏷️ Issue + PR Auto Labeler
 
 on:
   issues:
     types: [opened, edited]
+  pull_request:
+    types: [opened, edited, synchronize]
 
 permissions:
   issues: write
