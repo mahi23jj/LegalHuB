@@ -1,31 +1,31 @@
 bug fix:
-  - "(?i)bug"
-  - "(?i)fix"
-  - "(?i)error"
+  - "bug"
+  - "fix"
+  - "error"
 
 level 1:
-  - "(?i)level[\\s_-]?1"
+  - "level[\\s_-]?1"
 
 level 2:
-  - "(?i)level[\\s_-]?2"
+  - "level[\\s_-]?2"
 
 level 3:
-  - "(?i)level[\\s_-]?3"
+  - "level[\\s_-]?3"
 
 gssoc25:
-  - "(?i)gssoc25"
+  - "gssoc25"
 
 good first issue:
-  - "(?i)good first issue"
+  - "good first issue"
 
 enhancement:
-  - "(?i)enhancement"
-  - "(?i)improvement"
+  - "enhancement"
+  - "improvement"
 
 feature request:
-  - "(?i)feature request"
-  - "(?i)suggestion"
-  - "(?i)new feature"
+  - "feature request"
+  - "suggestion"
+  - "new feature"
 
 documentation:
-  - "(?i)documentation"
+  - "documentation"
