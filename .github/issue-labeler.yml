@@ -1,39 +1,31 @@
 bug fix:
-  patterns:
-    - pattern: 'bug|fix|error'
-      flags: 'i'
+  - "(?i)bug"
+  - "(?i)fix"
+  - "(?i)error"
 
 level 1:
-  patterns:
-    - pattern: 'level[\s_-]?1'
-      flags: 'i'
+  - "(?i)level[\\s_-]?1"
 
 level 2:
-  patterns:
-    - pattern: 'level[\s_-]?2'
-      flags: 'i'
+  - "(?i)level[\\s_-]?2"
 
 level 3:
-  patterns:
-    - pattern: 'level[\s_-]?3'
-      flags: 'i'
+  - "(?i)level[\\s_-]?3"
 
 gssoc25:
-  patterns:
-    - pattern: 'gssoc25'
-      flags: 'i'
+  - "(?i)gssoc25"
 
 good first issue:
-  patterns:
-    - pattern: 'good first issue'
-      flags: 'i'
+  - "(?i)good first issue"
 
 enhancement:
-  patterns:
-    - pattern: 'enhancement|improvement'
-      flags: 'i'
+  - "(?i)enhancement"
+  - "(?i)improvement"
 
 feature request:
-  patterns:
-    - pattern: 'feature request|suggestion|new feature'
-      flags: 'i'
+  - "(?i)feature request"
+  - "(?i)suggestion"
+  - "(?i)new feature"
+
+documentation:
+  - "(?i)documentation"
