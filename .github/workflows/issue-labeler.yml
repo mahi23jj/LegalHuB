@@ -15,7 +15,11 @@ jobs:
   autolabel:
     runs-on: ubuntu-latest
     steps:
-      - uses: github/issue-labeler@v3.3
+      - name: ⬇️ Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: 🏷️ Auto Label Issues & PRs
+        uses: github/issue-labeler@v3.3
         with:
           repo-token: ${{ secrets.GITHUB_TOKEN }}
           configuration-path: .github/issue-labeler.yml
