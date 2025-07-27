@@ -1,5 +1,5 @@
-gssoc25:
-  - '(?i)gssoc'
+bug fix:
+  - '(?i)bug|fix|error'
 
 level 1:
   - '(?i)level[\s_-]?1'
@@ -10,19 +10,14 @@ level 2:
 level 3:
   - '(?i)level[\s_-]?3'
 
+gssoc25:
+  - '(?i)gssoc25'
+
 good first issue:
   - '(?i)good first issue'
 
-bug fix:
-  - '(?i)bug|fix|error'
-
-documentation:
-  - '(?i)doc|docs|documentation'
-
 enhancement:
-  - '(?i)enhancement|improvement|feature'
+  - '(?i)enhancement|improvement'
 
 feature request:
-  - '(?i)feature|request|suggestion'
-  - '(?i)feature request'
-  - '(?i)enhancement request'
+  - '(?i)feature request|suggestion|new feature'

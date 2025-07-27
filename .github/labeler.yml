@@ -1,4 +1,3 @@
-# Add labels based on modified files in PR
 bug fix:
   - 'fix/**'
   - '**/bugfix/**'
@@ -20,6 +19,7 @@ good first issue:
 
 documentation:
   - 'docs/**'
+  - '**/*.md'
 
 enhancement:
   - 'enhancement/**'
