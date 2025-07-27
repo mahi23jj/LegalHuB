@@ -1,0 +1,22 @@
+name: 🔁 Auto Merge PR
+
+on:
+  pull_request:
+    types: [labeled, opened, synchronize, reopened, ready_for_review]
+
+jobs:
+  automerge:
+    runs-on: ubuntu-latest
+
+    # Only run if the PR is not a draft and has the 'automerge' label
+    if: |
+      github.event.pull_request.draft == false &&
+      contains(github.event.pull_request.labels.*.name, 'automerge')
+
+    steps:
+      - name: 🤖 Enable Auto-Merge
+        uses: peter-evans/enable-pull-request-automerge@v3
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          merge-method: squash
+          pull-request-number: ${{ github.event.pull_request.number }}
