@@ -25,17 +25,17 @@ jobs:
         if: steps.check.outputs.is_contributor == 'true'
         uses: actions/github-script@v7
         with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
           script: |
             github.rest.issues.createComment({
               issue_number: context.issue.number,
               owner: context.repo.owner,
               repo: context.repo.repo,
-              body: |
-                👋 Hi @${{ github.event.issue.user.login }}!
+              body: `👋 Hi @${context.payload.issue.user.login}!
 
-                Thank you for opening this issue — we really appreciate your contribution! 🙌  
-                We’ll review it as soon as possible.
+              Thank you for opening this issue — we really appreciate your contribution! 🙌  
+              We’ll review it as soon as possible.
 
-                In the meantime, feel free to browse the repo and check out other issues.  
-                Thanks again for raising this — your input helps improve the project! 🚀
-              })
+              In the meantime, feel free to browse the repo and check out other issues.  
+              Thanks again for raising this — your input helps improve the project! 🚀`
+            });
