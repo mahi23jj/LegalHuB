@@ -19,13 +19,21 @@ jobs:
           script: |
             const issueNumber = context.issue.number;
             const issueTitle = context.payload.issue.title;
-            const user = context.payload.issue.user.login;
+            const issueAuthor = context.payload.issue.user.login;
+            const closer = context.payload.sender.login;
 
-            const comment = `👋 Hi @${user}!
+            const owner = context.repo.owner;
+
+            if (closer === owner) {
+              console.log(`Issue closed by repo owner (${owner}). Skipping comment.`);
+              return;
+            }
+
+            const comment = `👋 Hi @${issueAuthor}!
             Thank you for your contribution! The issue "${issueTitle}" has been closed.
             If you still face any problems or have more suggestions, feel free to open a new issue. Happy coding! 🚀🚀`;
 
-            github.rest.issues.createComment({
+            await github.rest.issues.createComment({
               issue_number: issueNumber,
               owner: context.repo.owner,
               repo: context.repo.repo,
