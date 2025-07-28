@@ -15,7 +15,7 @@ jobs:
       - name: 💡 Check if PR closer is not the repo owner
         id: check
         run: |
-          if [ "${{ github.actor }}" != "${{ github.repository_owner }}" ]; then
+          if [ "${{ github.event.pull_request.user.login }}" != "${{ github.repository_owner }}" ]; then
             echo "is_contributor=true" >> "$GITHUB_OUTPUT"
           else
             echo "is_contributor=false" >> "$GITHUB_OUTPUT"
