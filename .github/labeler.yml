@@ -1,26 +1,26 @@
 bug:
-  -'(bug|issue|error|problem|fail|failure|crash)'
+  - '(bug|issue|error|problem|fail|failure|crash)'
 
 feature:
-  -'(feature|enhancement|improvement|new feature|new functionality)'
+  - '(feature|enhancement|improvement|new feature|new functionality)'
 
 documentation:
-  -'(documentation|docs|doc|readme)'
+  - '(documentation|docs|doc|readme)'
 
 gssoc25:
-  -'(gssoc25|gssoc 2025|gssoc 2025|gssoc 25)'
+  - '(gssoc25|gssoc 2025|gssoc 25)'
 
 level 1:
-  -'(level 1|easy|beginner)'
+  - '(level 1|easy|beginner)'
 
 level 2:
-  -'(level 2|intermediate|medium)'
+  - '(level 2|intermediate|medium)'
 
 level 3:
-  -'(level 3|advanced|hard|difficult)'
+  - '(level 3|advanced|hard|difficult)'
 
 good first issue:
-  -'(good first issue|good first bug|good first feature)'
+  - '(good first issue|good first bug|good first feature)'
 
 enhancement:
-  -'(enhancement|improvement|upgrade|update)'
+  - '(enhancement|improvement|upgrade|update)'
