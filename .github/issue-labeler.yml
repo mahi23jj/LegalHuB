@@ -1,9 +1,0 @@
-bug:
-  - "bug"
-  - "error"
-  - "crash"
-  - "unexpected"
-enhancement:
-  - "feature"
-  - "enhancement"
-  - "improve"
