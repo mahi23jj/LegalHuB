@@ -1,0 +1,33 @@
+name: 💬 Auto Comment on Issue Close
+
+on:
+  issues:
+    types:
+        - closed
+
+permissions:
+  issues: write
+  contents: read
+
+jobs:
+  comment-on-close:
+    runs-on: ubuntu-latest
+    steps:
+      - name: 💬 Post comment on closed issue
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const issueNumber = context.issue.number;
+            const issueTitle = context.payload.issue.title;
+            const user = context.payload.issue.user.login;
+
+            const comment = `👋 Hi @${user}!
+            Thank you for your contribution! The issue "${issueTitle}" has been closed.
+            If you still face any problems or have more suggestions, feel free to open a new issue. Happy coding! 🚀🚀`;
+
+            github.rest.issues.createComment({
+              issue_number: issueNumber,
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              body: comment
+            });
