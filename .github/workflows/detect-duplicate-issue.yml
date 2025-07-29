@@ -17,7 +17,7 @@ jobs:
       - name: Detect similar issues
         uses: actions-cool/issues-similarity-analysis@v1
         with:
-          github-token: ${{ secrets.GITHUB_TOKEN }}
+          token: ${{ secrets.GITHUB_TOKEN }}
 
           since-days: 100
 
