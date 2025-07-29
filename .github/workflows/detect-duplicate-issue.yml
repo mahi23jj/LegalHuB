@@ -10,9 +10,10 @@ permissions:
 
 jobs:
   check-duplicate:
+    name: Check for Duplicate Issues
     runs-on: ubuntu-latest
     steps:
-      - name: Check for duplicate issues
+      - name: Search for similar open issues
         uses: actions/github-script@v7
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
@@ -22,11 +23,21 @@ jobs:
             const repoOwner = context.repo.owner;
             const repoName = context.repo.repo;
 
-            const { data: issues } = await github.rest.search.issuesAndPullRequests({
-              q: `repo:${repoOwner}/${repoName} is:issue is:open in:title "${issueTitle}"`,
+            // Perform a broader search using parts of the title
+            const searchQuery = issueTitle
+              .split(' ')
+              .filter(word => word.length > 3)
+              .slice(0, 5)
+              .join(' ');
+
+            const searchResults = await github.rest.search.issuesAndPullRequests({
+              q: `repo:${repoOwner}/${repoName} is:issue is:open in:title ${searchQuery}`
             });
 
-            const possibleDuplicates = issues.items.filter(issue => issue.number !== issueNumber);
+            const possibleDuplicates = searchResults.data.items.filter(issue =>
+              issue.number !== issueNumber &&
+              issue.title.toLowerCase().includes(searchQuery)
+            );
 
             if (possibleDuplicates.length > 0) {
               const commentBody = [
@@ -34,7 +45,7 @@ jobs:
                 "",
                 ...possibleDuplicates.slice(0, 5).map(issue => `- [#${issue.number}](${issue.html_url}) - ${issue.title}`),
                 "",
-                "Please review the above issues to see if your problem has already been reported. If so, you may want to add a comment there instead."
+                "Please review the above issues to see if your problem has already been reported. If so, consider contributing to the existing discussion."
               ].join('\n');
 
               await github.rest.issues.createComment({
@@ -43,4 +54,6 @@ jobs:
                 issue_number: issueNumber,
                 body: commentBody
               });
+            } else {
+              console.log("✅ No duplicates found.");
             }
