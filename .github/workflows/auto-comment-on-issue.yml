@@ -15,7 +15,7 @@ jobs:
       - name: 💡 Check if author is not the owner
         id: check_owner
         run: |
-          if [ "true" == "true" ]; then
+          if [ "${{ github.event.issue.user.login }}" != "${{ github.repository_owner }}" ]; then
             echo "is_contributor=true" >> $GITHUB_OUTPUT
           else
             echo "is_contributor=false" >> $GITHUB_OUTPUT
@@ -45,11 +45,10 @@ jobs:
               issue_number: context.issue.number,
               owner: context.repo.owner,
               repo: context.repo.repo,
-              body: `🎉 Welcome @${context.payload.issue.user.login}!
+              body: `🎉 Whoa, @${context.payload.issue.user.login} — your *first* issue here?!
 
-              This is your **first contribution** to this project — thank you! 🙌  
-              We're thrilled to have you here. We'll review your issue shortly. 🚀`
-            });
+              Big thanks for jumping in! We’ll check it out soon. Glad to have you on board. 🙌`
+              });
 
       - name: 💬 Post thank-you comment for returning contributor
         if: steps.check_first.outputs.result == 'false'
@@ -61,11 +60,7 @@ jobs:
               issue_number: context.issue.number,
               owner: context.repo.owner,
               repo: context.repo.repo,
-              body: `👋 Hi @${context.payload.issue.user.login}!
+              body: `👋 Hi @${context.payload.issue.user.login}! — thanks for opening this issue! We really appreciate your input and will review it soon. 🙌  
 
-              Thank you for opening this issue — we really appreciate your contribution! 🙌  
-              We’ll review it as soon as possible.
-
-              In the meantime, feel free to browse the repo and check out other issues.  
-              Thanks again for raising this — your input helps improve the project! 🚀`
+              In the meantime, feel free to browse the repo and check out other issues. 🚀`
             });
