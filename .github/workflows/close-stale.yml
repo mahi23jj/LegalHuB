@@ -18,9 +18,10 @@ jobs:
         with:
           repo-token: ${{ secrets.GITHUB_TOKEN }}
           days-before-stale: 30
-          days-before-close: 0
+          days-before-close: 7
           stale-issue-message: >
-            This issue has been automatically marked as stale due to 30 days of inactivity. It will be closed soon if there’s no activity.
+            This issue has been automatically marked as stale due to 30 days of inactivity. If this is still relevant, feel free to comment or update — otherwise, it will be closed soon.
+
           close-issue-message: >
             Closing this issue due to inactivity. Feel free to reopen if needed.
           stale-pr-message: >
