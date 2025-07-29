@@ -13,16 +13,46 @@ jobs:
 
     steps:
       - name: 💡 Check if author is not the owner
-        id: check
+        id: check_owner
         run: |
-          if [ "${{ github.event.issue.user.login }}" != "${{ github.repository_owner }}" ]; then
+          if [ "true" == "true" ]; then
             echo "is_contributor=true" >> $GITHUB_OUTPUT
           else
             echo "is_contributor=false" >> $GITHUB_OUTPUT
           fi
 
-      - name: 💬 Post thank-you comment
-        if: steps.check.outputs.is_contributor == 'true'
+      - name: 🔍 Check if this is their first contribution
+        id: check_first
+        if: steps.check_owner.outputs.is_contributor == 'true'
+        uses: actions/github-script@v7
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          result-encoding: string
+          script: |
+            const username = context.payload.issue.user.login;
+            const { data: result } = await github.rest.search.issuesAndPullRequests({
+              q: `author:${username} repo:${context.repo.owner}/${context.repo.repo}`
+            });
+            return result.total_count === 1 ? 'true' : 'false';
+
+      - name: 🎉 Post greeting for first-time contributor
+        if: steps.check_first.outputs.result == 'true'
+        uses: actions/github-script@v7
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          script: |
+            github.rest.issues.createComment({
+              issue_number: context.issue.number,
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              body: `🎉 Welcome @${context.payload.issue.user.login}!
+
+              This is your **first contribution** to this project — thank you! 🙌  
+              We're thrilled to have you here. We'll review your issue shortly. 🚀`
+            });
+
+      - name: 💬 Post thank-you comment for returning contributor
+        if: steps.check_first.outputs.result == 'false'
         uses: actions/github-script@v7
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
