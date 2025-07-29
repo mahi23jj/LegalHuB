@@ -18,15 +18,9 @@ jobs:
         uses: actions-cool/issues-similarity-analysis@v1
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
-
           since-days: 100
-
           filter-threshold: 0.75
-
-          title-excludes: "bug,fix,issue,request"
-
           show-mentioned: false
-
           comment-title: "🔁 Possible Duplicate Issue Detected"
           comment-body: |
             Hey @{context.payload.issue.user.login}, 👋 Thanks for opening this issue.
