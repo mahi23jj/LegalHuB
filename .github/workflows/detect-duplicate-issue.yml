@@ -4,6 +4,10 @@ on:
   issues:
     types: [opened, edited]
 
+permissions:
+  issues: write
+  contents: read
+
 jobs:
   detect-duplicates:
     name: 🔍 Detect Similar Issues
@@ -13,35 +17,24 @@ jobs:
       - name: Detect similar issues
         uses: actions-cool/issues-similarity-analysis@v1
         with:
-          # Required token for API access
-          token: ${{ secrets.GITHUB_TOKEN }}
+          github-token: ${{ secrets.GITHUB_TOKEN }}
 
-          # How many days back to check (default 100)
           since-days: 100
 
-          # Similarity filter threshold (0 to 1, default 0.8)
           filter-threshold: 0.75
 
-          # Optional: words to ignore in title comparisons
           title-excludes: "bug,fix,issue,request"
 
-          # Optional: show mentioned users in comment
           show-mentioned: false
 
-          # Optional: show 'footer' in comment
           show-footer: true
 
-          # Bot comment on similar issue found
           comment-title: "🔁 Possible Duplicate Issue Detected"
           comment-body: |
-            Hi @{{ author }} 👋
-
-            Thanks for opening this issue.
+            Hi @{{ author }} 👋 Thanks for opening this issue.
 
             Based on the title and content, this issue **might be related to the following**:
 
             {{ similar_issues }}
 
-            Please review and consider adding your input to the linked issue(s) if applicable.
-
-            If this is indeed a new issue, feel free to clarify, and we’ll keep it open.
+            Please review and consider adding your input to the linked issue(s) if applicable. If this is indeed a new issue, feel free to clarify, and we’ll keep it open.
