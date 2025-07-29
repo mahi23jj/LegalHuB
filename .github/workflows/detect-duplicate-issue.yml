@@ -13,7 +13,7 @@ jobs:
     name: Check for Duplicate Issues
     runs-on: ubuntu-latest
     steps:
-      - name: Check for duplicate issues
+      - name: Check for duplicate issues with logging
         uses: actions/github-script@v7
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
@@ -36,15 +36,13 @@ jobs:
                 for (let j = 0; j <= s2.length; j++) {
                   if (i === 0) {
                     costs[j] = j;
-                  } else {
-                    if (j > 0) {
-                      let newValue = costs[j - 1];
-                      if (s1.charAt(i - 1) !== s2.charAt(j - 1)) {
-                        newValue = Math.min(Math.min(newValue, lastValue), costs[j]) + 1;
-                      }
-                      costs[j - 1] = lastValue;
-                      lastValue = newValue;
+                  } else if (j > 0) {
+                    let newValue = costs[j - 1];
+                    if (s1.charAt(i - 1) !== s2.charAt(j - 1)) {
+                      newValue = Math.min(Math.min(newValue, lastValue), costs[j]) + 1;
                     }
+                    costs[j - 1] = lastValue;
+                    lastValue = newValue;
                   }
                 }
                 if (i > 0) costs[s2.length] = lastValue;
@@ -57,7 +55,8 @@ jobs:
             const repoOwner = context.repo.owner;
             const repoName = context.repo.repo;
 
-            // Get all open issues (up to 100, adjust as needed)
+            console.log(`Checking for duplicates of issue #${issueNumber}: "${issueTitle}"`);
+
             const { data: issues } = await github.rest.issues.listForRepo({
               owner: repoOwner,
               repo: repoName,
@@ -70,7 +69,10 @@ jobs:
 
               const title = issue.title.toLowerCase();
               const score = similarity(issueTitle, title);
-              return score >= 0.6; // 60% similar — adjust threshold as needed
+
+              console.log(`Compared with #${issue.number}: "${title}", similarity: ${score}`);
+
+              return score >= 0.6;
             });
 
             if (possibleDuplicates.length > 0) {
@@ -83,6 +85,8 @@ jobs:
                 "",
                 "Please review the above issues to see if your problem has already been reported. If so, consider adding more info to the existing thread instead of creating a new one."
               ].join('\n');
+
+              console.log("Posting comment with duplicates...");
 
               await github.rest.issues.createComment({
                 owner: repoOwner,
