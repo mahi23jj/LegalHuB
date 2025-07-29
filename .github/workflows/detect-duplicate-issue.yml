@@ -6,44 +6,42 @@ on:
 
 jobs:
   detect-duplicates:
-    name: 🔍 Detect and Handle Duplicates
+    name: 🔍 Detect Similar Issues
     runs-on: ubuntu-latest
 
     steps:
-      - name: Check for similar issues
+      - name: Detect similar issues
         uses: actions-cool/issues-similarity-analysis@v1
         with:
-          # GitHub token for API access (automatically provided by GitHub)
+          # Required token for API access
           token: ${{ secrets.GITHUB_TOKEN }}
 
-          # Include both issue title and body in similarity analysis
-          title-include: true
-          body-include: true
+          # How many days back to check (default 100)
+          since-days: 100
 
-          # Minimum similarity threshold (0.7 = 70% match)
-          similarity-threshold: 0.7
+          # Similarity filter threshold (0 to 1, default 0.8)
+          filter-threshold: 0.75
 
-          # Only search open issues (skip closed ones)
-          state: open
+          # Optional: words to ignore in title comparisons
+          title-excludes: "bug,fix,issue,request"
 
-          # Add a label if similar issues are found
-          add-label: duplicate
+          # Optional: show mentioned users in comment
+          show-mentioned: false
 
-          # Custom comment title shown in issue
+          # Optional: show 'footer' in comment
+          show-footer: true
+
+          # Bot comment on similar issue found
           comment-title: "🔁 Possible Duplicate Issue Detected"
-
-          # Comment body with markdown and dynamic placeholders
           comment-body: |
-            Hey @{{ author }} 👋 Thanks for submitting an issue!
+            Hi @{{ author }} 👋
 
-            Based on our analysis, your issue may be similar to the following existing issue(s):
+            Thanks for opening this issue.
+
+            Based on the title and content, this issue **might be related to the following**:
 
             {{ similar_issues }}
 
-            Please check them before continuing. If your issue is indeed different, feel free to clarify in a comment and we’ll take another look.
+            Please review and consider adding your input to the linked issue(s) if applicable.
 
-          # Avoid commenting multiple times if issue already has the "duplicate" label
-          check-label: true
-
-          # Limit how many similar issues are listed (default is 3)
-          max-number: 3
+            If this is indeed a new issue, feel free to clarify, and we’ll keep it open.
