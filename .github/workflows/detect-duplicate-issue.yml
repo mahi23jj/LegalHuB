@@ -27,14 +27,12 @@ jobs:
 
           show-mentioned: false
 
-          show-footer: true
-
           comment-title: "🔁 Possible Duplicate Issue Detected"
           comment-body: |
-            Hi @{{ author }} 👋 Thanks for opening this issue.
+            Hey @{context.payload.issue.user.login}, 👋 Thanks for opening this issue.
 
             Based on the title and content, this issue **might be related to the following**:
 
-            {{ similar_issues }}
+            {related-issues}
 
             Please review and consider adding your input to the linked issue(s) if applicable. If this is indeed a new issue, feel free to clarify, and we’ll keep it open.
