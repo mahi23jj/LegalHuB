@@ -1,0 +1,67 @@
+name: "🐞 Bug Report"
+description: Report an issue or unexpected behavior
+title: "[Bug]: "
+labels: [bug]
+body:
+  - type: checkboxes
+    id: existing-issue
+    attributes:
+      label: "🔍 Is there an existing issue for this?"
+      description: Please check to see if your bug has already been reported.
+      options:
+        - label: "I have searched the existing issues"
+          required: true
+
+  - type: textarea
+    id: what-happened
+    attributes:
+      label: "🐛 Describe the bug"
+      description: Clearly describe the issue you are facing.
+      placeholder: Tell us what went wrong or what you're seeing.
+    validations:
+      required: true
+
+  - type: textarea
+    id: expected-behaviour
+    attributes:
+      label: "✅ Expected behavior"
+      description: What did you expect to happen instead?
+      placeholder: Describe the expected outcome or correct behavior.
+    validations:
+      required: true
+
+  - type: textarea
+    id: screenshots
+    attributes:
+      label: "📸 Screenshots"
+      description: Add screenshots, logs, or videos to better explain the issue (if applicable).
+      placeholder: You can drag-and-drop images or paste links here.
+
+  - type: dropdown
+    id: devices
+    attributes:
+      label: "💻 What platform/device are you using?"
+      description: Select all platforms where you experienced this issue.
+      multiple: true
+      options:
+        - Android
+        - iPhone
+        - Linux
+        - macOS
+        - Windows
+        - Chrome
+
+  - type: checkboxes
+    id: terms
+    attributes:
+      label: "📋 Checklist"
+      description: Confirm the following:
+      options:
+        - label: "I have read the [Contributing Guidelines](../CONTRIBUTING.md)"
+          required: true
+        - label: "I'm a GSSoC'24 contributor"
+          required: true
+        - label: "I have starred this repository"
+          required: true
+        - label: "I have searched for existing issues and pull requests"
+          required: true
