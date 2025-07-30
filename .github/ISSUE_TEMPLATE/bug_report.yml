@@ -1,4 +1,4 @@
-name: Bug report 🐞
+name: 🐞 Bug report 
 description: Report an issue or unexpected behavior
 title: "[Bug]: "
 labels: [bug]
@@ -6,7 +6,7 @@ body:
   - type: checkboxes
     id: existing-issue
     attributes:
-      label: Is there an existing issue for this?
+      label: 🔍 Is there an existing issue for this?
       description: Please search to see if an issue already exists for the bug you encountered.
       options:
         - label: I have searched the existing issues
@@ -15,7 +15,7 @@ body:
   - type: textarea
     id: what-happened
     attributes:
-      label: Describe the bug
+      label: 🐛 Describe the bug
       description: Clearly describe the issue you are facing.
       placeholder: Tell us what went wrong or what you're seeing.
     validations:
@@ -24,7 +24,7 @@ body:
   - type: textarea
     id: expected-behaviour
     attributes:
-      label: Expected behavior
+      label: ✅ Expected behavior
       description:  What did you expect to happen instead?
       placeholder: Describe the expected outcome or correct behavior.
     validations:
@@ -33,8 +33,8 @@ body:
   - type: textarea
     id: screenshots
     attributes:
-      label: Add ScreenShots
-      description: Add sufficient ScreenShots to explain your issue.
+      label: 📸 Add ScreenShots
+      description: Select all platforms where you experienced this issue
 
   - type: dropdown
     id: devices
@@ -53,7 +53,7 @@ body:
   - type: checkboxes
     id: terms
     attributes:
-      label: Checklist
+      label: 📋 Checklist
       description: Confirm the following
       options:
         - label: "I have read the Contributing Guidelines"
