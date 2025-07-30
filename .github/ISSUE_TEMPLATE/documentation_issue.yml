@@ -38,7 +38,7 @@ body:
       required: true
 
   - type: textarea
-    id: Suggested Change
+    id: suggested-change
     attributes:
       label: 💡 Suggested fix or improvement
       description: Optional – Suggest what the documentation should say instead.
