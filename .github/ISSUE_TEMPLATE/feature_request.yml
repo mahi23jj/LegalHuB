@@ -1,0 +1,68 @@
+name: ✨ Feature Request
+description: Suggest a new feature or enhancement
+title: "[Feature Request]: "
+labels: [enhancement]
+body:
+  - type: checkboxes
+    id: existing-issue
+    attributes:
+      label: 🔍 Is there an existing issue for this?
+      description: Please search to confirm whether a similar feature has already been requested.
+      options:
+        - label: I have searched the existing issues
+          required: true
+
+  - type: textarea
+    id: feature-description
+    attributes:
+      label: 📝 Feature Description
+      description: Provide a clear and detailed description of the feature you’re requesting.
+      placeholder: Describe the feature or enhancement you’d like to see.
+    validations:
+      required: true
+
+  - type: textarea
+    id: use-case
+    attributes:
+      label: 💡 Use Case
+      description: How would this feature improve your experience or workflow?
+      placeholder: Share a specific use case or scenario where this feature would be helpful.
+    validations:
+      required: true
+
+  - type: textarea
+    id: benefits
+    attributes:
+      label: 🎯 Benefits
+      description: What value would this feature bring to users or the community?
+      placeholder: Explain how this feature would make a positive impact.
+
+  - type: textarea
+    id: screenShots
+    attributes:
+      label: 📸 Add Screenshots (Optional)
+      description: Attach images or sketches that illustrate the feature (if any).
+
+  - type: dropdown
+    id: priority
+    attributes:
+      label: 🚦 Priority Level
+      description: How important is this feature to you?
+      options:
+        - High
+        - Medium
+        - Low
+      default: 0
+    validations:
+      required: true
+
+  - type: checkboxes
+    id: terms
+    attributes:
+      label: ✅ Confirmation
+      options:
+        - label: "I have read the Contributing Guidelines"
+          required: true
+        - label: "I'm a GSSoC'24 contributor"
+        - label: "I have starred the repository"
+          required: true
