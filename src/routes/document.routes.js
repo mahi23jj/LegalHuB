@@ -1,4 +1,4 @@
-const express = require('express');
+const express = require("express");
 const {
     createDocument,
     getAllDocuments,
@@ -7,33 +7,33 @@ const {
     deleteDocument,
     downloadDocument,
     applyOnline,
-    trackDownload
-} = require('../controllers/document.controller.js');
+    trackDownload,
+} = require("../controllers/document.controller.js");
 
 const router = express.Router();
 
 // ✅ Create Document
-router.route('/').post(createDocument);
+router.route("/").post(createDocument);
 
 // ✅ Get All Documents
-router.route('/').get(getAllDocuments);
+router.route("/").get(getAllDocuments);
 
 // ✅ Get Document by ID
-router.route('/:id').get(getDocumentById);
+router.route("/:id").get(getDocumentById);
 
 // ✅ Update Document
-router.route('/:id').put(updateDocument);
+router.route("/:id").put(updateDocument);
 
 // ✅ Delete Document
-router.route('/:id').delete(deleteDocument);
+router.route("/:id").delete(deleteDocument);
 
 // ✅ Download Document
-router.route('/:id/download').get(downloadDocument);
+router.route("/:id/download").get(downloadDocument);
 
 // ✅ Apply Online Link
-router.route('/:id/apply').get(applyOnline);
+router.route("/:id/apply").get(applyOnline);
 
 // ✅ Track Download
-router.route('/:id/track').post(trackDownload);
+router.route("/:id/track").post(trackDownload);
 
 module.exports = router;

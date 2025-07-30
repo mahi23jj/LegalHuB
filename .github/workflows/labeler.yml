@@ -1,25 +1,25 @@
 name: Label Issues and PRs
 
 on:
-  issues:
-    types: [opened, edited, reopened]
+    issues:
+        types: [opened, edited, reopened]
 
-  pull_request_target:
-    types: [opened, edited, synchronize, reopened, ready_for_review]
+    pull_request_target:
+        types: [opened, edited, synchronize, reopened, ready_for_review]
 
 permissions:
-  issues: write
-  pull-requests: write
-  contents: read
+    issues: write
+    pull-requests: write
+    contents: read
 
 jobs:
-  label-issue:
-    runs-on: ubuntu-latest
-    steps:
-    - uses: github/issue-labeler@v3.4
-      with:
-        configuration-path: .github/labeler.yml
-        enable-versioned-regex: 0
-        include-title: 1
-        include-body: 1
-        repo-token: ${{ secrets.GITHUB_TOKEN }}
+    label-issue:
+        runs-on: ubuntu-latest
+        steps:
+            - uses: github/issue-labeler@v3.4
+              with:
+                  configuration-path: .github/labeler.yml
+                  enable-versioned-regex: 0
+                  include-title: 1
+                  include-body: 1
+                  repo-token: ${{ secrets.GITHUB_TOKEN }}

@@ -5,9 +5,10 @@ const Right = require("../src/models/rights.model");
 describe("🛡️ Rights API Testing", () => {
     const mockRight = {
         name: "Right to Equality",
-        description: "Ensures equality before the law and equal protection of the laws.",
+        description:
+            "Ensures equality before the law and equal protection of the laws.",
         sourceLink: "https://example.com/equality",
-        category: "Fundamental"
+        category: "Fundamental",
     };
     let createdRight;
 
@@ -32,7 +33,7 @@ describe("🛡️ Rights API Testing", () => {
                 name: "Right to Freedom of Speech",
                 description: "Protects the freedom of expression and speech.",
                 sourceLink: "https://example.com/freedom-of-speech",
-                category: "Fundamental"
+                category: "Fundamental",
             });
 
         // console.log("📥 Response received:", res.body);
@@ -44,7 +45,10 @@ describe("🛡️ Rights API Testing", () => {
     it("❌ should return 400 if required fields are missing", async () => {
         // console.log("📤 Sending invalid data...");
         const res = await request(app).post("/api/rights").send({
-            name: "", description: "", sourceLink: "", category: ""
+            name: "",
+            description: "",
+            sourceLink: "",
+            category: "",
         });
 
         // console.log("📥 Response received:", res.body);
@@ -65,7 +69,9 @@ describe("🛡️ Rights API Testing", () => {
 
     it("✅ should fetch all rights", async () => {
         // console.log("📤 Fetching all rights...");
-        const res = await request(app).get("/api/rights").set("Accept", "application/json");
+        const res = await request(app)
+            .get("/api/rights")
+            .set("Accept", "application/json");
 
         // console.log("📥 Response received:", res.body);
         expect(res.statusCode).toBe(200);
@@ -76,7 +82,9 @@ describe("🛡️ Rights API Testing", () => {
 
     it("✅ should fetch right by ID", async () => {
         // console.log(`📤 Fetching right by ID: ${createdRight._id}`);
-        const res = await request(app).get(`/api/rights/${createdRight._id}`).set("Accept", "application/json");
+        const res = await request(app)
+            .get(`/api/rights/${createdRight._id}`)
+            .set("Accept", "application/json");
 
         // console.log("📥 Response received:", res.body);
         expect(res.statusCode).toBe(200);
@@ -98,9 +106,11 @@ describe("🛡️ Rights API Testing", () => {
 
     it("✅ should update a right successfully", async () => {
         // console.log(`📤 Updating right ID: ${createdRight._id}`);
-        const res = await request(app).put(`/api/rights/${createdRight._id}`).send({
-            description: "Updated description"
-        });
+        const res = await request(app)
+            .put(`/api/rights/${createdRight._id}`)
+            .send({
+                description: "Updated description",
+            });
 
         // console.log("📥 Response received:", res.body);
         expect(res.statusCode).toBe(200);
@@ -122,7 +132,9 @@ describe("🛡️ Rights API Testing", () => {
 
     it("✅ should delete a right successfully", async () => {
         // console.log(`📤 Deleting right ID: ${createdRight._id}`);
-        const res = await request(app).delete(`/api/rights/${createdRight._id}`);
+        const res = await request(app).delete(
+            `/api/rights/${createdRight._id}`
+        );
 
         // console.log("📥 Response received:", res.body);
         expect(res.statusCode).toBe(200);
@@ -131,7 +143,9 @@ describe("🛡️ Rights API Testing", () => {
     });
 
     it("❌ should return 404 when deleting non-existent right", async () => {
-        const res = await request(app).delete("/api/rights/64b4c7fe12f84b1f12345678");
+        const res = await request(app).delete(
+            "/api/rights/64b4c7fe12f84b1f12345678"
+        );
 
         // console.log("📥 Response received:", res.body);
         expect(res.statusCode).toBe(404);

@@ -1,6 +1,6 @@
-const mongoose = require('mongoose');
+const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
-const passportLocalMongoose = require('passport-local-mongoose');
+const passportLocalMongoose = require("passport-local-mongoose");
 
 const userSchema = new Schema({
     name: {
@@ -16,8 +16,8 @@ const userSchema = new Schema({
     },
     role: {
         type: String,
-        enum: ['user', 'admin'],
-        default: 'user',
+        enum: ["user", "admin"],
+        default: "user",
     },
     profilePicture: {
         type: String,
@@ -35,9 +35,9 @@ const userSchema = new Schema({
         type: Number, // ✅ Lawyer ke experience ko handle karega
         default: 0,
         min: 0,
-    }
+    },
 });
 
 userSchema.plugin(passportLocalMongoose);
 
-module.exports = mongoose.model('User', userSchema);
+module.exports = mongoose.model("User", userSchema);

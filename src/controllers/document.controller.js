@@ -1,13 +1,31 @@
-const Document = require('../models/document.model.js');
-const asyncHandler = require('../utils/asyncHandler.js');
-const ApiError = require('../utils/apiError.js');
-const ApiResponse = require('../utils/apiResponse.js');
+const Document = require("../models/document.model.js");
+const asyncHandler = require("../utils/asyncHandler.js");
+const ApiError = require("../utils/apiError.js");
+const ApiResponse = require("../utils/apiResponse.js");
 
 // ✅ Create Document
 const createDocument = asyncHandler(async (req, res) => {
-    const { title, description, downloadLink, applyLink, state, department, guidelines, requiredDocuments } = req.body;
+    const {
+        title,
+        description,
+        downloadLink,
+        applyLink,
+        state,
+        department,
+        guidelines,
+        requiredDocuments,
+    } = req.body;
 
-    if (!title || !description || !downloadLink || !applyLink || !state || !department || !guidelines || !requiredDocuments) {
+    if (
+        !title ||
+        !description ||
+        !downloadLink ||
+        !applyLink ||
+        !state ||
+        !department ||
+        !guidelines ||
+        !requiredDocuments
+    ) {
         throw new ApiError(400, "All fields are required");
     }
 
@@ -19,10 +37,12 @@ const createDocument = asyncHandler(async (req, res) => {
         state,
         department,
         guidelines,
-        requiredDocuments
+        requiredDocuments,
     });
 
-    res.status(201).json(new ApiResponse(201, document, "Document created successfully"));
+    res.status(201).json(
+        new ApiResponse(201, document, "Document created successfully")
+    );
 });
 
 // ✅ Get All Documents (Pass data to EJS)
@@ -44,16 +64,27 @@ const getDocumentById = asyncHandler(async (req, res) => {
         throw new ApiError(404, "Document not found");
     }
     // res.render('pages/documentDetails', { document })
-    if(req.accepts('html')) {
-        res.render('pages/documentDetails', { document });
-    }else {
-        res.status(200).json(new ApiResponse(200, document, "Document fetched successfully"));
+    if (req.accepts("html")) {
+        res.render("pages/documentDetails", { document });
+    } else {
+        res.status(200).json(
+            new ApiResponse(200, document, "Document fetched successfully")
+        );
     }
 });
 
 // ✅ Update Document
 const updateDocument = asyncHandler(async (req, res) => {
-    const { title, description, downloadLink, applyLink, state, department, guidelines, requiredDocuments } = req.body;
+    const {
+        title,
+        description,
+        downloadLink,
+        applyLink,
+        state,
+        department,
+        guidelines,
+        requiredDocuments,
+    } = req.body;
 
     const document = await Document.findById(req.params.id);
     if (!document) {
@@ -67,11 +98,14 @@ const updateDocument = asyncHandler(async (req, res) => {
     document.state = state || document.state;
     document.department = department || document.department;
     document.guidelines = guidelines || document.guidelines;
-    document.requiredDocuments = requiredDocuments || document.requiredDocuments;
+    document.requiredDocuments =
+        requiredDocuments || document.requiredDocuments;
 
     await document.save();
 
-    res.status(200).json(new ApiResponse(200, document, "Document updated successfully"));
+    res.status(200).json(
+        new ApiResponse(200, document, "Document updated successfully")
+    );
 });
 
 // ✅ Delete Document
@@ -83,7 +117,9 @@ const deleteDocument = asyncHandler(async (req, res) => {
 
     await document.deleteOne();
 
-    res.status(200).json(new ApiResponse(200, null, "Document deleted successfully"));
+    res.status(200).json(
+        new ApiResponse(200, null, "Document deleted successfully")
+    );
 });
 
 // ✅ Download Document
@@ -105,30 +141,29 @@ const applyOnline = asyncHandler(async (req, res) => {
 });
 
 // Route to track downloads
-const trackDownload = asyncHandler(
-    async (req, res) => {
-        const document = await Document.findById(req.params.id);
-        if (!document) {
-            throw new ApiError(404, "Document not found");
-        }
-        document.downloadCount = (document.downloadCount || 0) + 1; // Increment download count
-
-        // If user is logged in, store username
-        if (req.user) {
-            document.downloadedBy.push({ username: req.user.username });
-        } else {
-            req.flash("error", "You need to log in to store download info.");
-        }
-
-        await document.save();
-        res.status(200).json(new ApiResponse(200, document, "Download tracked successfully"));
+const trackDownload = asyncHandler(async (req, res) => {
+    const document = await Document.findById(req.params.id);
+    if (!document) {
+        throw new ApiError(404, "Document not found");
     }
-);
+    document.downloadCount = (document.downloadCount || 0) + 1; // Increment download count
+
+    // If user is logged in, store username
+    if (req.user) {
+        document.downloadedBy.push({ username: req.user.username });
+    } else {
+        req.flash("error", "You need to log in to store download info.");
+    }
+
+    await document.save();
+    res.status(200).json(
+        new ApiResponse(200, document, "Download tracked successfully")
+    );
+});
 
 const renderDownCount = asyncHandler(async (req, res) => {
-
     const documents = await Document.find();
-    res.render('pages/down_doc', { documents });
+    res.render("pages/down_doc", { documents });
 });
 
 module.exports = {
@@ -140,5 +175,5 @@ module.exports = {
     downloadDocument,
     applyOnline,
     trackDownload,
-    renderDownCount
+    renderDownCount,
 };

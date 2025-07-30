@@ -4,10 +4,10 @@ const asyncHandler = require("../utils/asyncHandler");
 const healthCheck = asyncHandler(async (req, res) => {
     const healthData = {
         status: "OK",
-        uptime: process.uptime(),                  // in seconds
-        memoryUsage: process.memoryUsage(),        // RAM usage
-        timestamp: new Date().toISOString(),       // Current time
-        env: process.env.NODE_ENV || "development" // Useful info
+        uptime: process.uptime(), // in seconds
+        memoryUsage: process.memoryUsage(), // RAM usage
+        timestamp: new Date().toISOString(), // Current time
+        env: process.env.NODE_ENV || "development", // Useful info
     };
 
     return res

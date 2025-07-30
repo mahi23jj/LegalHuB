@@ -1,6 +1,6 @@
 const request = require("supertest");
 const app = require("../src/app");
-const User = require("../src/models/user.model")
+const User = require("../src/models/user.model");
 
 describe("📄 User API Testing", () => {
     let agent;
@@ -34,57 +34,57 @@ describe("📄 User API Testing", () => {
     });
 
     it("✅ should create an new user", async () => {
-    // console.log("📤 Creating user...");
-    const res = await agent
-        .post("/api/users/register")
-        .set("Accept", "application/json")
-        .send(testUser);
-    
-    userId = res.body.data._id;
+        // console.log("📤 Creating user...");
+        const res = await agent
+            .post("/api/users/register")
+            .set("Accept", "application/json")
+            .send(testUser);
 
-    // console.log("📥 Response status:", res.statusCode);
-    expect(res.statusCode).toBe(201);
-    expect(res.body.success).toBe(true);
-    expect(res.body.msg).toBe("User registered successfully");
-  });
+        userId = res.body.data._id;
 
-  // ❌ JSON: Missing fields
-  it("should return 400 JSON error when required fields are missing", async () => {
-    // console.log("📤 Attempting to register without required fields...");
-    const res = await request(app)
-        .post("/api/users/register")
-        .set("Accept", "application/json")
-        .send({});
+        // console.log("📥 Response status:", res.statusCode);
+        expect(res.statusCode).toBe(201);
+        expect(res.body.success).toBe(true);
+        expect(res.body.msg).toBe("User registered successfully");
+    });
 
-    // console.log("📥 Response status:", res.statusCode);
-    expect(res.statusCode).toBe(400);
-    expect(res.body.success).toBe(false);
-    expect(res.body.msg).toBe("All fields are required");
-  });
+    // ❌ JSON: Missing fields
+    it("should return 400 JSON error when required fields are missing", async () => {
+        // console.log("📤 Attempting to register without required fields...");
+        const res = await request(app)
+            .post("/api/users/register")
+            .set("Accept", "application/json")
+            .send({});
 
-   // ❌ JSON: Password mismatch
-  it("should return 400 JSON error for password mismatch", async () => {
-    // console.log("📤 Attempting to register with mismatched passwords...");
-    const res = await request(app)
-        .post("/api/users/register")
-        .set("Accept", "application/json")
-        .send({...testUser, confirmPassword: "abc123"});
+        // console.log("📥 Response status:", res.statusCode);
+        expect(res.statusCode).toBe(400);
+        expect(res.body.success).toBe(false);
+        expect(res.body.msg).toBe("All fields are required");
+    });
 
-    // console.log("📥 Response status:", res.statusCode);
-    expect(res.statusCode).toBe(400);
-    expect(res.body.success).toBe(false);
-    expect(res.body.msg).toBe("Passwords do not match");
-  });
+    // ❌ JSON: Password mismatch
+    it("should return 400 JSON error for password mismatch", async () => {
+        // console.log("📤 Attempting to register with mismatched passwords...");
+        const res = await request(app)
+            .post("/api/users/register")
+            .set("Accept", "application/json")
+            .send({ ...testUser, confirmPassword: "abc123" });
+
+        // console.log("📥 Response status:", res.statusCode);
+        expect(res.statusCode).toBe(400);
+        expect(res.body.success).toBe(false);
+        expect(res.body.msg).toBe("Passwords do not match");
+    });
 
     // ❌ JSON: User already exists
     it("should return 400 JSON error if user already exists", async () => {
-    // console.log("📤 Attempting to register an existing user...");
+        // console.log("📤 Attempting to register an existing user...");
         const res = await request(app)
             .post("/api/users/register")
             .set("Accept", "application/json")
             .send(testUser);
 
-    // console.log("📥 Response status:", res.statusCode);
+        // console.log("📥 Response status:", res.statusCode);
         expect(res.statusCode).toBe(400);
         expect(res.body.success).toBe(false);
         expect(res.body.msg).toBe("User already exists");

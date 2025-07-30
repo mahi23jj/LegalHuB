@@ -5,7 +5,7 @@ if (process.env.NODE_ENV != "production") {
 const express = require("express");
 const app = express();
 const cors = require("cors");
-const mongoose = require('mongoose');
+const mongoose = require("mongoose");
 const path = require("path");
 const methodOverride = require("method-override");
 const ejsMate = require("ejs-mate");
@@ -23,7 +23,6 @@ const User = require("./models/user.model.js");
 // Import Utility Functions
 const apiError = require("./utils/apiError.js");
 const apiResponse = require("./utils/apiResponse.js");
-
 
 // CORS Configuration
 app.use(
@@ -44,7 +43,6 @@ app.use(methodOverride("_method"));
 app.engine("ejs", ejsMate);
 app.set("views", path.join(__dirname, "views"));
 app.set("view engine", "ejs");
-
 
 // Session Configuration
 const sessionOptions = {
@@ -93,9 +91,8 @@ const documentsRoutes = require("./routes/document.routes.js");
 const { smartSearch } = require("./controllers/search.controller.js");
 const articleRoutes = require("./routes/article.routes.js");
 const userRoutes = require("./routes/user.routes.js");
-const pageRoutes = require('./routes/page.routes');
-const lawyerRoutes = require('./routes/lawyer.routes.js');
-
+const pageRoutes = require("./routes/page.routes");
+const lawyerRoutes = require("./routes/lawyer.routes.js");
 
 // ✅ Define the test route first
 // app.get("/", (req, res) => {
@@ -110,7 +107,7 @@ app.use("/api/documents", documentsRoutes);
 app.use("/api/articles", articleRoutes);
 app.use("/api/users", userRoutes);
 app.use("/api/lawyers", lawyerRoutes);
-app.use('/', pageRoutes);
+app.use("/", pageRoutes);
 
 // Smart Search
 app.get("/api/search", smartSearch);
@@ -122,20 +119,26 @@ app.all("*", (req, res) => {
 
 // Global Error Handler
 app.use((err, req, res, next) => {
-    const isProd = process.env.NODE_ENV === 'production';
-    const isTest = process.env.NODE_ENV === 'test';
+    const isProd = process.env.NODE_ENV === "production";
+    const isTest = process.env.NODE_ENV === "test";
 
     if (!isProd && !isTest) {
-        if (err.name === 'apiError' || err instanceof apiError) {
+        if (err.name === "apiError" || err instanceof apiError) {
             console.error(`❌ ${err.message} [${err.statusCode}]`);
         } else {
             console.error("🔥 Unexpected Error:", err);
         }
     }
 
-    return res.status(err.statusCode || 500).json(
-        new apiResponse(err.statusCode || 500, null, err.message || "Internal Server Error")
-    );
+    return res
+        .status(err.statusCode || 500)
+        .json(
+            new apiResponse(
+                err.statusCode || 500,
+                null,
+                err.message || "Internal Server Error"
+            )
+        );
 });
 
 module.exports = app;

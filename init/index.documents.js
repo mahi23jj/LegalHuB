@@ -1,11 +1,12 @@
-require('dotenv').config({ path: require('path').resolve(__dirname, '../.env') });
+require("dotenv").config({
+    path: require("path").resolve(__dirname, "../.env"),
+});
 
-const mongoose = require('mongoose');
+const mongoose = require("mongoose");
 const intDocumentsData = require("./documents.data.js");
 const Document = require("../src/models/document.model.js");
 const app = require("../src/app.js");
 const db_connect = require("../src/db/index.js");
-
 
 const PORT = process.env.PORT || 8000;
 
@@ -20,7 +21,6 @@ db_connect()
         process.exit(1);
     });
 
-
 const initDocumentsDB = async () => {
     try {
         await Document.deleteMany({});
@@ -32,6 +32,6 @@ const initDocumentsDB = async () => {
         console.error("Error initializing Documents database", err);
         process.exit(1);
     }
-}
+};
 
 initDocumentsDB();

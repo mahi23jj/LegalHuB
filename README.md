@@ -6,11 +6,11 @@
 
 ## 🚀 Features
 
-- ✅ **Legal Dictionary** – AI-powered explanations of complex legal terms.  
-- ✅ **Download Legal Forms** – Access and download state-specific legal documents.  
-- ✅ **Apply for Legal Services** – Redirects to official legal application portals.  
-- ✅ **Legal Rights Database** – Browse essential civil, fundamental, and employment rights.  
-- ✅ **Legal Articles & Guides** – Learn from structured and easy-to-read legal content.  
+- ✅ **Legal Dictionary** – AI-powered explanations of complex legal terms.
+- ✅ **Download Legal Forms** – Access and download state-specific legal documents.
+- ✅ **Apply for Legal Services** – Redirects to official legal application portals.
+- ✅ **Legal Rights Database** – Browse essential civil, fundamental, and employment rights.
+- ✅ **Legal Articles & Guides** – Learn from structured and easy-to-read legal content.
 - ✅ **Smart Search** – Search across legal terms, rights, and documents efficiently.
 
 ---
@@ -18,11 +18,13 @@
 ## 📸 Screenshots
 
 ### 🏠 Homepage
+
 ![Homepage](https://github.com/user-attachments/assets/b3a791fe-29b3-4acd-99ba-5fd452cd20d7)
 
 ---
 
 ### 📘 Legal Dictionary
+
 ![Legal Dictionary](https://github.com/user-attachments/assets/33660235-dc58-4196-8cdc-c450068312e2)
 
 ---
@@ -46,6 +48,7 @@
 ![Link](https://github.com/user-attachments/assets/91a40e6f-7124-42c2-bfa1-beeedeaf7394)
 
 ---
+
 ![Link](https://github.com/user-attachments/assets/42e338d4-26f8-46bb-9f93-bc56e9203f84)
 
 ---
@@ -57,13 +60,14 @@
 ![Link](https://github.com/user-attachments/assets/aea9cc35-7cb3-4c87-8d28-a27f64b73eee)
 
 ---
+
 ## 🛠️ Tech Stack
 
-- **Backend:** Node.js, Express.js  
-- **Database:** MongoDB (Free Tier or Atlas)  
-- **AI Integration:** Chatbase (for AI chatbot responses)  
-- **Templating Engine:** EJS  
-- **Authentication:** Passport.js  
+- **Backend:** Node.js, Express.js
+- **Database:** MongoDB (Free Tier or Atlas)
+- **AI Integration:** Chatbase (for AI chatbot responses)
+- **Templating Engine:** EJS
+- **Authentication:** Passport.js
 
 ---
 
@@ -78,30 +82,41 @@
 ### 📥 Setup Instructions
 
 #### 1. Clone the repository
+
 ```bash
    git clone https://github.com/yourusername/LegalHuB
-   
+
    cd LegalHuB
-````
- #### 2. Install dependencies
-```bash 
+```
+
+#### 2. Install dependencies
+
+```bash
    npm install
 ```
 
 #### 3. Set up environment variables
-  - Create a .env file in the root directory and add the following:
- ---
+
+- Create a .env file in the root directory and add the following:
+
+---
 
 ## 🧑‍💻 Environment Setup
 
 1. Copy the example environment file:
+
 ---
+
 ```bash
    cp .env.sample .env
 ```
+
 ---
+
 2. Update the .env file with your configuration:
-----
+
+---
+
 ```bash
    # Server Configuration
    PORT=8000
@@ -109,7 +124,7 @@
 
    # CORS Configuration
    CORS_ORIGIN=*
-   # CORS_ORIGIN=http://localhost:4000 
+   # CORS_ORIGIN=http://localhost:4000
 
    #DB_URL=
    DB_URL=mongodb+srv://<username>:<password>@cluster0.weuhr.mongodb.net
@@ -123,7 +138,9 @@
 
    ADMIN_SECRECT_KEY=mysupersecretkey
 ```
+
 ---
+
 ## 🔐 Mistral AI API Integration
 
 ### ⚙️ Setting Up Mistral API Key
@@ -134,15 +151,18 @@ To enable Mistral AI-powered features in LegalHuB, follow the steps below:
 2. Navigate to **API Keys** and generate a new key.
 3. Add the following entry to your `.env` file:
 
-   ```env
-   MISTRAL_API_KEY=your_mistral_api_key_here
-   ```
+    ```env
+    MISTRAL_API_KEY=your_mistral_api_key_here
+    ```
 
 ---
+
 3. Start the server
+
 ```bash
    npm start or npm run dev
 ```
+
 The server will run on `http://localhost:8000`
 
 ---
@@ -167,50 +187,59 @@ We welcome contributions to help improve **LegalHuB**! 🚀 Whether you're fixin
 ```bash
    git clone https://github.com/your-username/LegalHuB.git
 ```
+
 2. Navigate to the project directory:
 
 ```bash
    cd LegalHuB
 ```
+
 3. 🌿 Create a New Branch
-   - Create a new branch for your changes:
+    - Create a new branch for your changes:
+
 ```bash
    git checkout -b feature/your-feature-name
 ```
+
 4. Make Your Changes✏️
-   - Add your desired features, fix bugs, or improve documentation. 🛠️
+
+    - Add your desired features, fix bugs, or improve documentation. 🛠️
 
 5. 📦 Stage the Changes
-   - Add modified files to the staging area:
+    - Add modified files to the staging area:
 
 ```bash
    git add .
 ```
 
 6. 📝 Commit Your Changes
-   - Commit your changes with a clear, descriptive message:
+    - Commit your changes with a clear, descriptive message:
 
 ```bash
    git commit -m "Add [feature/fix]: short description of what you changed"
 ```
 
 7. ⬆️ Push to Your Fork
-   - Push the changes to your forked GitHub repository:
+    - Push the changes to your forked GitHub repository:
+
 ```bash
    git push origin feature/your-feature-name
 ```
 
 8. 📬 Create a Pull Request
-   - Visit your forked repository on GitHub.
 
-   - Click on "Compare & pull request".
+    - Visit your forked repository on GitHub.
 
-   - Add a title and description of your changes.
+    - Click on "Compare & pull request".
 
-   - Submit the pull request for review.
+    - Add a title and description of your changes.
+
+    - Submit the pull request for review.
+
 ---
 
 ## 💡 Tips for a Great Contribution
+
 - Follow consistent code style.
 
 - Write descriptive commit messages.
@@ -219,12 +248,9 @@ We welcome contributions to help improve **LegalHuB**! 🚀 Whether you're fixin
 
 - Reference any related issue numbers (e.g., Fixes #123).
 
-
-
 ---
 
-   ## 📂 Project Structure
-
+## 📂 Project Structure
 
 ```plaintext
 LegalHuB/
@@ -259,9 +285,10 @@ LegalHuB/
 ├── package-lock.json
 └── README.md               # Project overview and setup
 ```
+
 ---
 
- ## 🌐 API Endpoints
+## 🌐 API Endpoints
 
 ### 📘 Legal Dictionary
 
@@ -302,20 +329,21 @@ LegalHuB/
 
 ```json
 {
-  "dictionary_results": ["Tenant Rights - Explanation"],
-  "rights_results": ["Right to Safe Housing"],
-  "form_results": ["Rental Agreement Form"]
+    "dictionary_results": ["Tenant Rights - Explanation"],
+    "rights_results": ["Right to Safe Housing"],
+    "form_results": ["Rental Agreement Form"]
 }
-
 ```
+
 ---
+
 ## 🔍 Smart Search Logic
 
 The Smart Search feature performs a unified query across:
 
-- Legal terms in the dictionary database  
-- User rights stored in MongoDB  
-- Legal forms and their descriptions  
+- Legal terms in the dictionary database
+- User rights stored in MongoDB
+- Legal forms and their descriptions
 
 The results are ranked and returned in a categorized format to ensure relevance and clarity.
 
@@ -323,10 +351,10 @@ The results are ranked and returned in a categorized format to ensure relevance 
 
 ## 🎨 UI Pages
 
-- **Home** (`/`) – Introductory landing page with navigation  
-- **Legal Dictionary** (`/dictionary`) – Look up legal terms  
-- **Legal Forms** (`/forms`) – Download or view forms by category  
-- **Legal Rights** (`/rights`) – Explore civil and employment rights  
+- **Home** (`/`) – Introductory landing page with navigation
+- **Legal Dictionary** (`/dictionary`) – Look up legal terms
+- **Legal Forms** (`/forms`) – Download or view forms by category
+- **Legal Rights** (`/rights`) – Explore civil and employment rights
 
 ---
 

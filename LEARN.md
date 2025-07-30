@@ -20,44 +20,49 @@ This guide will help you understand **how LegalHuB works**, its **technical comp
 
 ## 🛠️ Tech Stack Overview
 
-| Layer         | Technology            |
-|--------------|------------------------|
-| **Backend**   | Node.js, Express.js    |
-| **Database**  | MongoDB (Free Tier)    |
-| **Templating**| EJS (Embedded JS)      |
-| **AI Chatbot**| Chatbase + OpenAI API  |
-| **Authentication** | Passport.js     |
-| **Search**    |  Smart Search Functionality |
+| Layer              | Technology                 |
+| ------------------ | -------------------------- |
+| **Backend**        | Node.js, Express.js        |
+| **Database**       | MongoDB (Free Tier)        |
+| **Templating**     | EJS (Embedded JS)          |
+| **AI Chatbot**     | Chatbase + OpenAI API      |
+| **Authentication** | Passport.js                |
+| **Search**         | Smart Search Functionality |
 
 ---
 
 ## 🧠 How the Platform Works
 
 ### 1. **Legal Dictionary (AI-powered)**
+
 - User enters a legal term.
 - Server sends the term to **OpenAI API** via backend.
 - Response is parsed and displayed using EJS.
 
 ### 2. **Legal Forms**
+
 - Forms are stored in MongoDB (with state/category).
 - Users can browse or filter by category.
 - Backend supports **downloading forms** or redirecting to official apply links.
 
 ### 3. **Legal Rights**
+
 - Fundamental and employment rights are stored in MongoDB.
 - Accessible via the `/rights` page.
 - Each right contains a title, description, category, and source link.
 
 ### 4. **Legal Articles & Guides**
+
 - Articles are structured as Markdown or HTML content rendered through EJS.
 - Aimed at educating users in simple language.
 
 ### 5. **Smart Search**
+
 - User types a query in the search bar.
 - Backend searches across:
-  - Dictionary terms
-  - Rights titles/descriptions
-  - Forms metadata
+    - Dictionary terms
+    - Rights titles/descriptions
+    - Forms metadata
 - Results are merged and shown by relevance.
 
 ---
@@ -108,6 +113,7 @@ LegalHuB/
 ## ⚙️ Core Components
 
 ### 🔌 `controllers/`
+
 Handles business logic for each module:
 
 - **`dictionary.controller.js`** – AI-based legal term explanation using OpenAI
@@ -121,6 +127,7 @@ Handles business logic for each module:
 ---
 
 ### 🧠 `models/`
+
 MongoDB schemas managed via Mongoose:
 
 - `document.model.js`
@@ -131,33 +138,36 @@ MongoDB schemas managed via Mongoose:
 ---
 
 ### 🌐 `routes/`
+
 Each controller is paired with a route file for clean API structure.
 
 **Example API Routes:**
 
-| Method | Endpoint              | Function              |
-|--------|-----------------------|-----------------------|
-| GET    | `/api/rights`         | `getAllRights()`      |
-| POST   | `/api/documents`      | `uploadDocument()`    |
-| GET    | `/api/search?q=...`   | `smartSearch()`       |
+| Method | Endpoint            | Function           |
+| ------ | ------------------- | ------------------ |
+| GET    | `/api/rights`       | `getAllRights()`   |
+| POST   | `/api/documents`    | `uploadDocument()` |
+| GET    | `/api/search?q=...` | `smartSearch()`    |
 
 ---
 
 ### 🧾 `views/`
+
 Built with EJS for dynamic templating.
 
 - **Layouts:**
-  - `layouts/boilerplate.ejs` – Base HTML structure
+    - `layouts/boilerplate.ejs` – Base HTML structure
 - **Includes:**
-  - `includes/navbar.ejs`, `footer.ejs`, `flash.ejs`
+    - `includes/navbar.ejs`, `footer.ejs`, `flash.ejs`
 - **Pages:**
-  - `pages/documents.ejs`, `articles.ejs`, `rights.ejs`, `dictionary.ejs`
+    - `pages/documents.ejs`, `articles.ejs`, `rights.ejs`, `dictionary.ejs`
 - **User Auth:**
-  - `users/login.ejs`, `profile.ejs`, `updateUser.ejs`
+    - `users/login.ejs`, `profile.ejs`, `updateUser.ejs`
 
 ---
 
 ### 🧪 `__tests__/`
+
 Testing suite (e.g., using Jest or Supertest):
 
 - `server.test.js` – API-level tests
@@ -172,11 +182,13 @@ Testing suite (e.g., using Jest or Supertest):
 ---
 
 ### ☁️ `utils/cloudinary.js`
+
 Handles all uploads to **Cloudinary**, including PDFs and images.
 
 ---
 
 ### 🌱 `init/`
+
 Seeding scripts for initial data:
 
 - **Documents** – State-specific legal forms
@@ -185,6 +197,7 @@ Seeding scripts for initial data:
 ---
 
 ### 🧪 `.github/workflows/integration.yml`
+
 GitHub Actions CI/CD:
 
 - Runs test suites
@@ -198,9 +211,9 @@ GitHub Actions CI/CD:
 The backend `/api/search?q=` route:
 
 - Supports **regex** or **full-text** search on:
-  - `dictionary`
-  - `rights`
-  - `documents`
+    - `dictionary`
+    - `rights`
+    - `documents`
 - Aggregates and returns ranked results:
 
 ```json
@@ -218,7 +231,9 @@ The backend `/api/search?q=` route:
 ```bash
 cp .env.sample .env
 ```
+
 2. Update the .env file with your configuration:
+
 ```bash
 # Server Configuration
 PORT=8000
@@ -226,7 +241,7 @@ SESSION_SECRET=mysecrectkey
 
 # CORS Configuration
 CORS_ORIGIN=*
-# CORS_ORIGIN=http://localhost:4000 
+# CORS_ORIGIN=http://localhost:4000
 
 #DB_URL=
 DB_URL=mongodb+srv://<username>:<password>@cluster0.weuhr.mongodb.net
@@ -251,7 +266,7 @@ We welcome contributions!
 
 ## 📫 Questions or Suggestions?
 
-- 📧 Email: [dipexplorerid23@gmail.com](mailto:dipexplorerid23@gmail.com)  
+- 📧 Email: [dipexplorerid23@gmail.com](mailto:dipexplorerid23@gmail.com)
 - 🐛 Open an Issue: [GitHub Issues](https://github.com/YOUR-USERNAME/LegalHuB/issues) <!-- Replace with your actual repo URL -->
 
 ## 🫶 Thank You

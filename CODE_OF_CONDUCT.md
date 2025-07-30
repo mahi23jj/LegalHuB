@@ -72,4 +72,3 @@ This Code of Conduct is adapted from the [Contributor Covenant](https://www.cont
 
 Thank you for being a part of LegalHuB.  
 Let’s build something impactful, accessible, and empowering—together. 🤝
-

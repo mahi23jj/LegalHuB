@@ -1,63 +1,63 @@
-name: 🐞 Bug report 
+name: 🐞 Bug report
 description: Report an issue or unexpected behavior
 title: "[Bug]: "
 labels: [bug]
 body:
-  - type: checkboxes
-    id: existing-issue
-    attributes:
-      label: 🔍 Is there an existing issue for this?
-      description: Please search to see if an issue already exists for the bug you encountered.
-      options:
-        - label: I have searched the existing issues
+    - type: checkboxes
+      id: existing-issue
+      attributes:
+          label: 🔍 Is there an existing issue for this?
+          description: Please search to see if an issue already exists for the bug you encountered.
+          options:
+              - label: I have searched the existing issues
+                required: true
+
+    - type: textarea
+      id: what-happened
+      attributes:
+          label: 🐛 Describe the bug
+          description: Clearly describe the issue you are facing.
+          placeholder: Tell us what went wrong or what you're seeing.
+      validations:
           required: true
 
-  - type: textarea
-    id: what-happened
-    attributes:
-      label: 🐛 Describe the bug
-      description: Clearly describe the issue you are facing.
-      placeholder: Tell us what went wrong or what you're seeing.
-    validations:
-      required: true
-
-  - type: textarea
-    id: expected-behaviour
-    attributes:
-      label: ✅ Expected behavior
-      description:  What did you expect to happen instead?
-      placeholder: Describe the expected outcome or correct behavior.
-    validations:
-      required: true
-
-  - type: textarea
-    id: screenshots
-    attributes:
-      label: 📸 Add ScreenShots
-      description: Select all platforms where you experienced this issue
-
-  - type: dropdown
-    id: devices
-    attributes:
-      label: On which device are you experiencing this bug?
-      multiple: true
-      options:
-        - Android
-        - iPhone
-        - Linux
-        - Chrome
-        - Windows
-        - MacOS
-        - Other
-
-  - type: checkboxes
-    id: terms
-    attributes:
-      label: 📋 Checklist
-      description: Confirm the following
-      options:
-        - label: "I have read the Contributing Guidelines"
+    - type: textarea
+      id: expected-behaviour
+      attributes:
+          label: ✅ Expected behavior
+          description: What did you expect to happen instead?
+          placeholder: Describe the expected outcome or correct behavior.
+      validations:
           required: true
-        - label: "I'm a GSSOC'24 contributor"
-        - label: "I have starred the repository"
-          required: true
+
+    - type: textarea
+      id: screenshots
+      attributes:
+          label: 📸 Add ScreenShots
+          description: Select all platforms where you experienced this issue
+
+    - type: dropdown
+      id: devices
+      attributes:
+          label: On which device are you experiencing this bug?
+          multiple: true
+          options:
+              - Android
+              - iPhone
+              - Linux
+              - Chrome
+              - Windows
+              - MacOS
+              - Other
+
+    - type: checkboxes
+      id: terms
+      attributes:
+          label: 📋 Checklist
+          description: Confirm the following
+          options:
+              - label: "I have read the Contributing Guidelines"
+                required: true
+              - label: "I'm a GSSOC'24 contributor"
+              - label: "I have starred the repository"
+                required: true

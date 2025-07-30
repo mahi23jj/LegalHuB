@@ -1,66 +1,66 @@
 name: 💬 Auto Comment on Contributor Issues
 
 on:
-  issues:
-    types: [opened]
+    issues:
+        types: [opened]
 
 permissions:
-  issues: write
+    issues: write
 
 jobs:
-  comment:
-    runs-on: ubuntu-latest
+    comment:
+        runs-on: ubuntu-latest
 
-    steps:
-      - name: 💡 Check if author is not the owner
-        id: check_owner
-        run: |
-          if [ "${{ github.event.issue.user.login }}" != "${{ github.repository_owner }}" ]; then
-            echo "is_contributor=true" >> $GITHUB_OUTPUT
-          else
-            echo "is_contributor=false" >> $GITHUB_OUTPUT
-          fi
+        steps:
+            - name: 💡 Check if author is not the owner
+              id: check_owner
+              run: |
+                  if [ "${{ github.event.issue.user.login }}" != "${{ github.repository_owner }}" ]; then
+                    echo "is_contributor=true" >> $GITHUB_OUTPUT
+                  else
+                    echo "is_contributor=false" >> $GITHUB_OUTPUT
+                  fi
 
-      - name: 🔍 Check if this is their first contribution
-        id: check_first
-        if: steps.check_owner.outputs.is_contributor == 'true'
-        uses: actions/github-script@v7
-        with:
-          github-token: ${{ secrets.GITHUB_TOKEN }}
-          result-encoding: string
-          script: |
-            const username = context.payload.issue.user.login;
-            const { data: result } = await github.rest.search.issuesAndPullRequests({
-              q: `author:${username} repo:${context.repo.owner}/${context.repo.repo}`
-            });
-            return result.total_count === 1 ? 'true' : 'false';
+            - name: 🔍 Check if this is their first contribution
+              id: check_first
+              if: steps.check_owner.outputs.is_contributor == 'true'
+              uses: actions/github-script@v7
+              with:
+                  github-token: ${{ secrets.GITHUB_TOKEN }}
+                  result-encoding: string
+                  script: |
+                      const username = context.payload.issue.user.login;
+                      const { data: result } = await github.rest.search.issuesAndPullRequests({
+                        q: `author:${username} repo:${context.repo.owner}/${context.repo.repo}`
+                      });
+                      return result.total_count === 1 ? 'true' : 'false';
 
-      - name: 🎉 Post greeting for first-time contributor
-        if: steps.check_first.outputs.result == 'true'
-        uses: actions/github-script@v7
-        with:
-          github-token: ${{ secrets.GITHUB_TOKEN }}
-          script: |
-            github.rest.issues.createComment({
-              issue_number: context.issue.number,
-              owner: context.repo.owner,
-              repo: context.repo.repo,
-              body: `🎉 Whoa, @${context.payload.issue.user.login} — your *first* issue here?!
+            - name: 🎉 Post greeting for first-time contributor
+              if: steps.check_first.outputs.result == 'true'
+              uses: actions/github-script@v7
+              with:
+                  github-token: ${{ secrets.GITHUB_TOKEN }}
+                  script: |
+                      github.rest.issues.createComment({
+                        issue_number: context.issue.number,
+                        owner: context.repo.owner,
+                        repo: context.repo.repo,
+                        body: `🎉 Whoa, @${context.payload.issue.user.login} — your *first* issue here?!
 
-              Big thanks for jumping in! We’ll check it out soon. Glad to have you on board. 🙌`
-              });
+                        Big thanks for jumping in! We’ll check it out soon. Glad to have you on board. 🙌`
+                        });
 
-      - name: 💬 Post thank-you comment for returning contributor
-        if: steps.check_first.outputs.result == 'false'
-        uses: actions/github-script@v7
-        with:
-          github-token: ${{ secrets.GITHUB_TOKEN }}
-          script: |
-            github.rest.issues.createComment({
-              issue_number: context.issue.number,
-              owner: context.repo.owner,
-              repo: context.repo.repo,
-              body: `👋 Hey @${context.payload.issue.user.login}! — thanks for opening this issue! We really appreciate your input and will review it soon. 🙌  
+            - name: 💬 Post thank-you comment for returning contributor
+              if: steps.check_first.outputs.result == 'false'
+              uses: actions/github-script@v7
+              with:
+                  github-token: ${{ secrets.GITHUB_TOKEN }}
+                  script: |
+                      github.rest.issues.createComment({
+                        issue_number: context.issue.number,
+                        owner: context.repo.owner,
+                        repo: context.repo.repo,
+                        body: `👋 Hey @${context.payload.issue.user.login}! — thanks for opening this issue! We really appreciate your input and will review it soon. 🙌  
 
-              In the meantime, feel free to browse the repo and check out other issues. 🚀`
-            });
+                        In the meantime, feel free to browse the repo and check out other issues. 🚀`
+                      });

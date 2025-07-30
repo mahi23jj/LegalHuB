@@ -1,16 +1,16 @@
-const mongoose = require('mongoose');
+const mongoose = require("mongoose");
 
 const articleSchema = new mongoose.Schema(
     {
         title: {
             type: String,
-            required: [true, 'Title is required'],
+            required: [true, "Title is required"],
             trim: true,
             unique: true, // Enforcing unique titles
         },
         content: {
             type: String,
-            required: [true, 'Content is required'],
+            required: [true, "Content is required"],
             trim: true,
         },
         tags: {
@@ -18,15 +18,18 @@ const articleSchema = new mongoose.Schema(
             default: [],
             validate: {
                 validator: function (tags) {
-                    return Array.isArray(tags) && new Set(tags).size === tags.length; // Ensuring unique tags
+                    return (
+                        Array.isArray(tags) &&
+                        new Set(tags).size === tags.length
+                    ); // Ensuring unique tags
                 },
-                message: 'Tags must be unique',
+                message: "Tags must be unique",
             },
         },
         author: {
             type: mongoose.Schema.Types.ObjectId, // Reference to a User model
-            ref: 'User',
-            required: [true, 'Author is required'],
+            ref: "User",
+            required: [true, "Author is required"],
         },
         publishedAt: {
             type: Date,
@@ -36,4 +39,4 @@ const articleSchema = new mongoose.Schema(
     { timestamps: true }
 );
 
-module.exports = mongoose.model('Article', articleSchema);
+module.exports = mongoose.model("Article", articleSchema);
