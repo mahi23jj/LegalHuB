@@ -1,67 +1,54 @@
-name: "🐞 Bug Report"
-description: Report an issue or unexpected behavior
+name: Bug report 🐞
+description: File a bug report
 title: "[Bug]: "
-labels: [bug]
 body:
   - type: checkboxes
     id: existing-issue
     attributes:
-      label: "🔍 Is there an existing issue for this?"
-      description: Please check to see if your bug has already been reported.
+      label: Is there an existing issue for this?
+      description: Please search to see if an issue already exists for the bug you encountered.
       options:
-        - label: "I have searched the existing issues"
+        - label: I have searched the existing issues
           required: true
-
   - type: textarea
     id: what-happened
     attributes:
-      label: "🐛 Describe the bug"
-      description: Clearly describe the issue you are facing.
-      placeholder: Tell us what went wrong or what you're seeing.
+      label: Describe the bug
+      description: A concise description of what you are experiencing.
+      placeholder: Tell us what you see!
     validations:
       required: true
-
   - type: textarea
     id: expected-behaviour
     attributes:
-      label: "✅ Expected behavior"
-      description: What did you expect to happen instead?
-      placeholder: Describe the expected outcome or correct behavior.
+      label: Expected behavior
+      description: A clear and concise description of what you expected to happen.
     validations:
       required: true
-
   - type: textarea
     id: screenshots
     attributes:
-      label: "📸 Screenshots"
-      description: Add screenshots, logs, or videos to better explain the issue (if applicable).
-      placeholder: You can drag-and-drop images or paste links here.
-
+      label: Add ScreenShots
+      description: Add sufficient ScreenShots to explain your issue.
   - type: dropdown
     id: devices
     attributes:
-      label: "💻 What platform/device are you using?"
-      description: Select all platforms where you experienced this issue.
+      label: On which device are you experiencing this bug?
       multiple: true
       options:
         - Android
         - iPhone
         - Linux
-        - macOS
-        - Windows
         - Chrome
-
+        - Windows
   - type: checkboxes
     id: terms
     attributes:
-      label: "📋 Checklist"
-      description: Confirm the following:
+      label: Record
       options:
-        - label: "I have read the [Contributing Guidelines](../CONTRIBUTING.md)"
+        - label: "I have read the Contributing Guidelines"
           required: true
-        - label: "I'm a GSSoC'24 contributor"
-          required: true
-        - label: "I have starred this repository"
-          required: true
-        - label: "I have searched for existing issues and pull requests"
+        - label: "I'm a GSSOC'24 contributor"
+          required: False
+        - label: "I have starred the repository"
           required: true
