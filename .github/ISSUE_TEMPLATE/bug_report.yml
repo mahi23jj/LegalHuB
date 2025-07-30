@@ -31,19 +31,6 @@ body:
       required: true
 
   - type: textarea
-    id: steps
-    attributes:
-      label: Steps to reproduce
-      description: Detailed steps to reproduce the bug.
-      placeholder: |
-        1. Go to '...'
-        2. Click on '...'
-        3. Observe the issue
-      render: bash
-    validations:
-      required: true
-
-  - type: textarea
     id: screenshots
     attributes:
       label: Add ScreenShots
