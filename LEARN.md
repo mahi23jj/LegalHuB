@@ -1,220 +1,126 @@
-# 📘 Learn About LegalHuB
+# 📘 **Learn About LegalHuB**
+
 
 Welcome to **LegalHuB** — a web-based legal support platform designed to make legal information accessible, understandable, and actionable for everyone.
 
-This guide will help you understand **how LegalHuB works**, its **technical components**, and how you can contribute or expand it.
+
+This document serves as a **technical guide and developer onboarding reference**. Whether you're exploring the codebase or contributing to the project, this will help you understand how everything works under the hood.
+
 
 ---
+## 🧭 Table of Contents
 
-## 🎯 Project Overview
+
+- [🎯 What Is LegalHuB?](#-what-is-legalhub)
+- [🛠️ Tech Stack](#️-tech-stack)
+- [🧠 Core Functionality Breakdown](#-core-functionality-breakdown)
+  - [⚖️ Legal Dictionary (AI-powered)](#️-legal-dictionary-ai-powered)
+  - [📄 Legal Forms](#-legal-forms)
+  - [🧾 Legal Rights](#-legal-rights)
+  - [📚 Legal Articles & Guides](#-legal-articles--guides)
+  - [🔍 Smart Search](#-smart-search)
+- [🏗️ Project Structure (Monorepo)](#️-project-structure-monorepo)
+- [🔍 API & Controllers](#-api--controllers)
+  - [`/src/controllers/`](#srccontrollers)
+  - [`/src/models/`](#srcmodels)
+  - [`/src/routes/`](#srcroutes)
+  - [`/src/views/`](#srcviews-ejs-templates)
+- [⚙️ Environment Configuration](#️-environment-configuration)
+- [🚦 GitHub Actions (CI/CD)](#-github-actions-cicd)
+- [🙋 Contributing](#-contributing)
+- [🧠 Tips for New Contributors](#-tips-for-new-contributors)
+- [📬 Contact](#-contact)
+- [🙌 Thank You](#-thank-you)
+---
+
+
+## 🎯 What Is LegalHuB?
+
 
 **LegalHuB** empowers users to:
 
-- Understand complex legal terms using AI.
-- Download state-specific legal forms.
-- Learn about their rights (e.g., employment, fundamental).
-- Read legal guides and articles.
-- Search across laws, rights, and documents in one place.
+
+- Understand complex legal terms using AI
+- Download state-specific legal forms
+- Explore legal rights (fundamental, civil, employment)
+- Read accessible legal articles and guides
+- Perform smart searches across legal content
+
 
 ---
 
-## 🛠️ Tech Stack Overview
+
+## 🛠️ Tech Stack
+
 
 | Layer              | Technology                 |
-| ------------------ | -------------------------- |
+|--------------------|----------------------------|
 | **Backend**        | Node.js, Express.js        |
-| **Database**       | MongoDB (Free Tier)        |
-| **Templating**     | EJS (Embedded JS)          |
+| **Database**       | MongoDB (Free Tier/Atlas)  |
+| **Templating**     | EJS (Embedded JavaScript)  |
 | **AI Chatbot**     | Chatbase + OpenAI API      |
 | **Authentication** | Passport.js                |
-| **Search**         | Smart Search Functionality |
+| **Search**         | Custom Smart Search Engine |
+
 
 ---
 
-## 🧠 How the Platform Works
 
-### 1. **Legal Dictionary (AI-powered)**
+## 🧠 Core Functionality Breakdown
 
-- User enters a legal term.
-- Server sends the term to **OpenAI API** via backend.
-- Response is parsed and displayed using EJS.
 
-### 2. **Legal Forms**
+### 1. ⚖️ Legal Dictionary (AI-powered)
 
-- Forms are stored in MongoDB (with state/category).
-- Users can browse or filter by category.
-- Backend supports **downloading forms** or redirecting to official apply links.
 
-### 3. **Legal Rights**
+- Users search a legal term
+- The backend sends the term to the **OpenAI API**
+- Results are rendered via EJS templates
 
-- Fundamental and employment rights are stored in MongoDB.
-- Accessible via the `/rights` page.
-- Each right contains a title, description, category, and source link.
-
-### 4. **Legal Articles & Guides**
-
-- Articles are structured as Markdown or HTML content rendered through EJS.
-- Aimed at educating users in simple language.
-
-### 5. **Smart Search**
-
-- User types a query in the search bar.
-- Backend searches across:
-    - Dictionary terms
-    - Rights titles/descriptions
-    - Forms metadata
-- Results are merged and shown by relevance.
 
 ---
 
-## 🏗️ Monorepo Folder Structure
 
-```plaintext
-LegalHuB/
-├── __tests__/              # Unit and integration tests
-│   └── server.test.js
-│
-├── .github/                # GitHub Actions workflows
-│   └── workflows/
-│       └── integration.yml
-│
-├── init/                   # Seed scripts for rights & documents
-│   ├── documents.data.js
-│   ├── index.documents.js
-│   ├── index.rights.js
-│   └── rights.data.js
-│
-├── src/                    # Main application source
-│   ├── controllers/        # Business logic for each route
-│   ├── db/                 # MongoDB database connection
-│   ├── middlewares/        # Auth, error, upload middleware
-│   ├── models/             # Mongoose schemas
-│   ├── public/             # Static files (CSS, JS, images)
-│   ├── routes/             # Express.js route definitions
-│   ├── uploads/            # Uploaded files (PDFs etc.)
-│   ├── utils/              # Helpers: error handling, responses, Cloudinary
-│   ├── views/              # EJS templates (includes, layouts, pages)
-│   ├── app.js              # Express app config
-│   ├── constants.js        # Global constants
-│   ├── index.js            # Server entry point
-│   └── readme.md           # Dev-specific readme
-│
-├── .env.sample             # Example environment config
-├── .gitignore              # Git ignored files
-├── .prettierrc             # Prettier config
-├── .prettierignore
-├── CODE_OF_CONDUCT.md
-├── LICENSE
-├── package.json
-├── package-lock.json
-└── README.md               # Project overview and setup
-```
+### 2. 📄 Legal Forms
 
-## ⚙️ Core Components
 
-### 🔌 `controllers/`
+- Forms are stored in MongoDB and categorized
+- Users can browse by type or state
+- Backend allows **download** or **external redirection**
 
-Handles business logic for each module:
-
-- **`dictionary.controller.js`** – AI-based legal term explanation using OpenAI
-- **`document.controller.js`** – Upload, download, and view legal forms
-- **`rights.controller.js`** – CRUD operations for legal rights
-- **`article.controller.js`** – Legal content (guides, blogs, etc.)
-- **`search.controller.js`** – Smart unified search across modules
-- **`user.controller.js`** – Auth, profile management using Passport.js
-- **`healthCheck.js`** – Monitoring and uptime checking endpoint
 
 ---
 
-### 🧠 `models/`
 
-MongoDB schemas managed via Mongoose:
+### 3. 🧾 Legal Rights
 
-- `document.model.js`
-- `rights.model.js`
-- `article.model.js`
-- `user.model.js`
 
----
+- Rights include descriptions, categories, and source links
+- Available at the `/rights` route
 
-### 🌐 `routes/`
-
-Each controller is paired with a route file for clean API structure.
-
-**Example API Routes:**
-
-| Method | Endpoint            | Function           |
-| ------ | ------------------- | ------------------ |
-| GET    | `/api/rights`       | `getAllRights()`   |
-| POST   | `/api/documents`    | `uploadDocument()` |
-| GET    | `/api/search?q=...` | `smartSearch()`    |
 
 ---
 
-### 🧾 `views/`
 
-Built with EJS for dynamic templating.
+### 4. 📚 Legal Articles & Guides
 
-- **Layouts:**
-    - `layouts/boilerplate.ejs` – Base HTML structure
-- **Includes:**
-    - `includes/navbar.ejs`, `footer.ejs`, `flash.ejs`
-- **Pages:**
-    - `pages/documents.ejs`, `articles.ejs`, `rights.ejs`, `dictionary.ejs`
-- **User Auth:**
-    - `users/login.ejs`, `profile.ejs`, `updateUser.ejs`
+
+- Markdown or HTML content rendered via EJS
+- Written in simple, user-friendly language
+
 
 ---
 
-### 🧪 `__tests__/`
 
-Testing suite (e.g., using Jest or Supertest):
+### 5. 🔍 Smart Search
 
-- `server.test.js` – API-level tests
 
----
+- Unified endpoint `/api/search?q=term`
+- Searches across:
+  - Dictionary entries
+  - Legal rights
+  - Document metadata
+- Ranked and returned as structured JSON:
 
-### ⚙️ `middlewares/`
-
-- `auth.middleware.js` – Authentication via Passport.js
-- `multer.middleware.js` – Handles file uploads (PDFs/images)
-
----
-
-### ☁️ `utils/cloudinary.js`
-
-Handles all uploads to **Cloudinary**, including PDFs and images.
-
----
-
-### 🌱 `init/`
-
-Seeding scripts for initial data:
-
-- **Documents** – State-specific legal forms
-- **Rights** – Default rights (fundamental, employment, etc.)
-
----
-
-### 🧪 `.github/workflows/integration.yml`
-
-GitHub Actions CI/CD:
-
-- Runs test suites
-- Enforces code quality on PRs
-- Optional: Automates deployments
-
----
-
-## 🚀 Smart Search Engine
-
-The backend `/api/search?q=` route:
-
-- Supports **regex** or **full-text** search on:
-    - `dictionary`
-    - `rights`
-    - `documents`
-- Aggregates and returns ranked results:
 
 ```json
 {
@@ -223,53 +129,144 @@ The backend `/api/search?q=` route:
   "form_results": [...]
 }
 ```
+---
+## 🏗️ Project Structure (Monorepo)
+```plaintext
+LegalHuB/
+├── __tests__/              # Unit & integration tests
+├── .github/                # GitHub workflows & templates
+│   └── workflows/
+├── init/                   # Seed scripts (rights, documents)
+├── src/                    # Core backend app
+│   ├── controllers/        # Route logic & APIs
+│   ├── db/                 # MongoDB connection
+│   ├── middlewares/        # Auth, error, upload handlers
+│   ├── models/             # Mongoose schemas
+│   ├── routes/             # Express route definitions
+│   ├── utils/              # Cloudinary, error helpers, etc.
+│   ├── views/              # EJS templates
+│   ├── public/, uploads/   # Static & uploaded files
+│   ├── app.js              # Express app config
+│   ├── index.js            # Entry point
+│   ├── constants.js        # Global constants
+│   └── readme.md           # Dev-only usage guide
+├── .env.sample             # Sample environment variables
+├── package.json            # NPM config
+└── README.md               # Project overview
+```
+---
+## 🔍 API & Controllers
 
-## 🧑‍💻 Environment Setup
 
-1. Copy the example environment file:
+📂 `/src/controllers/`
+Handles backend logic for each feature:
+
+
+* `dictionary.controller.js` – AI-powered legal term explanations
+* `document.controller.js` – Upload/view/download forms
+* `rights.controller.js` – Read and manage legal rights
+* `article.controller.js` – Legal articles & blogs
+* `search.controller.js` – Smart search queries
+* `user.controller.js` – User auth/profile handling
+* `healthCheck.js` – Monitoring and uptime status
+---
+## 🗂 `/src/models/`
+Mongoose models for:
+* `document.model.js`
+* `rights.model.js`
+* `article.model.js`
+* `user.model.js`
+---
+## 🌐 `/src/routes/`
+Each route maps to a controller method.
+
+
+|Method |Endpoint   |Action |
+|-------|-----------|-------|
+|GET    |`/api/rights`  |Fetch all rights|
+|POST   |`/api/documents`   |Upload a document|
+|GET    |`/api/search?q=...`    |Smart search by query|
+---
+## 🧾 `/src/views/` (EJS templates)
+* Layouts: `layouts/boilerplate.ejs`
+* Includes: `navbar.ejs`, `footer.ejs`, `flash.ejs`
+* Pages: `documents.ejs`, `rights.ejs`, `dictionary.ejs`
+* User auth: `login.ejs`, `profile.ejs`, `updateUser.ejs`
+---
+## ⚙️ Environment Configuration
+1. Copy the sample environment file:
+
 
 ```bash
 cp .env.sample .env
 ```
 
-2. Update the .env file with your configuration:
 
-```bash
-# Server Configuration
+2. Fill in required fields:
+
+
+```env
+# Server
 PORT=8000
-SESSION_SECRET=mysecrectkey
+SESSION_SECRET=mysecretkey
 
-# CORS Configuration
+
+# MongoDB
+DB_URL=mongodb+srv://<username>:<password>@cluster.mongodb.net
+
+
+# CORS
 CORS_ORIGIN=*
-# CORS_ORIGIN=http://localhost:4000
 
-#DB_URL=
-DB_URL=mongodb+srv://<username>:<password>@cluster0.weuhr.mongodb.net
-# Uncomment if needed for frontend security
 
-DB_URL=
+# AI APIs
+MISTRAL_API_KEY=
+ADMIN_SECRET_KEY=mysupersecretkey
+
 
 NODE_ENV=development
-
-MISTRAL_API_KEY=
-
-ADMIN_SECRECT_KEY=mysupersecretkey
 ```
+## 🚦 GitHub Actions (CI/CD)
+Workflow file: `.github/workflows/integration.yml`
 
-## 🙋 Contribute
 
-We welcome contributions!
+* Runs automated tests on PRs
+* Enforces code quality
+* Can be extended for deployments
+---
+## 🙋 Contributing
+We welcome your contributions!
+Start by reading:
 
-- Read the [CONTRIBUTING.md](CONTRIBUTING.md)
-- Open issues, suggest features, or submit pull requests
-- Follow our [CODE_OF_CONDUCT.md](CODE_OF_CONDUCT.md)
 
-## 📫 Questions or Suggestions?
+* [CONTRIBUTING.md](CONTRIBUTING.md)
+* [CODE_OF_CONDUCT.md](CODE_OF_CONDUCT.md)
 
-- 📧 Email: [dipexplorerid23@gmail.com](mailto:dipexplorerid23@gmail.com)
-- 🐛 Open an Issue: [GitHub Issues](https://github.com/YOUR-USERNAME/LegalHuB/issues) <!-- Replace with your actual repo URL -->
 
-## 🫶 Thank You
+Ways to contribute:
 
-Thanks for exploring **LegalHuB**!  
-Let’s build a legally aware and accessible web — together.
+
+- Fix typos, links, or formatting in this guide ✅
+- Suggest improvements or beginner tips
+- Submit PRs for features or bugs
+---
+## 🧠 Tips for New Contributors
+* Use [VS Code's Markdown Preview](https://code.visualstudio.com/) to test changes
+* Follow the repo’s Prettier config
+* Reference [README.md](README.md) for user-facing info
+* Reach out via GitHub Issues if stuck!
+---
+## 📬 Contact
+📧 Email: dipexplorerid23@gmail.com
+
+
+🐛 Open an Issue: [GitHub Issues](https://github.com/dipexplorer/LegalHuB/issues)
+
+
+---
+## 🙌 Thank You
+Thanks for contributing to **LegalHuB**!
+
+
+Let’s build a more legally literate web — together.
+
