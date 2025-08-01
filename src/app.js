@@ -23,6 +23,8 @@ const User = require("./models/user.model.js");
 // Import Utility Functions
 const apiError = require("./utils/apiError.js");
 const apiResponse = require("./utils/apiResponse.js");
+// Rate Limiter
+const apiLimiter = require("./middlewares/rateLimiter.middleware.js");
 
 // CORS Configuration
 app.use(
@@ -100,6 +102,10 @@ const lawyerRoutes = require("./routes/lawyer.routes.js");
 // });
 
 // API Routes
+
+// Apply to all /api routes
+app.use("/api", apiLimiter);
+
 app.use("/api/healthcheck", healthCheckRouter);
 app.use("/api/dictionary", dictionaryRoutes);
 app.use("/api/rights", rightsRoutes);
@@ -114,7 +120,7 @@ app.get("/api/search", smartSearch);
 
 // Handle 404 Errors
 app.all("*", (req, res) => {
-    return res.status(404).json(new apiResponse(404, null, "Page not found"));
+    res.status(404).render("pages/nopage");
 });
 
 // Global Error Handler
