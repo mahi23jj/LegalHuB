@@ -433,22 +433,22 @@
                 </button>
             </div>
             
-            <form method="GET" action="" class="filter-form" role="search">
+            <form method="GET" action="" class="filter-form" role="search" onsubmit="event.preventDefault(); applyFilters();">
                 <div class="filter-controls" role="group" aria-labelledby="filter-title">
                     <!-- Search Input -->
                     <div class="filter-group">
                         <label for="search" class="filter-label">Search Documents</label>
                         <div class="search-input-container">
-                            <i class="fas fa-search search-icon" aria-hidden="true"></i>
                             <input 
-                                type="text" 
-                                id="search" 
-                                name="search" 
-                                class="filter-input" 
-                                placeholder="Search by title or description..."
-                                value="<%= currentFilters.search %>"
-                                autocomplete="off"
+                            type="text" 
+                            id="search" 
+                            name="search" 
+                            class="filter-input" 
+                            placeholder="Search by title or description..."
+                            value="<%= currentFilters.search %>"
+                            autocomplete="off"
                             >
+                            <i class="fas fa-search search-icon" aria-hidden="true" onclick="applyFilters()" style="cursor: pointer;"></i>
                         </div>
                     </div>
 
@@ -646,7 +646,7 @@
     document.addEventListener('DOMContentLoaded', function() {
         const searchInput = document.getElementById('search');
         if (searchInput) {
-            searchInput.addEventListener('input', handleSearchInput);
+            // searchInput.addEventListener('input', handleSearchInput);
             
             // Add focus/blur effects
             searchInput.addEventListener('focus', function() {
