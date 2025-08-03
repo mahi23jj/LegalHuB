@@ -2,6 +2,7 @@ const Document = require("../models/document.model.js");
 const asyncHandler = require("../utils/asyncHandler.js");
 const ApiError = require("../utils/apiError.js");
 const ApiResponse = require("../utils/apiResponse.js");
+const indianStates = require("../utils/indianStates.js")
 
 // ✅ Create Document
 const createDocument = asyncHandler(async (req, res) => {
@@ -29,12 +30,22 @@ const createDocument = asyncHandler(async (req, res) => {
         throw new ApiError(400, "All fields are required");
     }
 
+    // Check if state is a valid Indian state
+    const normalizedState = state.trim();
+    const matchedState = indianStates.find(
+    validState => validState.toLowerCase() === normalizedState.toLowerCase()
+    );
+
+    if (!matchedState) {
+    throw new ApiError(400, "Not a valid Indian state");
+    }
+
     const document = await Document.create({
         title,
         description,
         downloadLink,
         applyLink,
-        state,
+        state : normalizedState,
         department,
         guidelines,
         requiredDocuments,
@@ -63,8 +74,14 @@ const getAllDocuments = asyncHandler(async (req, res) => {
     
     // Add state filter
     if (state && state !== 'all') {
-        filter.state = state;
+        const matchedState = indianStates.find(
+            s => s.toLowerCase() === state.trim().toLowerCase()
+        );
+        if (matchedState) {
+            filter.state = matchedState;
+        }
     }
+
     
     // Add department filter
     if (department && department !== 'all') {
@@ -90,13 +107,16 @@ const getAllDocuments = asyncHandler(async (req, res) => {
     }
     
     // Calculate pagination
-    const skip = (parseInt(page) - 1) * parseInt(limit);
+    const safePage = Number.isNaN(parseInt(page)) ? 1 : parseInt(page);
+    const safeLimit = Number.isNaN(parseInt(limit)) ? 50 : parseInt(limit);
+    const skip = (safePage - 1) * safeLimit;
+
     
     // Fetch filtered and sorted documents with pagination
     const documents = await Document.find(filter)
         .sort(sort)
         .skip(skip)
-        .limit(parseInt(limit));
+        .limit(safeLimit);
     
     // Get total count for pagination
     const totalDocuments = await Document.countDocuments(filter);
@@ -165,16 +185,31 @@ const updateDocument = asyncHandler(async (req, res) => {
     if (!document) {
         throw new ApiError(404, "Document not found");
     }
+    
+    
+    // If state is provided, validate it
+    let validatedState = state;
+    if (state) {
+        const normalizedState = state.trim();
+        const matchedState = indianStates.find(
+            validState => validState.toLowerCase() === normalizedState.toLowerCase()
+        );
+
+        if (!matchedState) {
+            throw new ApiError(400, "Not a valid Indian state");
+        }
+
+        validatedState = matchedState; // Use the matched one for consistency
+    }
 
     document.title = title || document.title;
     document.description = description || document.description;
     document.downloadLink = downloadLink || document.downloadLink;
     document.applyLink = applyLink || document.applyLink;
-    document.state = state || document.state;
+    document.state = validatedState || document.state;
     document.department = department || document.department;
     document.guidelines = guidelines || document.guidelines;
-    document.requiredDocuments =
-        requiredDocuments || document.requiredDocuments;
+    document.requiredDocuments = requiredDocuments || document.requiredDocuments;
 
     await document.save();
 
