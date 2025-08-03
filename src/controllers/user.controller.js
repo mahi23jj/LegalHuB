@@ -49,20 +49,14 @@ const registerUser = asyncHandler(async (req, res, next) => {
                 return res.redirect("/login"); // Return here to prevent further execution
             }
 
-            if (req.accepts("json")) {
-                return res
-                    .status(201)
-                    .json(
-                        new apiResponse(
-                            201,
-                            registeredUser,
-                            "User registered successfully"
-                        )
-                    );
+            if (req.accepts("html")) {
+                req.flash("success", "Welcome! Account created successfully.");
+                return res.redirect("/");
+            }else{
+                return res.status(201).json(
+                    new apiResponse(201, registeredUser, "User registered successfully")
+                );
             }
-
-            req.flash("success", "Welcome! Account created successfully.");
-            return res.redirect("/");
         });
     } catch (err) {
         if (req.accepts("json")) {
