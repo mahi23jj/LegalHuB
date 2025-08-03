@@ -15,30 +15,34 @@ const renderDictionary = (req, res) => {
 };
 
 const renderDocument = asyncHandler(async (req, res) => {
-    // Extract filter parameters from query string
-    const { search, state, department, sortBy } = req.query;
-    
+    // Extract filter parameters and pagination from query string
+    const {
+        search,
+        state,
+        department,
+        sortBy,
+        page = 1,
+        limit = 6  // Feel free to adjust
+    } = req.query;
+
     // Build filter object
     let filter = {};
-    
-    // Add text search filter (case-insensitive search across title and description)
+
     if (search && search.trim()) {
         filter.$or = [
             { title: { $regex: search.trim(), $options: 'i' } },
             { description: { $regex: search.trim(), $options: 'i' } }
         ];
     }
-    
-    // Add state filter
+
     if (state && state !== 'all') {
         filter.state = state;
     }
-    
-    // Add department filter
+
     if (department && department !== 'all') {
         filter.department = department;
     }
-    
+
     // Build sort object
     let sort = {};
     switch (sortBy) {
@@ -56,15 +60,27 @@ const renderDocument = asyncHandler(async (req, res) => {
             sort = { createdAt: -1 };
             break;
     }
-    
-    // Fetch filtered and sorted documents
-    const documents = await Document.find(filter).sort(sort);
-    
-    // Get unique states and departments for filter options
+
+    // Pagination logic
+    const currentPage = Math.max(1, parseInt(page));
+    const perPage = Math.max(1, parseInt(limit));
+    const skip = (currentPage - 1) * perPage;
+
+    const [documents, totalDocuments] = await Promise.all([
+        Document.find(filter)
+            .sort(sort)
+            .skip(skip)
+            .limit(perPage),
+        Document.countDocuments(filter)
+    ]);
+
+    const totalPages = Math.ceil(totalDocuments / perPage);
+
+    // Get unique states and departments
     const allStates = await Document.distinct('state');
     const allDepartments = await Document.distinct('department');
-    
-    // Prepare filter options
+
+    // Filter and sort options for the frontend
     const filterOptions = {
         states: allStates.sort(),
         departments: allDepartments.sort(),
@@ -75,8 +91,8 @@ const renderDocument = asyncHandler(async (req, res) => {
             { value: 'alphabetical', label: 'A-Z' }
         ]
     };
-    
-    // Current filter state for maintaining form values
+
+    // Current filters for form pre-fill
     const currentFilters = {
         search: search || '',
         state: state || 'all',
@@ -84,12 +100,15 @@ const renderDocument = asyncHandler(async (req, res) => {
         sortBy: sortBy || 'newest'
     };
 
-    // ✅ Render with documents, filter options, and current filters
-    res.render("pages/documents", { 
-        documents, 
-        filterOptions, 
+    res.render("pages/documents", {
+        documents,
+        filterOptions,
         currentFilters,
-        resultsCount: documents.length
+        resultsCount: documents.length,
+        currentPage,
+        totalPages,
+        totalDocuments,
+        request: req
     });
 });
 

@@ -59,7 +59,7 @@ const createDocument = asyncHandler(async (req, res) => {
 // ✅ Get All Documents with filtering support
 const getAllDocuments = asyncHandler(async (req, res) => {
     // Extract filter parameters from query string
-    const { search, state, department, sortBy, page = 1, limit = 50 } = req.query;
+    const { search, state, department, sortBy, page = 1, limit = 10 } = req.query;
     
     // Build filter object
     let filter = {};
@@ -108,7 +108,7 @@ const getAllDocuments = asyncHandler(async (req, res) => {
     
     // Calculate pagination
     const safePage = Number.isNaN(parseInt(page)) ? 1 : parseInt(page);
-    const safeLimit = Number.isNaN(parseInt(limit)) ? 50 : parseInt(limit);
+    const safeLimit = Number.isNaN(parseInt(limit)) ? 10 : parseInt(limit);
     const skip = (safePage - 1) * safeLimit;
 
     
