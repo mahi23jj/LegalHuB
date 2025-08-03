@@ -10,30 +10,33 @@ const registerUser = asyncHandler(async (req, res, next) => {
 
     if (!username || !email || !password || !confirmPassword) {
         const errorMsg = "All fields are required";
-        if (req.accepts("json")) {
+        if (req.accepts("html")) {
+            req.flash("error", errorMsg);
+            return res.redirect("/login");
+        }else{
             throw new apiError(400, errorMsg);
         }
-        req.flash("error", errorMsg);
-        return res.redirect("/login");
     }
 
     if (password !== confirmPassword) {
         const errorMsg = "Passwords do not match";
-        if (req.accepts("json")) {
+        if (req.accepts("html")) {
+            req.flash("error", errorMsg);
+            return res.redirect("/login");
+        }else{
             throw new apiError(400, errorMsg);
         }
-        req.flash("error", errorMsg);
-        return res.redirect("/login");
     }
 
     const existingUser = await User.findOne({ email });
     if (existingUser) {
         const errorMsg = "User already exists";
-        if (req.accepts("json")) {
+        if (req.accepts("html")) {
+            req.flash("error", errorMsg);
+            return res.redirect("/login");
+        }else{
             throw new apiError(400, errorMsg);
         }
-        req.flash("error", errorMsg);
-        return res.redirect("/login");
     }
 
     try {
@@ -42,11 +45,12 @@ const registerUser = asyncHandler(async (req, res, next) => {
         req.login(newUser, (err) => {
             if (err) {
                 const errorMsg = "Login failed after registration";
-                if (req.accepts("json")) {
+                if (req.accepts("html")) {
+                    req.flash("error", errorMsg);
+                    return res.redirect("/login");
+                }else{
                     throw new apiError(500, errorMsg);
                 }
-                req.flash("error", errorMsg);
-                return res.redirect("/login"); // Return here to prevent further execution
             }
 
             if (req.accepts("html")) {
@@ -59,11 +63,12 @@ const registerUser = asyncHandler(async (req, res, next) => {
             }
         });
     } catch (err) {
-        if (req.accepts("json")) {
+        if (req.accepts("html")) {
+            req.flash("error", err.message);
+            return res.redirect("/login");
+        }else{
             throw new apiError(500, err.message);
         }
-        req.flash("error", err.message);
-        return res.redirect("/login");
     }
 });
 
