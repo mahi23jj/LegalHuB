@@ -74,7 +74,7 @@ const registerUser = asyncHandler(async (req, res, next) => {
 
 // 📌 Login User
 const loginUser = asyncHandler(async (req, res, next) => {
-    console.log("login");
+    // console.log("login");
     req.flash("success", "Logged in successfully!");
     return res.redirect("/"); // ✅ Redirect after login
 });
