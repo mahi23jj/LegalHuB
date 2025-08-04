@@ -76,7 +76,7 @@ nav ul li a:hover {
 
 /* ✅ Hero Section */
 .hero {
-    padding: 100px 20px;
+    padding: 50px 20px;
     background: url("/pic") center/cover no-repeat;
     background: linear-gradient(135deg, #1a1a2e, #16213e);
     color: #f4f4f9;
