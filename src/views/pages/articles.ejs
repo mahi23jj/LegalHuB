@@ -153,7 +153,12 @@
                 <div class="meta-info">
                     By <%= article.author?.name || "Unknown Author" %> · <%= article.createdAt.toDateString() %>
                 </div>
-                <p><%= article.introduction.replace(/<[^>]+>/g, '').substring(0, 150) %>...</p>
+                <p>
+                    <%= article.introduction 
+                        ? article.introduction.replace(/<[^>]+>/g, '').substring(0, 150) 
+                        : "No introduction available." 
+                    %>...
+                </p>
                 <a href="/api/articles/<%= article._id %>" class="read-more">Read More →</a>
             </div>
         <% }) %>
