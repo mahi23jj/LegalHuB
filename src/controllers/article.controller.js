@@ -107,6 +107,8 @@ const cleanHtml = (html) =>
         delete attribs.style; // ✅ Remove all inline styles
         return { tagName, attribs };
       },
+      'div': 'p', // Replace <div> with <p> to maintain spacing
+      'span': 'p' // Replace <span> with <p> if outside formatting
     },
     exclusiveFilter: frame =>
       // ✅ Remove empty tags with no visible content
@@ -150,14 +152,24 @@ const getArticleById = asyncHandler(async (req, res) => {
 
 // ✅ Update Article (Only Author or Admin Can Update)
 const updateArticle = asyncHandler(async (req, res) => {
-    const { title, content, tags } = req.body;
+    let {
+        title,
+        introduction,
+        conclusion,
+        sectionSubheadings,
+        sectionContents,
+        sectionListTypes,
+        sectionListItems,
+        tags,
+    } = req.body;
+
     const article = await Article.findById(req.params.id);
 
     if (!article) {
         throw new ApiError(404, "Article not found");
     }
 
-    // Check if the logged-in user is the author or an admin
+    // Authorization check
     const isAdmin = req.user?.role === "admin";
     if (article.author.toString() !== req.user?._id.toString() && !isAdmin) {
         throw new ApiError(
@@ -166,21 +178,63 @@ const updateArticle = asyncHandler(async (req, res) => {
         );
     }
 
+    // Normalize section-related fields
+    const toArray = (val) => Array.isArray(val) ? val : (val ? [val] : []);
+    sectionSubheadings = toArray(sectionSubheadings);
+    sectionContents = toArray(sectionContents);
+    sectionListTypes = toArray(sectionListTypes);
+    sectionListItems = toArray(sectionListItems);
+
+    // Validate at least one section has content
+    if (
+        sectionContents.length === 0 ||
+        sectionContents.every(content => !content.trim())
+    ) {
+        throw new ApiError(400, "At least one section with content is required");
+    }
+
+    // Build updated sections
+    const updatedSections = sectionContents.map((content, index) => {
+        const section = {
+            subheading: sectionSubheadings[index] || '',
+            content: content.trim(),
+        };
+
+        const listType = sectionListTypes[index];
+        const rawListItems = sectionListItems[index];
+
+        if (listType && rawListItems) {
+            const items = rawListItems
+                .split('\n')
+                .map(item => item.trim())
+                .filter(item => item);
+
+            if (items.length > 0) {
+                section.list = {
+                    type: listType,
+                    items,
+                };
+            }
+        }
+
+        return section;
+    });
+
+    // Apply updates
     article.title = title?.trim() || article.title;
-    article.content = content?.trim() || article.content;
-    article.tags = tags
-        ? tags.split(",").map((tag) => tag.trim())
-        : article.tags;
+    article.introduction = introduction?.trim() || article.introduction;
+    article.conclusion = conclusion?.trim() || article.conclusion;
+    article.sections = updatedSections;
+    article.tags = tags ? tags.split(',').map(tag => tag.trim()) : article.tags;
 
     await article.save();
+
     if (req.accepts("html")) {
-        return res.redirect(`/articles/${article._id}`);
+        return res.redirect(`/api/articles/${article._id}`);
     } else {
         return res
             .status(200)
-            .json(
-                new ApiResponse(200, article, "Article updated successfully")
-            );
+            .json(new ApiResponse(200, article, "Article updated successfully"));
     }
 });
 
