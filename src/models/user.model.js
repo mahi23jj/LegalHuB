@@ -35,7 +35,9 @@ const userSchema = new Schema({
         type: Number, // ✅ Lawyer ke experience ko handle karega
         default: 0,
         min: 0,
-    }
+    },
+    resetToken: String,
+    resetTokenExpires: Date,
 });
 
 userSchema.plugin(passportLocalMongoose);
