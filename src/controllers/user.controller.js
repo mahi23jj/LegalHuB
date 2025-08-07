@@ -62,7 +62,7 @@ const registerUser = asyncHandler(async (req, res) => {
     try {
         const newUser = new User({ username, email });
         const registeredUser = await User.register(newUser, password);
-        req.login(newUser, (err) => {
+        req.login(registeredUser, (err) => {
             if (err) {
                 const errorMsg = "Login failed after registration";
                 if (req.accepts("html")) {
@@ -127,7 +127,7 @@ const getUserProfile = asyncHandler(async (req, res) => {
     }
     const user = await User.findById(req.user._id).select("-password");
     if (!user) {
-        res.redirect("/login");
+        return res.redirect("/login");
     }
 
     if (req.accepts("html")) {
@@ -167,7 +167,7 @@ const updateUser = asyncHandler(async (req, res) => {
     const user = await User.findById(req.user._id);
 
     if (!user) {
-        return next(new apiError(404, "User not found"));
+        return res.redirect("/login");
     }
 
     user.username = username || user.username;
@@ -204,39 +204,50 @@ const deleteUser = asyncHandler(async (req, res) => {
     }
 });
 
-//Controllers to reset password
-const requestPasswordReset = async (req, res) => {
+// Request password reset
+const requestPasswordReset = asyncHandler(async (req, res) => {
   const { email } = req.body;
-    console.log("saving tokens")
-const user = await User.findOne({ email });
-if (!user) {
-  return res.render("pages/forgot-password", { message: "User doesnt exist" });
-}
 
+  if (!email) {
+    return res.status(400).render("pages/forgot-password", {
+      message: "Email is required."
+    });
+  }
 
-  const token = crypto.randomBytes(32).toString('hex');
+  const user = await User.findOne({ email });
+
+  // Always return generic message to prevent email enumeration
+  const genericMsg = "If the email is valid, a reset link has been sent.";
+
+  if (!user) {
+    return res.render("pages/forgot-password", { message: genericMsg });
+  }
+
+  // Generate reset token and expiry
+  const token = crypto.randomBytes(32).toString("hex");
   user.resetToken = token;
-  user.resetTokenExpires = Date.now() + 30 * 60 * 1000; // 30 min
+  user.resetTokenExpires = Date.now() + 30 * 60 * 1000; // 30 mins
   await user.save();
-    console.log(user.resetToken)
-  const resetLink = `http://192.168.100.4:8000/api/users/reset-password/${token}`;
+
+  // Use req.headers.host or env for dynamic domain
+  const resetLink = `http://${req.headers.host}/api/users/reset-password/${token}`;
 
   const mailOptions = {
-    from: process.env.EMAIL_USER,
+    from: `"Support Team" <${process.env.EMAIL_USER}>`,
     to: user.email,
-    subject: 'Password Reset',
-    html: `<p>Click <a href="${resetLink}">here</a> to reset your password. This link expires in 30 minutes.</p>`
+    subject: "Password Reset",
+    html: `
+      <p>You requested a password reset.</p>
+      <p>Click <a href="${resetLink}">here</a> to reset your password.</p>
+      <p>This link expires in 30 minutes.</p>
+    `
   };
 
-  try {
-    await transporter.sendMail(mailOptions);
-  res.render("pages/forgot-password", { message: "If the email is valid, a reset link has been sent." });
-
-  } catch (err) {
-    console.error(err);
-    res.status(500).send("Failed to send email.");
-  }
-};
+  await transporter.sendMail(mailOptions);
+  
+  req.flash("success", "Password reset link sent to your email.");
+  return res.render("pages/forgot-password", { message: genericMsg });
+});
 
 // 🔐 Render Reset Password Page
 const renderResetPasswordPage = async (req, res) => {
@@ -255,31 +266,43 @@ const renderResetPasswordPage = async (req, res) => {
 };
 
 // 🔐 Reset Password Handler
-const resetPassword = async (req, res) => {
+const resetPassword = asyncHandler(async (req, res) => {
   const { token, password, confirmPassword } = req.body;
-  console.log(password, confirmPassword);
-  console.log("Resetting password for token:", token);
 
+  // Check if passwords match
   if (password !== confirmPassword) {
-    return res.send("Passwords do not match.");
+    req.flash("error", "Passwords do not match.");
+    return res.redirect(`/api/users/reset-password/${token}`);
   }
 
+  // Validate password strength
+  const result = validatePassword(password);
+  if (result.errors.length > 0) {
+    req.flash("error", result.errors.join(" "));
+    return res.redirect(`/api/users/reset-password/${token}`);
+  }
+
+  // Find user with token
   const user = await User.findOne({
     resetToken: token,
-    resetTokenExpires: { $gt: Date.now() }
+    resetTokenExpires: { $gt: Date.now() },
   });
-  console.log("User found:", user);
 
   if (!user) {
-    return res.send("Reset token is invalid or expired.");
+    req.flash("error", "Reset token is invalid or expired.");
+    return res.redirect("/forgot-password");
   }
+
+  // Update password
   await user.setPassword(password);
   user.resetToken = undefined;
   user.resetTokenExpires = undefined;
   await user.save();
 
-  res.render("users/login");
-};
+  req.flash("success", "Password reset successfully. Please log in.");
+  return res.redirect("/login");
+});
+
 
 module.exports = {
     registerUser,
