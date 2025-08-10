@@ -9,7 +9,7 @@ const {
     deleteUser,
     requestPasswordReset,
     renderResetPasswordPage,
-    resetPassword
+    resetPassword,
 } = require("../controllers/user.controller.js");
 const {
     isLoggedIn,
@@ -49,17 +49,16 @@ router.route("/delete").delete(isLoggedIn, deleteUser);
 // ---------------------------
 
 // Request password reset (email form submission)
-router.post('/request-reset', requestPasswordReset);
+router.post("/request-reset", requestPasswordReset);
 
 // Reset password form (via token in URL)
-router.get('/reset-password/:token', renderResetPasswordPage);
+router.get("/reset-password/:token", renderResetPasswordPage);
 
 // Submit new password (after user enters new password)
-router.post('/reset-password', resetPassword);
+router.post("/reset-password", resetPassword);
 
-router.get('/forgot-password', (req, res) => {
-  res.render('pages/forgot-password');
+router.get("/forgot-password", (req, res) => {
+    res.render("pages/forgot-password");
 });
-
 
 module.exports = router;

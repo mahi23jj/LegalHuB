@@ -3,20 +3,19 @@ const asyncHandler = require("../utils/asyncHandler.js");
 const apiResponse = require("../utils/apiResponse.js");
 const apiError = require("../utils/apiError.js");
 const passport = require("passport");
-const crypto = require('crypto');
-const bcrypt = require('bcrypt');
-const nodemailer = require('nodemailer');
+const crypto = require("crypto");
+const bcrypt = require("bcrypt");
+const nodemailer = require("nodemailer");
 const validatePassword = require("../validators/passwordValidator.js");
-
 
 // 📌 Nodemailer setup
 
 const transporter = nodemailer.createTransport({
-  service: 'gmail',
-  auth: {
-    user: process.env.EMAIL_USER,      // Add in your .env
-    pass: process.env.EMAIL_PASS
-  }
+    service: "gmail",
+    auth: {
+        user: process.env.EMAIL_USER, // Add in your .env
+        pass: process.env.EMAIL_PASS,
+    },
 });
 // 📌 Register User
 const registerUser = asyncHandler(async (req, res) => {
@@ -27,23 +26,25 @@ const registerUser = asyncHandler(async (req, res) => {
         if (req.accepts("html")) {
             req.flash("error", errorMsg);
             return res.redirect("/login");
-        }else{
+        } else {
             throw new apiError(400, errorMsg);
         }
     }
 
-     // Validate password strength
+    // Validate password strength
     const result = validatePassword(password);
     if (result.errors.length > 0) {
-    return res.status(400).json({ errors: result.errors, strength: result.strength });
-  }
+        return res
+            .status(400)
+            .json({ errors: result.errors, strength: result.strength });
+    }
 
     if (password !== confirmPassword) {
         const errorMsg = "Passwords do not match";
         if (req.accepts("html")) {
             req.flash("error", errorMsg);
             return res.redirect("/login");
-        }else{
+        } else {
             throw new apiError(400, errorMsg);
         }
     }
@@ -54,7 +55,7 @@ const registerUser = asyncHandler(async (req, res) => {
         if (req.accepts("html")) {
             req.flash("error", errorMsg);
             return res.redirect("/login");
-        }else{
+        } else {
             throw new apiError(400, errorMsg);
         }
     }
@@ -68,7 +69,7 @@ const registerUser = asyncHandler(async (req, res) => {
                 if (req.accepts("html")) {
                     req.flash("error", errorMsg);
                     return res.redirect("/login");
-                }else{
+                } else {
                     throw new apiError(500, errorMsg);
                 }
             }
@@ -76,17 +77,23 @@ const registerUser = asyncHandler(async (req, res) => {
             if (req.accepts("html")) {
                 req.flash("success", "Welcome! Account created successfully.");
                 return res.redirect("/");
-            }else{
-                return res.status(201).json(
-                    new apiResponse(201, registeredUser, "User registered successfully")
-                );
+            } else {
+                return res
+                    .status(201)
+                    .json(
+                        new apiResponse(
+                            201,
+                            registeredUser,
+                            "User registered successfully"
+                        )
+                    );
             }
         });
     } catch (err) {
         if (req.accepts("html")) {
             req.flash("error", err.message);
             return res.redirect("/login");
-        }else{
+        } else {
             throw new apiError(500, err.message);
         }
     }
@@ -206,103 +213,102 @@ const deleteUser = asyncHandler(async (req, res) => {
 
 // Request password reset
 const requestPasswordReset = asyncHandler(async (req, res) => {
-  const { email } = req.body;
+    const { email } = req.body;
 
-  if (!email) {
-    return res.status(400).render("pages/forgot-password", {
-      message: "Email is required."
-    });
-  }
+    if (!email) {
+        return res.status(400).render("pages/forgot-password", {
+            message: "Email is required.",
+        });
+    }
 
-  const user = await User.findOne({ email });
+    const user = await User.findOne({ email });
 
-  // Always return generic message to prevent email enumeration
-  const genericMsg = "If the email is valid, a reset link has been sent.";
+    // Always return generic message to prevent email enumeration
+    const genericMsg = "If the email is valid, a reset link has been sent.";
 
-  if (!user) {
-    return res.render("pages/forgot-password", { message: genericMsg });
-  }
+    if (!user) {
+        return res.render("pages/forgot-password", { message: genericMsg });
+    }
 
-  // Generate reset token and expiry
-  const token = crypto.randomBytes(32).toString("hex");
-  user.resetToken = token;
-  user.resetTokenExpires = Date.now() + 30 * 60 * 1000; // 30 mins
-  await user.save();
+    // Generate reset token and expiry
+    const token = crypto.randomBytes(32).toString("hex");
+    user.resetToken = token;
+    user.resetTokenExpires = Date.now() + 30 * 60 * 1000; // 30 mins
+    await user.save();
 
-  // Use req.headers.host or env for dynamic domain
-  const resetLink = `http://${req.headers.host}/api/users/reset-password/${token}`;
+    // Use req.headers.host or env for dynamic domain
+    const resetLink = `http://${req.headers.host}/api/users/reset-password/${token}`;
 
-  const mailOptions = {
-    from: `"Support Team" <${process.env.EMAIL_USER}>`,
-    to: user.email,
-    subject: "Password Reset",
-    html: `
+    const mailOptions = {
+        from: `"Support Team" <${process.env.EMAIL_USER}>`,
+        to: user.email,
+        subject: "Password Reset",
+        html: `
       <p>You requested a password reset.</p>
       <p>Click <a href="${resetLink}">here</a> to reset your password.</p>
       <p>This link expires in 30 minutes.</p>
-    `
-  };
+    `,
+    };
 
-  await transporter.sendMail(mailOptions);
-  
-  req.flash("success", "Password reset link sent to your email.");
-  return res.render("pages/forgot-password", { message: genericMsg });
+    await transporter.sendMail(mailOptions);
+
+    req.flash("success", "Password reset link sent to your email.");
+    return res.render("pages/forgot-password", { message: genericMsg });
 });
 
 // 🔐 Render Reset Password Page
 const renderResetPasswordPage = async (req, res) => {
-  const { token } = req.params;
+    const { token } = req.params;
 
-  const user = await User.findOne({
-    resetToken: token,
-    resetTokenExpires: { $gt: Date.now() }
-  });
+    const user = await User.findOne({
+        resetToken: token,
+        resetTokenExpires: { $gt: Date.now() },
+    });
 
-  if (!user) {
-    return res.send("Reset link is invalid or expired.");
-  }
+    if (!user) {
+        return res.send("Reset link is invalid or expired.");
+    }
 
-  res.render('pages/reset-password', { token });
+    res.render("pages/reset-password", { token });
 };
 
 // 🔐 Reset Password Handler
 const resetPassword = asyncHandler(async (req, res) => {
-  const { token, password, confirmPassword } = req.body;
+    const { token, password, confirmPassword } = req.body;
 
-  // Check if passwords match
-  if (password !== confirmPassword) {
-    req.flash("error", "Passwords do not match.");
-    return res.redirect(`/api/users/reset-password/${token}`);
-  }
+    // Check if passwords match
+    if (password !== confirmPassword) {
+        req.flash("error", "Passwords do not match.");
+        return res.redirect(`/api/users/reset-password/${token}`);
+    }
 
-  // Validate password strength
-  const result = validatePassword(password);
-  if (result.errors.length > 0) {
-    req.flash("error", result.errors.join(" "));
-    return res.redirect(`/api/users/reset-password/${token}`);
-  }
+    // Validate password strength
+    const result = validatePassword(password);
+    if (result.errors.length > 0) {
+        req.flash("error", result.errors.join(" "));
+        return res.redirect(`/api/users/reset-password/${token}`);
+    }
 
-  // Find user with token
-  const user = await User.findOne({
-    resetToken: token,
-    resetTokenExpires: { $gt: Date.now() },
-  });
+    // Find user with token
+    const user = await User.findOne({
+        resetToken: token,
+        resetTokenExpires: { $gt: Date.now() },
+    });
 
-  if (!user) {
-    req.flash("error", "Reset token is invalid or expired.");
-    return res.redirect("/forgot-password");
-  }
+    if (!user) {
+        req.flash("error", "Reset token is invalid or expired.");
+        return res.redirect("/forgot-password");
+    }
 
-  // Update password
-  await user.setPassword(password);
-  user.resetToken = undefined;
-  user.resetTokenExpires = undefined;
-  await user.save();
+    // Update password
+    await user.setPassword(password);
+    user.resetToken = undefined;
+    user.resetTokenExpires = undefined;
+    await user.save();
 
-  req.flash("success", "Password reset successfully. Please log in.");
-  return res.redirect("/login");
+    req.flash("success", "Password reset successfully. Please log in.");
+    return res.redirect("/login");
 });
-
 
 module.exports = {
     registerUser,
@@ -314,5 +320,5 @@ module.exports = {
     deleteUser,
     requestPasswordReset,
     renderResetPasswordPage,
-    resetPassword
+    resetPassword,
 };
