@@ -17,6 +17,8 @@ const { viewLawyer } = require("../controllers/lawyer.controller.js");
 const {
     getUserProfile,
     renderUpdateForm,
+    renderLawyerUpdateForm,
+    renderLawyerApplyForm,
 } = require("../controllers/user.controller.js");
 const {
     publishArticle,
@@ -37,6 +39,8 @@ router.get("/terms", renderTermsAndConditions);
 router.get("/login", renderLoginForm);
 router.get("/account", getUserProfile);
 router.get("/account/update", renderUpdateForm);
+router.get("/account/applyforlawyer", renderLawyerApplyForm);
+router.get("/account/update/lawyer", renderLawyerUpdateForm);
 router.get("/articles/publish", publishArticle);
 router.get("/articles/:id/edit", renderEditForm);
 router.get("/viewdowncount", renderDownCount);
