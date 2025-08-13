@@ -321,14 +321,14 @@ main.card-alt h2 {
   <div id="tab-chats" class="tab-content">
     <div class="card-alt">
       <h4>Chats</h4>
-      <a class="small-badge" href="/chats">Open Chat Inbox</a>
+      <a class="small-badge" href="/chat">Open Chat Inbox</a>
     </div>
   </div>
 
   <div id="tab-bookings" class="tab-content" style="display:none">
     <div class="card-alt">
       <h4><%= user.role === 'lawyer' ? 'Client Appointments' : 'My Appointments' %></h4>
-      <a class="small-badge" href="/bookings">View All</a>
+      <a class="small-badge" href="/api/appointment/bookings">View All</a>
     </div>
   </div>
 
@@ -362,6 +362,7 @@ document.getElementById('avatarInput').addEventListener('change', e => {
 
 (function computeProfileProgress(){
   let score = 0, total = 0;
+  
   <% if (user.role === 'lawyer') { %>
     const lawyerFields = [
       Boolean("<%= user.username %>"),

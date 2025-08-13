@@ -3,8 +3,7 @@ const sampleDocuments = [
         title: "Permanent Residential Certificate (PRC) in Rural Areas",
         description:
             "Application process for obtaining a PRC for tribal and non-tribal citizens in rural areas.",
-        downloadLink:
-            "https://drive.google.com/file/d/1b9UxqPQtAUF-JeWnrxZg6KENmLf-6Khb/view",
+        downloadLink: "https://drive.google.com/file/d/1b9UxqPQtAUF-JeWnrxZg6KENmLf-6Khb/view",
         applyLink:
             "https://sewasetu.assam.gov.in/site/service-apply/permanent-residential-certificate-prc-in-rural-areas-nchac",
         state: "Arunachal Pradesh",
