@@ -14,6 +14,11 @@ const MongoStore = require("connect-mongo");
 const flash = require("connect-flash");
 const cookieParser = require("cookie-parser");
 
+// ✅ Render ke proxy ko trust karo (production me)
+if (process.env.NODE_ENV === "production") {
+    app.set("trust proxy", 1);
+}
+
 // Passport Configuration
 const passport = require("passport");
 const LocalStrategy = require("passport-local");
