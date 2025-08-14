@@ -8,11 +8,6 @@ const crypto = require("crypto");
 const nodemailer = require("nodemailer");
 const validatePassword = require("../validators/passwordValidator.js");
 
-// Optional: ensure required env vars exist at boot
-// if (!process.env.EMAIL_USER || !process.env.EMAIL_PASS) {
-//   throw new Error("EMAIL_USER and EMAIL_PASS must be set");
-// }
-
 // Nodemailer setup
 const transporter = nodemailer.createTransport({
   service: "gmail",
@@ -37,7 +32,7 @@ const registerAccount = asyncHandler(async (req, res) => {
     throw new apiError(400, errorMsg);
   }
 
-  // Required fields
+  // 1️⃣ Required fields check
   if (!username || !email || !password || !confirmPassword) {
     const errorMsg = "All fields are required";
     if (req.accepts("html")) {
@@ -47,7 +42,7 @@ const registerAccount = asyncHandler(async (req, res) => {
     throw new apiError(400, errorMsg);
   }
 
-  // Password strength
+  // 2️⃣ password strength check
   const strength = validatePassword(password);
   if (strength.errors.length > 0) {
     if (req.accepts("html")) {
@@ -57,7 +52,7 @@ const registerAccount = asyncHandler(async (req, res) => {
     return res.status(400).json({ errors: strength.errors, strength: strength.strength });
   }
 
-  // Password match
+  // 3️⃣ Password match check
   if (password !== confirmPassword) {
     const errorMsg = "Passwords do not match";
     if (req.accepts("html")) {
@@ -77,13 +72,14 @@ const registerAccount = asyncHandler(async (req, res) => {
     }
     throw new apiError(400, msg);
   }
-
-  // Create user and optional lawyer profile
+  
+  // 5️⃣ Create user
   try {
     const newUser = new User({ username, email, role: role || "user" });
     // Uses passport-local-mongoose's register helper with hashing
     const registeredUser = await User.register(newUser, password);
 
+    // 6️⃣ If role is lawyer, create LawyerProfile
     if (registeredUser.role === "lawyer") {
       if (!lawyerProfile?.specialization || !lawyerProfile?.licenseNumber) {
         const msg = "Specialization and license number are required for lawyer registration";
@@ -104,7 +100,7 @@ const registerAccount = asyncHandler(async (req, res) => {
       await registeredUser.save();
     }
 
-    // Auto login after registration
+    // 7️⃣ Login user after registration
     req.login(registeredUser, (err) => {
       if (err) {
         const errorMsg = "Login failed after registration";
@@ -130,32 +126,27 @@ const registerAccount = asyncHandler(async (req, res) => {
   }
 });
 
-// Login User
+// 📌 Login User
 const loginUser = asyncHandler(async (req, res) => {
   req.flash("success", "Logged in successfully!");
   return res.redirect("/");
 });
 
-// Logout User (with session destroy + cookie clear)
+// 📌 Logout User
 const logoutUser = asyncHandler(async (req, res, next) => {
   if (!req.session) {
     return next(new apiError(500, "Session not found"));
   }
-
   req.logout((err) => {
     if (err) return next(new apiError(500, "Logout failed"));
 
-    req.session.destroy((err) => {
-      if (err) return next(new apiError(500, "Session destruction failed"));
-
-      res.clearCookie("connect.sid");
-      req.flash("success", "Logged out successfully!");
-      return res.redirect("/");
-    });
+    req.flash("success", "Logged out successfully!");
+    res.clearCookie("connect.sid"); // optional: removes cookie but leaves store entry
+    return res.redirect("/");
   });
 });
 
-// Get User Profile
+// 📌 Get User Profile
 const getUserProfile = asyncHandler(async (req, res) => {
   if (!req.user) {
     return res.redirect("/login");
@@ -171,7 +162,7 @@ const getUserProfile = asyncHandler(async (req, res) => {
   return res.status(200).json(new apiResponse(200, user, "User profile fetched successfully"));
 });
 
-// Render update form
+// 📌 Render update form
 const renderUpdateForm = asyncHandler(async (req, res) => {
   if (!req.user) {
     return res.redirect("/login");
@@ -183,7 +174,7 @@ const renderUpdateForm = asyncHandler(async (req, res) => {
   res.render("users/updateUser", { user });
 });
 
-// Render lawyer update form
+// 📌 Render lawyer update form
 const renderLawyerUpdateForm = asyncHandler(async (req, res) => {
   if (!req.user) {
     return res.redirect("/login");
@@ -199,7 +190,7 @@ const renderLawyerUpdateForm = asyncHandler(async (req, res) => {
   });
 });
 
-// Update User
+// 📌 Update User
 const updateUser = asyncHandler(async (req, res) => {
   const { username, name, email, profilePicture } = req.body;
   const user = await User.findById(req.user._id);
@@ -212,7 +203,7 @@ const updateUser = asyncHandler(async (req, res) => {
     throw new apiError(404, "User not found");
   }
 
-  // Unique username
+  // ✅ Unique username
   if (username && username !== user.username) {
     const usernameExists = await User.findOne({ username });
     if (usernameExists) {
@@ -226,7 +217,7 @@ const updateUser = asyncHandler(async (req, res) => {
     user.username = username;
   }
 
-  // Unique email
+  // ✅ Unique email
   if (email && email !== user.email) {
     const emailExists = await User.findOne({ email });
     if (emailExists) {
@@ -251,7 +242,7 @@ const updateUser = asyncHandler(async (req, res) => {
   return res.status(200).json(new apiResponse(200, user, "User profile updated successfully"));
 });
 
-// Delete User
+// 📌 Delete User
 const deleteUser = asyncHandler(async (req, res) => {
   await User.findByIdAndDelete(req.user._id);
   if (req.accepts("html")) {
@@ -261,7 +252,7 @@ const deleteUser = asyncHandler(async (req, res) => {
   return res.status(200).json(new apiResponse(200, null, "User deleted successfully"));
 });
 
-// Request password reset
+// 📌 Request password reset
 const requestPasswordReset = asyncHandler(async (req, res) => {
   const { email } = req.body;
 
@@ -273,8 +264,8 @@ const requestPasswordReset = asyncHandler(async (req, res) => {
 
   const user = await User.findOne({ email });
 
-  // Generic message to prevent enumeration
-  const genericMsg = "If the email is valid, a reset link has been sent.";
+// 📌 Generic message to prevent enumeration
+const genericMsg = "If the email is valid, a reset link has been sent.";
 
   if (!user) {
     req.flash("success", genericMsg);
@@ -304,18 +295,13 @@ const requestPasswordReset = asyncHandler(async (req, res) => {
     `,
   };
 
-  try {
     await transporter.sendMail(mailOptions);
-  } catch (e) {
-    // Don't leak email delivery errors to enumeration path; log instead
-    // console.error("Email send failed:", e.message);
-  }
 
   req.flash("success", genericMsg);
   return res.render("pages/forgot-password", { message: genericMsg });
 });
 
-// Render reset password page
+// 🔐 Render reset password page
 const renderResetPasswordPage = asyncHandler(async (req, res) => {
   const { token } = req.params;
 
@@ -331,11 +317,11 @@ const renderResetPasswordPage = asyncHandler(async (req, res) => {
   res.render("pages/reset-password", { token });
 });
 
-// Reset password
+// 🔐 Reset password
 const resetPassword = asyncHandler(async (req, res) => {
   const { token, password, confirmPassword } = req.body;
 
-  // Check passwords match
+  // Check if passwords match
   if (password !== confirmPassword) {
     req.flash("error", "Passwords do not match.");
     return res.redirect(`/api/users/reset-password/${token}`);
@@ -402,6 +388,7 @@ const updateLawyerProfile = asyncHandler(async (req, res) => {
     throw new apiError(403, msg);
   }
 
+  // ✅ Required fields for lawyer
   if (!specialization || !licenseNumber) {
     const msg = "Specialization and license number are required";
     if (req.accepts("html")) {
