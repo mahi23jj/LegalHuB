@@ -130,7 +130,7 @@ const renderFundamental = asyncHandler(async (req, res) => {
         category,
         articleNumber,
         page = 1,
-        limit = 12, // Increased for better grid display
+        limit = 9, // Increased for better grid display
     } = req.query;
 
     // Build filter object for smart search
