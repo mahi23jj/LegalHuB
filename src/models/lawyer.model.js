@@ -60,6 +60,12 @@ const lawyerProfileSchema = new Schema(
             type: Number,
             default: 0,
         },
+        reviews: [
+            {
+                type: Schema.Types.ObjectId,
+                ref: "Review",
+            },
+        ],
         isVerified: {
             type: Boolean,
             default: false,
@@ -73,5 +79,16 @@ const lawyerProfileSchema = new Schema(
         timestamps: true, // Automatically adds createdAt and updatedAt
     }
 );
+
+// Prevent duplicate license numbers
+lawyerProfileSchema.index({ licenseNumber: 1 }, { unique: true });
+
+// middleware to delete reviews attached to LawyerProfile
+lawyerProfileSchema.post("findOneAndDelete", async (lawyerProfile) => {
+    if (lawyerProfile) {
+        await Review.deleteMany({ _id: { $in: lawyerProfile.reviews } });
+    }
+});
+
 
 module.exports = mongoose.model("LawyerProfile", lawyerProfileSchema);

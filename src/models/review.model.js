@@ -3,14 +3,14 @@ const Schema = mongoose.Schema;
 
 const reviewSchema = new Schema(
     {
-        client: {
-            type: Schema.Types.ObjectId,
-            ref: "User",
-            required: true,
-        },
         lawyer: {
             type: Schema.Types.ObjectId,
             ref: "LawyerProfile",
+            required: true,
+        },
+        author: {
+            type: Schema.Types.ObjectId,
+            ref: "User",
             required: true,
         },
         rating: {
@@ -22,11 +22,15 @@ const reviewSchema = new Schema(
         comment: {
             type: String,
             trim: true,
+            required: true,
         },
     },
     {
         timestamps: true,
     }
 );
+
+// Prevent double-review: unique per lawyer+author
+reviewSchema.index({ lawyer: 1, author: 1 }, { unique: true });
 
 module.exports = mongoose.model("Review", reviewSchema);
