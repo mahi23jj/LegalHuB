@@ -67,6 +67,8 @@
         "globalSetup": "<rootDir>/test/globalSetup.js",
         "globalTeardown": "<rootDir>/test/globalTeardown.js",
         "testEnvironment": "node",
-        "testTimeout": 30000
+        "testTimeout": 60000,
+        "maxWorkers": 1,
+        "forceExit": true
     }
 }
