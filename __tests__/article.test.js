@@ -204,7 +204,7 @@ describe("📄 Articles API Testing", () => {
             .set("Accept", "application/json")
             .send({
                 author: anotherUser._id,
-                title: "Unauthorized Update"
+                title: "Unauthorized Update",
             });
 
         expect([403, 404]).toContain(res.statusCode);

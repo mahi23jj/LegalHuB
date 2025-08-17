@@ -341,7 +341,9 @@ const downloadAppointmentCard = asyncHandler(async (req, res) => {
     // 🔹 Prepare data for template
     const templateData = {
         lawyer: appointment.lawyer.fullName || appointment.lawyer.username,
-        client: appointment.client? appointment.client.fullName || appointment.client.username: "N/A",
+        client: appointment.client
+            ? appointment.client.fullName || appointment.client.username
+            : "N/A",
         venue: appointment.venue || "To be decided",
         date: appointment.date,
         timeSlot: appointment.timeSlot,
@@ -376,9 +378,9 @@ const downloadAppointmentCard = asyncHandler(async (req, res) => {
     // 🔹 Send as download
     res.setHeader("Content-Type", "application/pdf");
     res.setHeader("Content-Disposition", `attachment; filename=appointment_${appointment._id}.pdf`);
-    
-    return res.end(pdfBuffer);   // ✅ use res.end() instead of res.send()
-}); 
+
+    return res.end(pdfBuffer); // ✅ use res.end() instead of res.send()
+});
 
 module.exports = {
     bookAppointment,

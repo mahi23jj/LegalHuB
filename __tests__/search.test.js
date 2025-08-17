@@ -10,7 +10,8 @@ describe("🔍 Search API Testing", () => {
     const mockRight = {
         name: "Right to Education",
         articleNumber: "Article 21A",
-        description: "The state shall provide free and compulsory education to all children of the age of six to fourteen years.",
+        description:
+            "The state shall provide free and compulsory education to all children of the age of six to fourteen years.",
         sourceLink: "https://indiankanoon.org/doc/1298951/",
         category: "Cultural and Educational Rights",
     };
@@ -58,7 +59,9 @@ describe("🔍 Search API Testing", () => {
             expect(Array.isArray(res.body.data.documents)).toBe(true);
 
             // Should find the right with "education" in name
-            const foundRight = res.body.data.rights.find(r => r.name.toLowerCase().includes("education"));
+            const foundRight = res.body.data.rights.find((r) =>
+                r.name.toLowerCase().includes("education")
+            );
             expect(foundRight).toBeDefined();
             expect(foundRight.name).toBe(mockRight.name);
         });
@@ -73,7 +76,9 @@ describe("🔍 Search API Testing", () => {
             expect(res.body.success).toBe(true);
 
             // Should find the document with "scholarship" in title
-            const foundDocument = res.body.data.documents.find(d => d.title.toLowerCase().includes("scholarship"));
+            const foundDocument = res.body.data.documents.find((d) =>
+                d.title.toLowerCase().includes("scholarship")
+            );
             expect(foundDocument).toBeDefined();
             expect(foundDocument.title).toBe(mockDocument.title);
         });
@@ -88,7 +93,9 @@ describe("🔍 Search API Testing", () => {
             expect(res.body.success).toBe(true);
 
             // Should find the document with "delhi" as state
-            const foundDocument = res.body.data.documents.find(d => d.state.toLowerCase().includes("delhi"));
+            const foundDocument = res.body.data.documents.find((d) =>
+                d.state.toLowerCase().includes("delhi")
+            );
             expect(foundDocument).toBeDefined();
             expect(foundDocument.state).toBe(mockDocument.state);
         });
@@ -117,7 +124,9 @@ describe("🔍 Search API Testing", () => {
             expect(res.body.success).toBe(true);
 
             // Should find results despite uppercase query
-            const foundRight = res.body.data.rights.find(r => r.name.toLowerCase().includes("education"));
+            const foundRight = res.body.data.rights.find((r) =>
+                r.name.toLowerCase().includes("education")
+            );
             expect(foundRight).toBeDefined();
         });
 
@@ -131,7 +140,9 @@ describe("🔍 Search API Testing", () => {
             expect(res.body.success).toBe(true);
 
             // Should find results with partial match
-            const foundRight = res.body.data.rights.find(r => r.name.toLowerCase().includes("education"));
+            const foundRight = res.body.data.rights.find((r) =>
+                r.name.toLowerCase().includes("education")
+            );
             expect(foundRight).toBeDefined();
         });
 
@@ -150,9 +161,7 @@ describe("🔍 Search API Testing", () => {
 
     describe("❌ Invalid Search Queries", () => {
         it("should return 400 when query parameter is missing", async () => {
-            const res = await request(app)
-                .get("/api/search")
-                .set("Accept", "application/json");
+            const res = await request(app).get("/api/search").set("Accept", "application/json");
 
             expect(res.statusCode).toBe(400);
             expect(res.body.success).toBe(false);
@@ -195,10 +204,10 @@ describe("🔍 Search API Testing", () => {
             expect(res.body).toHaveProperty("success", true);
             expect(res.body).toHaveProperty("data");
             expect(res.body).toHaveProperty("msg", "Search results fetched successfully");
-            
+
             expect(res.body.data).toHaveProperty("rights");
             expect(res.body.data).toHaveProperty("documents");
-            
+
             // Check rights structure
             if (res.body.data.rights.length > 0) {
                 const right = res.body.data.rights[0];
@@ -208,7 +217,7 @@ describe("🔍 Search API Testing", () => {
                 expect(right).toHaveProperty("category");
                 expect(right).toHaveProperty("sourceLink");
             }
-            
+
             // Check documents structure
             if (res.body.data.documents.length > 0) {
                 const document = res.body.data.documents[0];

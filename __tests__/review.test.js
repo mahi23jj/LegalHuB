@@ -67,7 +67,8 @@ describe("⭐ Review API Testing", () => {
             const reviewData = {
                 review: {
                     rating: 5,
-                    comment: "Excellent lawyer! Very professional and knowledgeable. Helped me with my family law case efficiently.",
+                    comment:
+                        "Excellent lawyer! Very professional and knowledgeable. Helped me with my family law case efficiently.",
                 },
                 author: testClient._id, // For test authentication
             };
@@ -89,7 +90,7 @@ describe("⭐ Review API Testing", () => {
 
             // Verify review was added to lawyer's profile
             const updatedLawyer = await User.findById(testLawyer._id).populate("lawyerProfile");
-            const reviewIds = updatedLawyer.lawyerProfile.reviews.map(id => id.toString());
+            const reviewIds = updatedLawyer.lawyerProfile.reviews.map((id) => id.toString());
             expect(reviewIds).toContain(testReview._id.toString());
         });
 
@@ -302,10 +303,10 @@ describe("⭐ Review API Testing", () => {
 
         it("should handle valid rating range (1-5)", async () => {
             const validRatings = [1, 2, 3, 4, 5];
-            
+
             for (let i = 0; i < validRatings.length; i++) {
                 const rating = validRatings[i];
-                
+
                 // Create a new client for each rating test
                 const client = await User.create({
                     username: `client${rating}`,

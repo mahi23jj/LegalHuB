@@ -163,9 +163,7 @@ describe("💬 Chat API Testing", () => {
         });
 
         it("should return 302 redirect for unauthenticated user", async () => {
-            const res = await request(app)
-                .get("/chat/rooms")
-                .set("Accept", "application/json");
+            const res = await request(app).get("/chat/rooms").set("Accept", "application/json");
 
             expect(res.statusCode).toBe(302); // Redirect to login
         });

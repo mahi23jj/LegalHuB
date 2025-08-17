@@ -355,7 +355,7 @@ describe("📅 Appointment API Testing", () => {
                 expect(res.body.msg).toBe("Available slots fetched");
                 expect(Array.isArray(res.body.data)).toBe(true);
             }
-            
+
             // Should not include the booked slot (10:00 AM was booked but then cancelled)
             // Since appointment was cancelled, 10:00 AM should be available again
         });
