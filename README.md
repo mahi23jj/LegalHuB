@@ -19,47 +19,70 @@
 
 ### 🏠 Homepage
 
-![Homepage](https://github.com/user-attachments/assets/b3a791fe-29b3-4acd-99ba-5fd452cd20d7)
+![Homepage](<img width="1280" height="642" alt="image" src="https://github.com/user-attachments/assets/1bf94170-22a3-460f-8fc9-4eaa8a5153f0" />)
+![Frequently asked Question](<img width="1280" height="632" alt="image" src="https://github.com/user-attachments/assets/70b5d515-6367-493d-81bb-d65bcb1ffaea" />
+)
 
 ---
 
 ### 📘 Legal Dictionary
 
-![Legal Dictionary](https://github.com/user-attachments/assets/33660235-dc58-4196-8cdc-c450068312e2)
+![Legal Dictionary](<img width="1280" height="641" alt="image" src="https://github.com/user-attachments/assets/c65ef2ad-f0cf-4649-b401-ef2f4d032fcb" />
+)
 
 ---
 
-![Link](https://github.com/user-attachments/assets/a7f5e868-29c7-44c5-8ef3-e4cce2c8b4dc)
+### 📘 Fundamental Right 
+
+![Fundamental Right ](<img width="1280" height="641" alt="image" src="https://github.com/user-attachments/assets/58b619a6-fad8-4520-8069-706939c23c4b" />
+)
 
 ---
 
-![Link](https://github.com/user-attachments/assets/bd66169d-f22a-48d6-8a93-2f89f165b9dc)
+### 📘About page
+
+![About page](<img width="1280" height="647" alt="image" src="https://github.com/user-attachments/assets/5e599beb-47e6-42ad-976f-62428167a620" />
+
+)
 
 ---
 
-![Link](https://github.com/user-attachments/assets/bebb21ce-971c-46ab-a8d4-3c072fedb304)
+### 📘 Explore Legal Article
+
+![Legal Dictionary](<img width="1280" height="629" alt="image" src="https://github.com/user-attachments/assets/6eae7681-8bed-46bb-be13-0455d7eda139" />
+
+)
+<img width="1280" height="642" alt="image" src="https://github.com/user-attachments/assets/43eec961-ab50-4e42-9b57-23e802567712" />
 
 ---
 
-![Link](https://github.com/user-attachments/assets/37cbfc4e-6113-435b-be48-50d8b212bcf3)
+### 📘 Registartion page 
+
+![Legal Dictionary](<img width="1280" height="643" alt="image" src="https://github.com/user-attachments/assets/02556661-b321-477c-9cb0-78e4489ef4ec" />)
+<img width="1280" height="642" alt="image" src="https://github.com/user-attachments/assets/5a73c26e-e226-4708-94ba-e27395af279e" />
+<img width="1280" height="642" alt="image" src="https://github.com/user-attachments/assets/1843bc6b-05b4-45af-baa3-c0c184db03b1" />
+
+
 
 ---
 
-![Link](https://github.com/user-attachments/assets/91a40e6f-7124-42c2-bfa1-beeedeaf7394)
+### 📘 Profile
+
+![Legal Dictionary](<img width="1280" height="642" alt="image" src="https://github.com/user-attachments/assets/3356057c-9e37-4e00-8404-51269bac7bd4" /> 
+<img width="1280" height="639" alt="image" src="https://github.com/user-attachments/assets/2ca226df-2f3b-4b6f-bb41-e8c5b64348f2" /> 
+<img width="1280" height="772" alt="image" src="https://github.com/user-attachments/assets/41e17063-8b7e-468e-bff0-fefad56c5c96" />
+<img width="1280" height="636" alt="image" src="https://github.com/user-attachments/assets/10f6f5bb-7ec6-4a3b-9b83-0d17d728f392" />
+
+)
 
 ---
 
-![Link](https://github.com/user-attachments/assets/42e338d4-26f8-46bb-9f93-bc56e9203f84)
+### 📘 Legal Dictionary
 
----
+![Legal Dictionary](<img width="1280" height="569" alt="image" src="https://github.com/user-attachments/assets/d39f258f-60be-4a86-a522-b3443d3749e9" />
 
-![Link](https://github.com/user-attachments/assets/13da2694-85d7-4495-9545-5955123d9950)
+)
 
----
-
-![Link](https://github.com/user-attachments/assets/aea9cc35-7cb3-4c87-8d28-a27f64b73eee)
-
----
 
 ## 🛠️ Tech Stack
 
