@@ -68,7 +68,7 @@
 
 ### 📘 Profile
 
-![Legal Dictionary](<img width="1280" height="642" alt="image" src="https://github.com/user-attachments/assets/3356057c-9e37-4e00-8404-51269bac7bd4" /> 
+![Legal Dictionary](<img width="480" height="142" alt="image" src="https://github.com/user-attachments/assets/3356057c-9e37-4e00-8404-51269bac7bd4" /> 
 <img width="1280" height="639" alt="image" src="https://github.com/user-attachments/assets/2ca226df-2f3b-4b6f-bb41-e8c5b64348f2" /> 
 <img width="1280" height="772" alt="image" src="https://github.com/user-attachments/assets/41e17063-8b7e-468e-bff0-fefad56c5c96" />
 <img width="1280" height="636" alt="image" src="https://github.com/user-attachments/assets/10f6f5bb-7ec6-4a3b-9b83-0d17d728f392" />
