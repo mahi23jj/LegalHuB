@@ -32,7 +32,8 @@ const createArticle = asyncHandler(async (req, res) => {
     }
 
     if (sectionContents.length === 0 || sectionContents.every((content) => !content.trim())) {
-        throw new ApiError(400, "At least one section with content is required");
+        req.flash("error", "At least one section with content is required");
+        return res.redirect("/articles/publish");
     }
 
     const sections = sectionContents.map((content, index) => {
@@ -182,9 +183,15 @@ const updateArticle = asyncHandler(async (req, res) => {
     sectionListTypes = toArray(sectionListTypes);
     sectionListItems = toArray(sectionListItems);
 
-    // Validate at least one section has content
-    if (sectionContents.length === 0 || sectionContents.every((content) => !content.trim())) {
-        throw new ApiError(400, "At least one section with content is required");
+    // For updates, sections are optional - allow articles without sections
+    // Only validate if sections are provided
+    if (sectionContents.length > 0 && sectionContents.every((content) => !content.trim())) {
+        if (req.accepts("html")) {
+            req.flash("error", "Section content cannot be empty if sections are provided");
+            return res.redirect(`/articles/${article._id}/edit`);
+        } else {
+            throw new ApiError(400, "Section content cannot be empty if sections are provided");
+        }
     }
 
     // Build updated sections
@@ -224,6 +231,7 @@ const updateArticle = asyncHandler(async (req, res) => {
     await article.save();
 
     if (req.accepts("html")) {
+        req.flash("success", "Article updated successfully");
         return res.redirect(`/api/articles/${article._id}`);
     } else {
         return res.status(200).json(new ApiResponse(200, article, "Article updated successfully"));
@@ -259,6 +267,18 @@ const publishArticle = asyncHandler(async (req, res) => {
 
 const renderEditForm = asyncHandler(async (req, res) => {
     const article = await Article.findById(req.params.id);
+
+    if (!article) {
+        throw new ApiError(404, "Article not found");
+    }
+
+    // Authorization check - only author or admin can edit
+    const isAdmin = req.user?.role === "admin";
+    if (article.author.toString() !== req.user?._id.toString() && !isAdmin) {
+        req.flash("error", "You are not authorized to edit this article");
+        return res.redirect("/articles");
+    }
+
     res.render("pages/edit-article", { article });
 });
 

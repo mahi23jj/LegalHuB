@@ -22,6 +22,7 @@ const {
 } = require("../controllers/user.controller.js");
 const { publishArticle, renderEditForm } = require("../controllers/article.controller.js");
 const { renderDownCount } = require("../controllers/document.controller.js");
+const { isLoggedIn } = require("../middlewares/auth.middleware.js");
 
 router.get("/", renderHome);
 router.get("/dictionary", renderDictionary);
@@ -38,8 +39,8 @@ router.get("/account", getUserProfile);
 router.get("/account/update", renderUpdateForm);
 router.get("/account/applyforlawyer", renderLawyerApplyForm);
 router.get("/account/update/lawyer", renderLawyerUpdateForm);
-router.get("/articles/publish", publishArticle);
-router.get("/articles/:id/edit", renderEditForm);
+router.get("/articles/publish", isLoggedIn, publishArticle);
+router.get("/articles/:id/edit", isLoggedIn, renderEditForm);
 router.get("/viewdowncount", renderDownCount);
 
 module.exports = router;
