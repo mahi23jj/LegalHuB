@@ -2,14 +2,14 @@ const multer = require("multer");
 const { CloudinaryStorage } = require("multer-storage-cloudinary");
 const cloudinary = require("../config/cloudinary.js");
 
-// Configure Cloudinary storage
+// Configure Cloudinary storage for profile pictures
 const storage = new CloudinaryStorage({
     cloudinary: cloudinary.cloudinary,
     params: {
         folder: 'LegalHuB/profiles',
         allowed_formats: ['jpg', 'jpeg', 'png', 'webp'],
         transformation: [
-            { width: 500, height: 500, crop: 'limit' },
+            { width: 300, height: 300, crop: 'fill', gravity: 'face' },
             { quality: 'auto' }
         ]
     },
@@ -17,11 +17,11 @@ const storage = new CloudinaryStorage({
 
 // File filter for validation
 const fileFilter = (req, file, cb) => {
-    // Check file type
+    // Allow only image files
     if (file.mimetype.startsWith('image/')) {
         cb(null, true);
     } else {
-        cb(new Error('Only image files are allowed!'), false);
+        cb(new Error('Only image files (jpg, jpeg, png, webp) are allowed!'), false);
     }
 };
 
@@ -34,9 +34,8 @@ const upload = multer({
     },
 });
 
-// Export both single and array upload configurations
+// Export configurations
 module.exports = {
-    upload,
     uploadProfilePic: upload.single('profilePicture'),
     uploadMultiple: upload.array('images', 5)
 };

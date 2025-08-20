@@ -14,6 +14,7 @@ const {
     applyForLawyer,
 } = require("../controllers/user.controller.js");
 const { isLoggedIn, saveRedirectUrl } = require("../middlewares/auth.middleware.js");
+const { uploadProfilePic } = require("../middlewares/profileUpload.middleware.js");
 
 const router = express.Router();
 
@@ -37,8 +38,8 @@ router.route("/logout").get(logoutUser);
 // Profile
 router.route("/profile").get(isLoggedIn, getUserProfile);
 
-// Update
-router.route("/update").put(isLoggedIn, updateUser);
+// Update - with profile picture upload
+router.route("/update").put(isLoggedIn, uploadProfilePic, updateUser);
 
 // Delete
 router.route("/delete").delete(isLoggedIn, deleteUser);
@@ -46,8 +47,8 @@ router.route("/delete").delete(isLoggedIn, deleteUser);
 // Apply for Lawyer
 router.route("/apply-lawyer").post(isLoggedIn, applyForLawyer);
 
-// Update Lawyer Profile
-router.route("/update-lawyer").put(isLoggedIn, updateLawyerProfile);
+// Update Lawyer Profile - with profile picture upload
+router.route("/update-lawyer").put(isLoggedIn, uploadProfilePic, updateLawyerProfile);
 
 // Request password reset (email form submission)
 router.post("/request-reset", requestPasswordReset);

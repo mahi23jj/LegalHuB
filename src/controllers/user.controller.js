@@ -7,6 +7,7 @@ const passport = require("passport");
 const crypto = require("crypto");
 const nodemailer = require("nodemailer");
 const validatePassword = require("../validators/passwordValidator.js");
+const cloudinary = require("../config/cloudinary.js");
 
 // Nodemailer setup
 const transporter = nodemailer.createTransport({
@@ -195,7 +196,7 @@ const renderLawyerUpdateForm = asyncHandler(async (req, res) => {
 
 // 📌 Update User
 const updateUser = asyncHandler(async (req, res) => {
-    const { username, name, email, profilePicture } = req.body;
+    const { username, name, email } = req.body;
     const user = await User.findById(req.user._id);
 
     if (!user) {
@@ -235,7 +236,37 @@ const updateUser = asyncHandler(async (req, res) => {
     }
 
     user.name = name || user.name;
-    user.profilePicture = profilePicture || user.profilePicture;
+
+    // Handle profile picture upload
+    if (req.file) {
+        // If there's an old profile picture, delete it from Cloudinary
+        if (user.profilePicture && user.profilePicture.publicId) {
+            try {
+                await cloudinary.cloudinary.uploader.destroy(user.profilePicture.publicId);
+            } catch (err) {
+                console.error("Error deleting old profile picture:", err);
+            }
+        }
+
+        // Set new profile picture
+        user.profilePicture = {
+            url: req.file.secure_url || req.file.url,
+            publicId: req.file.public_id || req.file.filename
+        };
+    }
+
+    // Handle profile picture removal
+    if (req.body.removeProfilePicture === 'true') {
+        if (user.profilePicture && user.profilePicture.publicId) {
+            try {
+                await cloudinary.cloudinary.uploader.destroy(user.profilePicture.publicId);
+            } catch (err) {
+                console.error("Error deleting profile picture:", err);
+            }
+        }
+        user.profilePicture = null;
+    }
+
     await user.save();
 
     if (req.accepts("html")) {
