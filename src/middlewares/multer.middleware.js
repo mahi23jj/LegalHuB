@@ -1,42 +1,25 @@
 const multer = require("multer");
-const { CloudinaryStorage } = require("multer-storage-cloudinary");
-const cloudinary = require("../config/cloudinary.js");
+const fs = require("fs");
+const path = require("path");
 
-// Configure Cloudinary storage
-const storage = new CloudinaryStorage({
-    cloudinary: cloudinary.cloudinary,
-    params: {
-        folder: 'LegalHuB/profiles',
-        allowed_formats: ['jpg', 'jpeg', 'png', 'webp'],
-        transformation: [
-            { width: 500, height: 500, crop: 'limit' },
-            { quality: 'auto' }
-        ]
+// ✅ Define upload directory
+const uploadDir = path.join(__dirname, "../uploads/temp");
+
+// ✅ Ensure directory exists
+if (!fs.existsSync(uploadDir)) {
+    fs.mkdirSync(uploadDir, { recursive: true });
+}
+
+const storage = multer.diskStorage({
+    destination: function (req, file, cb) {
+        cb(null, uploadDir);
+    },
+    filename: function (req, file, cb) {
+        const uniqueSuffix = Date.now() + "-" + Math.round(Math.random() * 1e9);
+        cb(null, file.fieldname + "-" + uniqueSuffix + path.extname(file.originalname));
     },
 });
 
-// File filter for validation
-const fileFilter = (req, file, cb) => {
-    // Check file type
-    if (file.mimetype.startsWith('image/')) {
-        cb(null, true);
-    } else {
-        cb(new Error('Only image files are allowed!'), false);
-    }
-};
+const upload = multer({ storage });
 
-// Configure multer with limits
-const upload = multer({
-    storage: storage,
-    fileFilter: fileFilter,
-    limits: {
-        fileSize: 5 * 1024 * 1024, // 5MB limit
-    },
-});
-
-// Export both single and array upload configurations
-module.exports = {
-    upload,
-    uploadProfilePic: upload.single('profilePicture'),
-    uploadMultiple: upload.array('images', 5)
-};
+module.exports = upload;
