@@ -8,6 +8,11 @@ const crypto = require("crypto");
 const nodemailer = require("nodemailer");
 const validatePassword = require("../validators/passwordValidator.js");
 const cloudinary = require("../config/cloudinary.js");
+const { deleteFromCloudinary } = require("../utils/cloudinary.js");
+
+const DEFAULT_AVATAR =
+  "https://cdn.vectorstock.com/i/1000v/51/87/student-avatar-user-profile-icon-vector-47025187.jpg";
+
 
 // Nodemailer setup
 const transporter = nodemailer.createTransport({
@@ -235,37 +240,7 @@ const updateUser = asyncHandler(async (req, res) => {
         user.email = email;
     }
 
-    user.name = name || user.name;
-
-    // Handle profile picture upload
-    if (req.file) {
-        // If there's an old profile picture, delete it from Cloudinary
-        if (user.profilePicture && user.profilePicture.publicId) {
-            try {
-                await cloudinary.cloudinary.uploader.destroy(user.profilePicture.publicId);
-            } catch (err) {
-                console.error("Error deleting old profile picture:", err);
-            }
-        }
-
-        // Set new profile picture
-        user.profilePicture = {
-            url: req.file.secure_url || req.file.url,
-            publicId: req.file.public_id || req.file.filename
-        };
-    }
-
-    // Handle profile picture removal
-    if (req.body.removeProfilePicture === 'true') {
-        if (user.profilePicture && user.profilePicture.publicId) {
-            try {
-                await cloudinary.cloudinary.uploader.destroy(user.profilePicture.publicId);
-            } catch (err) {
-                console.error("Error deleting profile picture:", err);
-            }
-        }
-        user.profilePicture = null;
-    }
+    user.name = name || user.name; // ✅ Name is optional
 
     await user.save();
 
@@ -275,6 +250,48 @@ const updateUser = asyncHandler(async (req, res) => {
     }
     return res.status(200).json(new apiResponse(200, user, "User profile updated successfully"));
 });
+
+// 📌 Upload or replace profile picture
+const uploadProfilePicture = asyncHandler(async (req, res) => {
+  if (!req.file) throw new apiError(400, "No file uploaded");
+
+  const user = await User.findById(req.user._id);
+
+  // Delete old Cloudinary picture if exists
+  if (user.profilePictureId) {
+    await deleteFromCloudinary(user.profilePictureId);
+  }
+
+  // Save new
+  user.profilePicture = req.file.path; // Cloudinary secure URL
+  user.profilePictureId = req.file.filename; // Cloudinary public_id
+  await user.save();
+    if (req.accepts("html")) {
+        req.flash("success", "Profile picture updated successfully!");
+        return res.redirect("/account");
+    }
+  return res.status(200).json(new apiResponse(200, user, "Profile picture updated"));
+});
+
+// 📌 Delete profile picture (reset to default)
+const deleteProfilePicture = asyncHandler(async (req, res) => {
+  const user = await User.findById(req.user._id);
+
+  if (user.profilePictureId) {
+    await deleteFromCloudinary(user.profilePictureId);
+  }
+
+  user.profilePicture = DEFAULT_AVATAR;
+  user.profilePictureId = null;
+  await user.save();
+
+    if (req.accepts("html")) {
+        req.flash("success", "Profile picture removed successfully!");
+        return res.redirect("/account");
+    }
+  return res.status(200).json(new apiResponse(200, user, "Profile picture removed"));
+});
+
 
 // 📌 Delete User
 const deleteUser = asyncHandler(async (req, res) => {
@@ -582,6 +599,8 @@ module.exports = {
     renderUpdateForm,
     renderLawyerUpdateForm,
     updateUser,
+    uploadProfilePicture,
+    deleteProfilePicture,
     deleteUser,
     requestPasswordReset,
     renderResetPasswordPage,

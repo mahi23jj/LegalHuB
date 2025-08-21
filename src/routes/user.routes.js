@@ -1,11 +1,15 @@
 const express = require("express");
 const passport = require("passport");
+const upload = require("../middlewares/multer.middleware");
+
 const {
     registerAccount,
     loginUser,
     logoutUser,
     getUserProfile,
     updateUser,
+    uploadProfilePicture,
+    deleteProfilePicture,
     deleteUser,
     requestPasswordReset,
     renderResetPasswordPage,
@@ -14,7 +18,6 @@ const {
     applyForLawyer,
 } = require("../controllers/user.controller.js");
 const { isLoggedIn, saveRedirectUrl } = require("../middlewares/auth.middleware.js");
-const { uploadProfilePic } = require("../middlewares/profileUpload.middleware.js");
 
 const router = express.Router();
 
@@ -39,7 +42,11 @@ router.route("/logout").get(logoutUser);
 router.route("/profile").get(isLoggedIn, getUserProfile);
 
 // Update - with profile picture upload
-router.route("/update").put(isLoggedIn, uploadProfilePic, updateUser);
+router.route("/update").put(isLoggedIn, updateUser);
+
+// Profile picture management
+router.route("/profile-picture").post(isLoggedIn, upload.single("profilePicture"), uploadProfilePicture);
+router.route("/profile-picture").delete(isLoggedIn, deleteProfilePicture);
 
 // Delete
 router.route("/delete").delete(isLoggedIn, deleteUser);
@@ -48,7 +55,7 @@ router.route("/delete").delete(isLoggedIn, deleteUser);
 router.route("/apply-lawyer").post(isLoggedIn, applyForLawyer);
 
 // Update Lawyer Profile - with profile picture upload
-router.route("/update-lawyer").put(isLoggedIn, uploadProfilePic, updateLawyerProfile);
+router.route("/update-lawyer").put(isLoggedIn, updateLawyerProfile);
 
 // Request password reset (email form submission)
 router.post("/request-reset", requestPasswordReset);

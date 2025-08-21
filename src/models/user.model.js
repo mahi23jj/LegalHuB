@@ -25,6 +25,10 @@ const userSchema = new Schema(
             default:
                 "https://cdn.vectorstock.com/i/1000v/51/87/student-avatar-user-profile-icon-vector-47025187.jpg",
         },
+        profilePictureId: {
+            type: String, // Cloudinary public_id
+            default: null,
+        },
         lawyerProfile: {
             type: Schema.Types.ObjectId,
             ref: "LawyerProfile",
