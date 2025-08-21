@@ -45,7 +45,9 @@ router.route("/profile").get(isLoggedIn, getUserProfile);
 router.route("/update").put(isLoggedIn, updateUser);
 
 // Profile picture management
-router.route("/profile-picture").post(isLoggedIn, upload.single("profilePicture"), uploadProfilePicture);
+router
+    .route("/profile-picture")
+    .post(isLoggedIn, upload.single("profilePicture"), uploadProfilePicture);
 router.route("/profile-picture").delete(isLoggedIn, deleteProfilePicture);
 
 // Delete

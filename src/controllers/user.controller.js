@@ -11,8 +11,7 @@ const cloudinary = require("../config/cloudinary.js");
 const { deleteFromCloudinary } = require("../utils/cloudinary.js");
 
 const DEFAULT_AVATAR =
-  "https://cdn.vectorstock.com/i/1000v/51/87/student-avatar-user-profile-icon-vector-47025187.jpg";
-
+    "https://cdn.vectorstock.com/i/1000v/51/87/student-avatar-user-profile-icon-vector-47025187.jpg";
 
 // Nodemailer setup
 const transporter = nodemailer.createTransport({
@@ -253,45 +252,44 @@ const updateUser = asyncHandler(async (req, res) => {
 
 // 📌 Upload or replace profile picture
 const uploadProfilePicture = asyncHandler(async (req, res) => {
-  if (!req.file) throw new apiError(400, "No file uploaded");
+    if (!req.file) throw new apiError(400, "No file uploaded");
 
-  const user = await User.findById(req.user._id);
+    const user = await User.findById(req.user._id);
 
-  // Delete old Cloudinary picture if exists
-  if (user.profilePictureId) {
-    await deleteFromCloudinary(user.profilePictureId);
-  }
+    // Delete old Cloudinary picture if exists
+    if (user.profilePictureId) {
+        await deleteFromCloudinary(user.profilePictureId);
+    }
 
-  // Save new
-  user.profilePicture = req.file.path; // Cloudinary secure URL
-  user.profilePictureId = req.file.filename; // Cloudinary public_id
-  await user.save();
+    // Save new
+    user.profilePicture = req.file.path; // Cloudinary secure URL
+    user.profilePictureId = req.file.filename; // Cloudinary public_id
+    await user.save();
     if (req.accepts("html")) {
         req.flash("success", "Profile picture updated successfully!");
         return res.redirect("/account");
     }
-  return res.status(200).json(new apiResponse(200, user, "Profile picture updated"));
+    return res.status(200).json(new apiResponse(200, user, "Profile picture updated"));
 });
 
 // 📌 Delete profile picture (reset to default)
 const deleteProfilePicture = asyncHandler(async (req, res) => {
-  const user = await User.findById(req.user._id);
+    const user = await User.findById(req.user._id);
 
-  if (user.profilePictureId) {
-    await deleteFromCloudinary(user.profilePictureId);
-  }
+    if (user.profilePictureId) {
+        await deleteFromCloudinary(user.profilePictureId);
+    }
 
-  user.profilePicture = DEFAULT_AVATAR;
-  user.profilePictureId = null;
-  await user.save();
+    user.profilePicture = DEFAULT_AVATAR;
+    user.profilePictureId = null;
+    await user.save();
 
     if (req.accepts("html")) {
         req.flash("success", "Profile picture removed successfully!");
         return res.redirect("/account");
     }
-  return res.status(200).json(new apiResponse(200, user, "Profile picture removed"));
+    return res.status(200).json(new apiResponse(200, user, "Profile picture removed"));
 });
-
 
 // 📌 Delete User
 const deleteUser = asyncHandler(async (req, res) => {

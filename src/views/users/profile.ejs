@@ -226,7 +226,9 @@
         <div class="progress">
           <div id="profileProgress" class="progress-bar" style="width:0%"></div>
         </div>
+        <span id="progressText" class="muted" style="font-size:0.95rem;display:block;text-align:right;margin-top:2px;"></span>
       </div>
+
 
       <small class="muted">Member since <%= new Date(user.createdAt).toLocaleDateString() %></small>
     </div>
@@ -289,30 +291,31 @@
 </div>
 
 <script>
-  document.querySelectorAll('.tab').forEach(tab => {
-    tab.addEventListener('click', () => {
-      document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
-      document.querySelectorAll('.tab-content').forEach(c => c.style.display = 'none');
-      tab.classList.add('active');
-      document.getElementById('tab-' + tab.dataset.tab).style.display = 'block';
-    });
+document.querySelectorAll('.tab').forEach(tab => {
+  tab.addEventListener('click', () => {
+    document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+    document.querySelectorAll('.tab-content').forEach(c => c.style.display = 'none');
+    tab.classList.add('active');
+    document.getElementById('tab-' + tab.dataset.tab).style.display = 'block';
   });
+});
 
-  const avatarInput = document.getElementById('avatarInput');
-  if (avatarInput) {
-    avatarInput.addEventListener('change', e => {
-      const file = e.target.files[0];
-      if (!file) return;
-      const reader = new FileReader();
-      reader.onload = ev => document.getElementById('avatarImg').src = ev.target.result;
-      reader.readAsDataURL(file);
-      document.getElementById('avatarForm').submit();
-    });
-  }
+const avatarInput = document.getElementById('avatarInput');
+avatarInput.addEventListener('change', e => {
+  const file = e.target.files[0];
+  if (!file) return;
+  const reader = new FileReader();
+  reader.onload = ev => document.getElementById('avatarImg').src = ev.target.result;
+  reader.readAsDataURL(file);
+  document.getElementById('avatarForm').submit();
+});
 
-  // Get profile progress value from server
-  const profilePercent = <%= (() => {
-    if (user.role === 'lawyer') {
+// Profile progress calculation
+(function computeProfileProgress(){
+  let percent = 0;
+
+  <% if (user.role === 'lawyer') { %>
+    <% 
       const lawyerFields = [
         user.username,
         user.email,
@@ -322,23 +325,26 @@
         user.lawyerProfile?.specialization,
         (user.lawyerProfile?.city || user.lawyerProfile?.state)
       ];
-      const score = lawyerFields.filter(Boolean).length;
-      return Math.round((score / lawyerFields.length) * 100);
-    } else {
-      const userFields = [user.username, user.email, user.profilePicture];
-      const score = userFields.filter(Boolean).length;
-      return Math.round((score / userFields.length) * 100);
-    }
-  })() %>;
+      const lawyerScore = lawyerFields.filter(Boolean).length;
+      const lawyerTotal = lawyerFields.length;
+      const lawyerPercent = Math.round((lawyerScore / lawyerTotal) * 100);
+    %>
+    percent = <%= lawyerPercent %>;
+  <% } else { %>
+    <% 
+      const userFields = [
+        user.username,
+        user.email,
+        user.profilePicture
+      ];
+      const userScore = userFields.filter(Boolean).length;
+      const userTotal = userFields.length;
+      const userPercent = Math.round((userScore / userTotal) * 100);
+    %>
+    percent = <%= userPercent %>;
+  <% } %>
 
-  // Update progress bar in DOM
-  document.addEventListener("DOMContentLoaded", () => {
-    const bar = document.getElementById('profileProgress');
-    if (bar) {
-      bar.style.width = profilePercent + '%';
-      bar.innerText = profilePercent + '%';
-    }
-  });
+  document.getElementById('profileProgress').style.width = percent + '%';
+})();
 </script>
-
 
