@@ -10,8 +10,8 @@ cloudinary.config({
 const storage = new CloudinaryStorage({
     cloudinary: cloudinary,
     params: {
-        folder: 'LegalHuB',                                                                                                                                                                                                                 
-        allowedFormats: ["png", "jpeg", "jpg"],
+        folder: 'LegalHuB',
+        allowed_formats: ['jpg', 'png', 'jpeg'],
     },
 });
 
