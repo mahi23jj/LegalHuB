@@ -1,0 +1,350 @@
+<%- layout("/layouts/boilerplate") -%>
+
+<style>
+  body {
+    font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+    background: linear-gradient(135deg, #0a0f1c, #0d1b2a, #1a2a40);
+    color: #e6eaf0;
+    margin: 0;
+    padding: 0;
+  }
+
+  .dashboard-container {
+    padding: 50px 30px;
+    max-width: 1300px;
+    margin: auto;
+  }
+
+  h1 {
+    font-size: 34px;
+    font-weight: 700;
+    margin-bottom: 35px;
+    color: #ffffff;
+    letter-spacing: 0.6px;
+    text-align: center;
+    text-shadow: 0px 2px 6px rgba(0,0,0,0.5);
+  }
+
+  /* Stats Section */
+  .stats-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    gap: 24px;
+    margin-bottom: 40px;
+  }
+
+  .stat-card {
+    background: linear-gradient(145deg, #1c2736, #202c44);
+    padding: 25px;
+    border-radius: 14px;
+    box-shadow: 0 6px 14px rgba(0,0,0,0.5);
+    display: flex;
+    align-items: center;
+    gap: 18px;
+    transition: transform 0.25s ease, box-shadow 0.25s ease;
+  }
+
+  .stat-card:hover {
+    transform: translateY(-6px);
+    box-shadow: 0 10px 20px rgba(0,0,0,0.7);
+  }
+
+  .stat-icon {
+    font-size: 30px;
+    width: 56px;
+    height: 56px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    flex-shrink: 0;
+  }
+
+  .stat-info {
+    flex: 1;
+  }
+
+  .stat-label {
+    font-size: 15px;
+    color: #aab4c5;
+    margin-bottom: 8px;
+    font-weight: 500;
+  }
+
+  .stat-value {
+    font-size: 30px;
+    font-weight: 700;
+    color: #ffffff;
+  }
+
+  /* Colored accents */
+  .bg-blue { background: #163d66; color: #4da3ff; }
+  .bg-green { background: #1e4631; color: #43d17b; }
+  .bg-yellow { background: #5a4a1f; color: #ffce56; }
+  .bg-purple { background: #382a52; color: #bb86fc; }
+
+  /* Filters */
+  .filters {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 14px;
+    margin-bottom: 30px;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .filters input,
+  .filters select {
+    padding: 12px 16px;
+    border: 1px solid #334155;
+    border-radius: 8px;
+    font-size: 15px;
+    flex: 1;
+    min-width: 220px;
+    background: #111827;
+    color: #e6eaf0;
+    transition: border 0.2s, background 0.2s;
+  }
+
+  .filters input:focus,
+  .filters select:focus {
+    border-color: #4da3ff;
+    background: #1e293b;
+    outline: none;
+  }
+
+  .filters button {
+    background: linear-gradient(135deg, #2563eb, #1d4ed8);
+    color: #fff;
+    border: none;
+    padding: 12px 22px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-weight: 500;
+    transition: transform 0.2s, box-shadow 0.2s;
+  }
+
+  .filters button:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 10px rgba(0,0,0,0.4);
+  }
+
+  /* Table */
+  .table-container {
+    background: #1e293b;
+    border-radius: 14px;
+    overflow: hidden;
+    box-shadow: 0 6px 14px rgba(0,0,0,0.5);
+  }
+
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    color: #e6eaf0;
+  }
+
+  thead {
+    background: #2d3a4d;
+  }
+
+  th, td {
+    padding: 16px 20px;
+    text-align: left;
+    font-size: 15px;
+  }
+
+  th {
+    font-weight: 600;
+    color: #ffffff;
+    border-bottom: 2px solid #3e4c63;
+  }
+
+  tbody tr:nth-child(even) {
+    background: #24344c;
+  }
+
+  tbody tr:hover {
+    background: #33425c;
+  }
+
+  /* Buttons */
+  .btn {
+    padding: 7px 14px;
+    font-size: 14px;
+    border-radius: 6px;
+    cursor: pointer;
+    border: 1px solid transparent;
+    transition: all 0.2s ease;
+    margin-right: 6px;
+  }
+
+  .btn-approve {
+    background: #22c55e;
+    border-color: #16a34a;
+    color: white;
+  }
+
+  .btn-approve:hover {
+    background: #16a34a;
+  }
+
+  .btn-suspend {
+    background: #facc15;
+    border-color: #ca8a04;
+    color: #111;
+  }
+
+  .btn-suspend:hover {
+    background: #ca8a04;
+    color: white;
+  }
+
+  .btn-view {
+    background: #06b6d4;
+    border-color: #0891b2;
+    color: white;
+  }
+
+  .btn-view:hover {
+    background: #0891b2;
+  }
+</style>
+
+
+<div class="dashboard-container">
+  <h1>Administrator Dashboard</h1>
+
+  <!-- Statistics -->
+  <div class="stats-grid">
+    <div class="stat-card">
+      <div class="stat-icon">👥</div>
+      <div class="stat-info">
+        <div class="stat-label">Total Registered Users</div>
+        <div id="stat-users" class="stat-value">—</div>
+      </div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-icon">⚖️</div>
+      <div class="stat-info">
+        <div class="stat-label">Verified Lawyers</div>
+        <div id="stat-lawyers" class="stat-value">—</div>
+      </div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-icon">⏳</div>
+      <div class="stat-info">
+        <div class="stat-label">Pending Approvals</div>
+        <div id="stat-pending" class="stat-value">—</div>
+      </div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-icon">📰</div>
+      <div class="stat-info">
+        <div class="stat-label">Published Articles</div>
+        <div id="stat-articles" class="stat-value">—</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Search & Filters -->
+  <div class="filters">
+    <input id="search-q" type="text" placeholder="Search by name or license number">
+    <select id="filter-state">
+      <option value="">All States</option>
+      <!-- Inject states dynamically -->
+    </select>
+    <button id="btn-search">Search</button>
+  </div>
+
+  <!-- Lawyers Table -->
+  <div class="table-container">
+    <table>
+      <thead>
+        <tr>
+          <th>Lawyer Name</th>
+          <th>Specialization</th>
+          <th>State</th>
+          <th>Years of Experience</th>
+          <th>Approval Status</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody id="lawyer-rows">
+        <!-- Rows injected dynamically -->
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<script>
+  const API_PREFIX = "/admin";
+
+  async function fetchStats() {
+    const res = await fetch(API_PREFIX + "/stats");
+    const json = await res.json();
+    if (res.ok) {
+      document.getElementById("stat-users").innerText = json.data.totalUsers;
+      document.getElementById("stat-lawyers").innerText = json.data.totalLawyers;
+      document.getElementById("stat-pending").innerText = json.data.pendingLawyers;
+      document.getElementById("stat-articles").innerText = json.data.totalArticles;
+    }
+  }
+
+  async function fetchLawyers() {
+    const q = document.getElementById("search-q").value;
+    const state = document.getElementById("filter-state").value;
+    const params = new URLSearchParams({ q, state, limit: 20 });
+
+    const res = await fetch(API_PREFIX + "/lawyers?" + params.toString());
+    const json = await res.json();
+    const rows = document.getElementById("lawyer-rows");
+    rows.innerHTML = "";
+    if (!res.ok) return;
+
+    json.data.lawyers.forEach(l => {
+      const tr = document.createElement("tr");
+      tr.innerHTML = `
+        <td>${l.name}</td>
+        <td>${l.specialization.join(", ")}</td>
+        <td>${l.state}</td>
+        <td>${l.experience || "-"}</td>
+        <td>${l.isApproved ? "Approved" : "Pending Approval"}</td>
+        <td>
+          ${l.isApproved
+            ? `<button class="btn btn-suspend" data-id="${l._id}" data-action="suspend">Deactivate</button>`
+            : `<button class="btn btn-approve" data-id="${l._id}" data-action="approve">Approve</button>`}
+          <button class="btn btn-view" data-id="${l._id}" data-action="view">View Profile</button>
+        </td>
+      `;
+      rows.appendChild(tr);
+    });
+  }
+
+  document.getElementById("btn-search").addEventListener("click", fetchLawyers);
+  document.getElementById("lawyer-rows").addEventListener("click", async (e) => {
+    const btn = e.target.closest("button");
+    if (!btn) return;
+    const id = btn.dataset.id;
+    const action = btn.dataset.action;
+
+    if (action === "approve") {
+      const res = await fetch(API_PREFIX + "/lawyers/" + id + "/approve", { method: "PATCH" });
+      if (res.ok) { await fetchLawyers(); await fetchStats(); alert("Lawyer approved successfully."); }
+      else alert("Failed to approve lawyer.");
+    }
+
+    if (action === "suspend") {
+      const res = await fetch(API_PREFIX + "/lawyers/" + id + "/suspend", { method: "PATCH" });
+      if (res.ok) { await fetchLawyers(); await fetchStats(); alert("Lawyer deactivated successfully."); }
+      else alert("Failed to deactivate lawyer.");
+    }
+
+    if (action === "view") {
+      window.location.href = "/admin/lawyers/" + id + "/view";
+    }
+  });
+
+  // Initialize
+  fetchStats();
+  fetchLawyers();
+</script>

@@ -8,8 +8,25 @@ const asyncHandler = require("../utils/asyncHandler.js");
 const apiResponse = require("../utils/apiResponse.js");
 const apiError = require("../utils/apiError.js");
 
+// --- Dashboard stats
+const dashboardStats = asyncHandler(async (req, res) => {
+    const totalUsers = await User.countDocuments();
+    const totalLawyers = await LawyerProfile.countDocuments();
+    const pendingLawyers = await LawyerProfile.countDocuments({ isApproved: false});
+    const totalArticles = await Article.countDocuments();
+    const totalDocuments = await Document.countDocuments();
+
+    if (req.accepts("html")) {
+        return res.render("admin/dashboard"); // no need for /views if views engine is set
+    }
+
+    res.status(200).json(new apiResponse(200, {
+        totalUsers, totalLawyers, pendingLawyers, totalArticles, totalDocuments
+    }, "Dashboard stats"));
+})
+
 // Admin approves lawyer application
-exports.adminApproveLawyer = asyncHandler(async (req, res) => {
+const adminApproveLawyer = asyncHandler(async (req, res) => {
     const lawyer = await LawyerProfile.findById(req.params.id);
     if (!lawyer) {
         return res.status(404).json(new apiError(404, "Lawyer not found"));
@@ -18,3 +35,8 @@ exports.adminApproveLawyer = asyncHandler(async (req, res) => {
     await lawyer.save();
     res.status(200).json(new apiResponse(200, lawyer, "Lawyer approved successfully"));
 });
+
+module.exports = {
+    dashboardStats,
+    adminApproveLawyer
+}
