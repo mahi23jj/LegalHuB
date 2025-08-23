@@ -19,13 +19,7 @@
 
 ### 🏠 Homepage
 
-![Homepage](https://github.com/user-attachments/assets/b3a791fe-29b3-4acd-99ba-5fd452cd20d7)
-
----
-
-### 📘 Legal Dictionary
-
-![Legal Dictionary](https://github.com/user-attachments/assets/c7b71c5a-f2f5-4e13-b62c-d73e386b9ef5)
+![Homepage](https://github.com/user-attachments/assets/c7b71c5a-f2f5-4e13-b62c-d73e386b9ef5)
 
 ---
 
