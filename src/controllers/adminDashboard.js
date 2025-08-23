@@ -11,19 +11,26 @@ const apiError = require("../utils/apiError.js");
 // --- Dashboard stats
 const dashboardStats = asyncHandler(async (req, res) => {
     const totalUsers = await User.countDocuments();
-    const totalLawyers = await LawyerProfile.countDocuments();
-    const pendingLawyers = await LawyerProfile.countDocuments({ isApproved: false});
+    const totalLawyers = await LawyerProfile.countDocuments({ isApproved: true });
+    const pendingLawyers = await LawyerProfile.countDocuments({ isApproved: false });
     const totalArticles = await Article.countDocuments();
     const totalDocuments = await Document.countDocuments();
 
-    if (req.accepts("html")) {
-        return res.render("admin/dashboard"); // no need for /views if views engine is set
-    }
+    const lawyers = await LawyerProfile.find()
+    .populate("user", "username email")
+    .limit(50); // fetch latest 50 lawyers
+    
+    res.render("admin/dashboard", {
+        totalUsers,
+        totalLawyers,
+        pendingLawyers,
+        totalArticles,
+        totalDocuments,
+        lawyers
+    });
+});
 
-    res.status(200).json(new apiResponse(200, {
-        totalUsers, totalLawyers, pendingLawyers, totalArticles, totalDocuments
-    }, "Dashboard stats"));
-})
+
 
 // Admin approves lawyer application
 const adminApproveLawyer = asyncHandler(async (req, res) => {
