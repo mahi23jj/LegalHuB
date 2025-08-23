@@ -34,10 +34,6 @@
 
 ---
 
-![Link](https://github.com/user-attachments/assets/b1f7d574-d515-48de-b3d4-a9ae4d5e26df)
-
----
-
 ![Link](https://github.com/user-attachments/assets/e668f549-4c1e-48d3-a4b2-4004ee019db2)
 
 ---
