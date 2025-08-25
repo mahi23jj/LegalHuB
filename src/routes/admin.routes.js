@@ -4,6 +4,7 @@ const {isAdmin} = require("../middlewares/auth.middleware.js");
 const {dashboardStats, toggleLawyerApprove} = require("../controllers/adminDashboard.js");
 const {renderUserPage, toggleUserStatus, changeUserRole} = require("../controllers/adminUserController.js");
 const {getAllLawyers, toggleLawyerStatus, deleteLawyer} = require("../controllers/adminLawyerController.js");
+const {getAllArticles, deleteArticle} = require("../controllers/adminArticleController.js");
 
 // render pages
 router.route("/dashboard/users").get(isAdmin, renderUserPage);
@@ -17,6 +18,10 @@ router.route("/dashboard/lawyers").get(isAdmin, getAllLawyers);
 router.route("/dashboard/lawyers/verify/:id").post(isAdmin, toggleLawyerApprove);
 router.route("/dashboard/lawyers/toggle-status/:id").post(isAdmin, toggleLawyerStatus);
 router.route("/dashboard/lawyers/delete/:id").post(isAdmin, deleteLawyer);
+
+// article routes
+router.route("/dashboard/articles").get(isAdmin, getAllArticles);
+router.route("/dashboard/articles/delete/:id").post(isAdmin, deleteArticle);
 
 router.route("/dashboard").get(isAdmin, dashboardStats);
 
