@@ -282,10 +282,10 @@
   <h1>Administrator Dashboard</h1>
   <p class="subtitle">Centralized panel to manage users, lawyers, appointments, and platform content.</p>
 
-  <!-- === Statistics === -->
+  <!-- === Statistics === -->/api/admin/dashboard/lawyers
   <div class="stats-grid">
     <div class="stat-card"><div class="stat-icon">👥</div><div><div class="stat-label"><a href="/api/admin/dashboard/users" class="text-decoration-none text-white">Total Users</a></div><div class="stat-value"><%= totalUsers %></div></div></div>
-    <div class="stat-card"><div class="stat-icon">⚖️</div><div><div class="stat-label">Verified Lawyers</div><div class="stat-value"><%= totalVerifiedLawyers %></div></div></div>
+    <div class="stat-card"><div class="stat-icon">⚖️</div><div><div class="stat-label"><a href="/api/admin/dashboard/lawyers" class="text-decoration-none text-white">Verified Lawyers</a></div><div class="stat-value"><%= totalVerifiedLawyers %></div></div></div>
     <div class="stat-card"><div class="stat-icon">⏳</div><div><div class="stat-label">Pending Lawyers</div><div class="stat-value"><%= pendingLawyers %></div></div></div>
     <div class="stat-card"><div class="stat-icon">📰</div><div><div class="stat-label">Articles</div><div class="stat-value"><%= totalArticles %></div></div></div>
     <div class="stat-card"><div class="stat-icon">📄</div><div><div class="stat-label">Documents</div><div class="stat-value"><%= totalDocuments %></div></div></div>
@@ -341,10 +341,17 @@
               </td>
               <td data-label="Actions">
                 <a href="/lawyers/<%= lawyer.user._id %>" class="btn-action btn-view">👁 View</a>
-                <% if(!lawyer.isVerified) { %>
-                  <a href="/lawyers/<%= lawyer.user._id %>/approve" class="btn-action btn-approve">✔ Approve</a>
-                  <a href="/lawyers/<%= lawyer.user._id %>/reject" class="btn-action btn-reject">✖ Reject</a>
+                <% if(lawyer.isVerified) { %>
+                  <form action="/api/admin/dashboard/lawyers/verify/<%= lawyer._id %>" method="POST" style="display:inline;">
+                    <button type="submit" class="btn-action btn-reject">✖ Reject</button>
+                  </form>
+                  <!-- <a href="/lawyers/<%= lawyer.user._id %>/reject" class="btn-action btn-reject">✖ Reject</a> -->
+                <% } else { %>
+                   <form action="/api/admin/dashboard/lawyers/verify/<%= lawyer._id %>" method="POST" style="display:inline;">
+                    <button type="submit" class="btn-action btn-approve">✔ Approve</button>
+                  </form>
                 <% } %>
+              </td>
               </td>
             </tr>
           <% }) %>

@@ -54,25 +54,22 @@ const dashboardStats = asyncHandler(async (req, res) => {
 });
 
 // Admin approves lawyer application
-const adminApproveLawyer = asyncHandler(async (req, res) => {
+const toggleLawyerApprove = asyncHandler(async (req, res) => {
     const lawyer = await LawyerProfile.findById(req.params.id);
     if (!lawyer) {
         return res.status(404).json(new apiError(404, "Lawyer not found"));
     }
-    lawyer.isApproved = true;
+    lawyer.isVerified = !lawyer.isVerified;
     await lawyer.save();
+
+    if(req.accepts("html")) {
+        req.flash("success", "Lawyer approved successfully");
+        return res.redirect("/api/admin/dashboard");
+    }
     res.status(200).json(new apiResponse(200, lawyer, "Lawyer approved successfully"));
-});
-
-
-// Render pages
-const renderUserPage = asyncHandler(async (req, res) => {
-    const users = await User.find({ role: "user" });
-    res.render("admin/usersPage", { users });
 });
 
 module.exports = {
     dashboardStats,
-    adminApproveLawyer,
-    renderUserPage,
+    toggleLawyerApprove
 }

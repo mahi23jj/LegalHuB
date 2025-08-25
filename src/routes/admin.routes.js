@@ -1,13 +1,24 @@
 const express = require("express");
 const router = express.Router();
 const {isAdmin} = require("../middlewares/auth.middleware.js");
-const {dashboardStats, adminApproveLawyer, renderUserPage} = require("../controllers/adminDashboard.js");
+const {dashboardStats, toggleLawyerApprove} = require("../controllers/adminDashboard.js");
+const {renderUserPage, toggleUserStatus, changeUserRole} = require("../controllers/adminUserController.js");
+const {getAllLawyers, toggleLawyerStatus, deleteLawyer} = require("../controllers/adminLawyerController.js");
 
 // render pages
 router.route("/dashboard/users").get(isAdmin, renderUserPage);
 
+// user routes
+router.route("/dashboard/users/toggle-status/:id").post(isAdmin, toggleUserStatus);
+router.route("/dashboard/users/change-role/:id").post(isAdmin, changeUserRole);
+
+// lawyer routes
+router.route("/dashboard/lawyers").get(isAdmin, getAllLawyers);
+router.route("/dashboard/lawyers/verify/:id").post(isAdmin, toggleLawyerApprove);
+router.route("/dashboard/lawyers/toggle-status/:id").post(isAdmin, toggleLawyerStatus);
+router.route("/dashboard/lawyers/delete/:id").post(isAdmin, deleteLawyer);
+
 router.route("/dashboard").get(isAdmin, dashboardStats);
-router.route("/approve-lawyer/:id").post(isAdmin, adminApproveLawyer);
 
 
 module.exports = router;

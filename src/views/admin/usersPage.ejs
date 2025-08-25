@@ -90,8 +90,6 @@
   .btn-toggle { background: #facc15; color: #111; }
   .btn-toggle:hover { background: #eab308; }
 
-  .btn-role { background: #3b82f6; color: white; }
-  .btn-role:hover { background: #2563eb; }
 </style>
 
 <div class="users-container">
@@ -131,18 +129,17 @@
               <td><%= user.createdAt.toDateString() %></td>
               <td>
                 <!-- Toggle active -->
-                <form action="/admin/users/toggle-status/<%= user._id %>" method="POST" style="display:inline;">
+                <form action="/api/admin/dashboard/users/toggle-status/<%= user._id %>" method="POST" style="display:inline;">
                   <button type="submit" class="btn btn-toggle">
                     <%= user.isActive ? "Deactivate" : "Activate" %>
                   </button>
                 </form>
 
                 <!-- Change role -->
-                <form action="/admin/users/change-role/<%= user._id %>" method="POST" style="display:inline;">
-                  <select name="role" onchange="this.form.submit()" class="btn btn-role">
+                <form action="/api/admin/dashboard/users/change-role/<%= user._id %>" method="POST" style="display:inline;">
+                  <select name="role" onchange="this.form.submit()" class="btn btn-secondary">
                     <option value="user" <%= user.role === "user" ? "selected" : "" %>>User</option>
                     <option value="lawyer" <%= user.role === "lawyer" ? "selected" : "" %>>Lawyer</option>
-                    <option value="admin" <%= user.role === "admin" ? "selected" : "" %>>Admin</option>
                   </select>
                 </form>
 
