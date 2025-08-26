@@ -5,6 +5,7 @@ const {dashboardStats, toggleLawyerApprove} = require("../controllers/adminDashb
 const {renderUserPage, toggleUserStatus, changeUserRole} = require("../controllers/adminUserController.js");
 const {getAllLawyers, toggleLawyerStatus, deleteLawyer} = require("../controllers/adminLawyerController.js");
 const {getAllArticles, deleteArticle} = require("../controllers/adminArticleController.js");
+const {getAllDocuments} = require("../controllers/adminDocumentController.js");
 
 // render pages
 router.route("/dashboard/users").get(isAdmin, renderUserPage);
@@ -22,6 +23,9 @@ router.route("/dashboard/lawyers/delete/:id").post(isAdmin, deleteLawyer);
 // article routes
 router.route("/dashboard/articles").get(isAdmin, getAllArticles);
 router.route("/dashboard/articles/delete/:id").post(isAdmin, deleteArticle);
+
+// document routes
+router.route("/dashboard/documents").get(isAdmin, getAllDocuments);
 
 router.route("/dashboard").get(isAdmin, dashboardStats);
 
