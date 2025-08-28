@@ -3,6 +3,7 @@ const asyncHandler = require("../utils/asyncHandler.js");
 const apiResponse = require("../utils/apiResponse.js");
 const apiError = require("../utils/apiError.js");
 const indianStates = require("../utils/indianStates.js");
+const { Parser } = require('json2csv');
 
 // GET /admin/documents
 const getAllDocuments = asyncHandler(async (req, res) => {
@@ -64,6 +65,57 @@ const getAllDocuments = asyncHandler(async (req, res) => {
   );
 });
 
+// GET /api/admin/dashboard/documents/export-csv
+const exportCsv = asyncHandler(async (req, res) => {
+  const { q, state, dept, sort } = req.query;
+
+    // 🔎 Filters
+    const filter = {};
+    if (q) {
+      filter.$or = [
+        { title: new RegExp(q, 'i') },
+        { description: new RegExp(q, 'i') },
+        { department: new RegExp(q, 'i') },
+      ];
+    }
+    if (state) filter.state = state;
+    if (dept) filter.department = dept;
+
+    // ↕ Sorting
+    let sortObj = { createdAt: -1 };
+    if (sort) {
+      const [field, dir] = sort.split('_');
+      sortObj = { [field]: dir === 'asc' ? 1 : -1 };
+    }
+
+    // 📄 Query (no pagination, export everything that matches)
+    const docs = await Document.find(filter).sort(sortObj).lean();
+
+    // 📝 CSV fields
+    const fields = [
+      { label: 'Title', value: 'title' },
+      { label: 'Department', value: 'department' },
+      { label: 'State', value: 'state' },
+      { label: 'Description', value: 'description' },
+      { label: 'Downloads', value: row => row.downloadCount || 0 },
+      { label: 'Created', value: row => row.createdAt ? new Date(row.createdAt).toISOString() : '' },
+      { label: 'Updated', value: row => row.updatedAt ? new Date(row.updatedAt).toISOString() : '' },
+      { label: 'Guidelines', value: row => (row.guidelines || []).join('; ') },
+      { label: 'Required Documents', value: row => (row.requiredDocuments || []).join('; ') },
+      { label: 'Download Link', value: 'downloadLink' },
+      { label: 'Apply Link', value: 'applyLink' },
+    ];
+
+    const parser = new Parser({ fields });
+    const csv = parser.parse(docs);
+
+    // ⬇ Send as file
+    res.header('Content-Type', 'text/csv');
+    res.attachment('documents-export.csv');
+    res.send(csv);
+})
+
 module.exports = {
   getAllDocuments,
+  exportCsv
 }
