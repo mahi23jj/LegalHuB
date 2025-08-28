@@ -1,11 +1,19 @@
 const express = require("express");
 const router = express.Router();
-const {isAdmin} = require("../middlewares/auth.middleware.js");
-const {dashboardStats, toggleLawyerApprove} = require("../controllers/adminDashboard.js");
-const {renderUserPage, toggleUserStatus, changeUserRole} = require("../controllers/adminUserController.js");
-const {getAllLawyers, toggleLawyerStatus, deleteLawyer} = require("../controllers/adminLawyerController.js");
-const {getAllArticles, deleteArticle} = require("../controllers/adminArticleController.js");
-const {getAllDocuments, exportCsv} = require("../controllers/adminDocumentController.js");
+const { isAdmin } = require("../middlewares/auth.middleware.js");
+const { dashboardStats, toggleLawyerApprove } = require("../controllers/adminDashboard.js");
+const {
+    renderUserPage,
+    toggleUserStatus,
+    changeUserRole,
+} = require("../controllers/adminUserController.js");
+const {
+    getAllLawyers,
+    toggleLawyerStatus,
+    deleteLawyer,
+} = require("../controllers/adminLawyerController.js");
+const { getAllArticles, deleteArticle } = require("../controllers/adminArticleController.js");
+const { getAllDocuments, exportCsv } = require("../controllers/adminDocumentController.js");
 
 // render pages
 router.route("/dashboard/users").get(isAdmin, renderUserPage);
@@ -29,6 +37,5 @@ router.route("/dashboard/documents").get(isAdmin, getAllDocuments);
 router.route("/dashboard/documents/export-csv").get(isAdmin, exportCsv);
 
 router.route("/dashboard").get(isAdmin, dashboardStats);
-
 
 module.exports = router;

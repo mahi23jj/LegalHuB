@@ -206,21 +206,19 @@ const updateDocument = asyncHandler(async (req, res) => {
 
 // ✅ Delete Document
 const deleteDocument = asyncHandler(async (req, res) => {
-  const document = await Document.findById(req.params.id);
-  if (!document) {
-    throw new ApiError(404, "Document not found");
-  }
+    const document = await Document.findById(req.params.id);
+    if (!document) {
+        throw new ApiError(404, "Document not found");
+    }
 
-  await document.deleteOne();
+    await document.deleteOne();
 
-  if (req.accepts("html")) {
-    req.flash("success", "Document deleted successfully");
-    return res.redirect("/api/admin/dashboard/documents");
-  }
+    if (req.accepts("html")) {
+        req.flash("success", "Document deleted successfully");
+        return res.redirect("/api/admin/dashboard/documents");
+    }
 
-  return res
-    .status(200)
-    .json(new ApiResponse(200, null, "Document deleted successfully"));
+    return res.status(200).json(new ApiResponse(200, null, "Document deleted successfully"));
 });
 
 // ✅ Download Document
