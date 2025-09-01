@@ -7,7 +7,9 @@ const apiError = require("../utils/apiError.js");
 // Get all articles with search, filters, pagination
 const getAllArticles = asyncHandler(async (req, res) => {
     const { page = 1, limit = 10, search = "", sort = "createdAt_desc", tag } = req.query;
-    const skip = (page - 1) * parseInt(limit);
+
+    const parsedLimit = parseInt(limit) || 10;
+    const skip = (page - 1) * parsedLimit;
 
     // Filters
     let filter = {};
@@ -38,7 +40,7 @@ const getAllArticles = asyncHandler(async (req, res) => {
             .populate("author", "username name email profilePicture")
             .sort(sortOptions)
             .skip(skip)
-            .limit(parseInt(limit)),
+            .limit(parsedLimit),
         Article.countDocuments(filter),
         Article.distinct("tags"),
     ]);
@@ -49,10 +51,11 @@ const getAllArticles = asyncHandler(async (req, res) => {
             totalArticles,
             uniqueTags,
             currentPage: parseInt(page),
-            totalPages: Math.ceil(totalArticles / limit),
+            totalPages: Math.ceil(totalArticles / parsedLimit),
             search,
             sort,
             tag,
+            limit: parsedLimit,
         });
     }
 

@@ -7,13 +7,6 @@
     line-height: 1.6;
   }
 
-  /* Main container */
-  .main {
-    display: flex;
-    flex-direction: column;
-    min-height: 100vh;
-  }
-
   .articles-container {
     padding: 40px 30px;
     max-width: 1500px;
@@ -284,6 +277,15 @@
         <option value="title_asc" <%= sort==='title_asc'?'selected':'' %>>Title (A-Z)</option>
         <option value="title_desc" <%= sort==='title_desc'?'selected':'' %>>Title (Z-A)</option>
       </select>
+
+      <!-- ✅ Limit selector -->
+      <select name="limit">
+        <option value="5"  <%= limit==5 ? 'selected' : '' %>>5 / page</option>
+        <option value="10" <%= limit==10 ? 'selected' : '' %>>10 / page</option>
+        <option value="25" <%= limit==25 ? 'selected' : '' %>>25 / page</option>
+        <option value="50" <%= limit==50 ? 'selected' : '' %>>50 / page</option>
+      </select>
+
       <button type="submit">Apply</button>
       <button type="button" class="reset-btn" onclick="resetFilters()">Reset</button>
       <a href="/articles/publish" class="add-btn">➕ Add Article</a>
@@ -360,21 +362,21 @@
     <!-- Pagination -->
     <div class="pagination">
       <% if (currentPage > 1) { %>
-        <a href="?page=1&search=<%= search %>&tag=<%= tag %>&sort=<%= sort %>">« First</a>
-        <a href="?page=<%= currentPage-1 %>&search=<%= search %>&tag=<%= tag %>&sort=<%= sort %>">‹ Prev</a>
+        <a href="?page=1&limit=<%= limit %>&search=<%= search %>&tag=<%= tag %>&sort=<%= sort %>">« First</a>
+        <a href="?page=<%= currentPage-1 %>&limit=<%= limit %>&search=<%= search %>&tag=<%= tag %>&sort=<%= sort %>">‹ Prev</a>
       <% } else { %>
         <a class="disabled">« First</a>
         <a class="disabled">‹ Prev</a>
       <% } %>
 
       <% for (let i = 1; i <= totalPages; i++) { %>
-        <a href="?page=<%= i %>&search=<%= search %>&tag=<%= tag %>&sort=<%= sort %>" 
+        <a href="?page=<%= i %>&limit=<%= limit %>&search=<%= search %>&tag=<%= tag %>&sort=<%= sort %>" 
            class="<%= currentPage==i?'active':'' %>"><%= i %></a>
       <% } %>
 
       <% if (currentPage < totalPages) { %>
-        <a href="?page=<%= currentPage+1 %>&search=<%= search %>&tag=<%= tag %>&sort=<%= sort %>">Next ›</a>
-        <a href="?page=<%= totalPages %>&search=<%= search %>&tag=<%= tag %>&sort=<%= sort %>">Last »</a>
+        <a href="?page=<%= currentPage+1 %>&limit=<%= limit %>&search=<%= search %>&tag=<%= tag %>&sort=<%= sort %>">Next ›</a>
+        <a href="?page=<%= totalPages %>&limit=<%= limit %>&search=<%= search %>&tag=<%= tag %>&sort=<%= sort %>">Last »</a>
       <% } else { %>
         <a class="disabled">Next ›</a>
         <a class="disabled">Last »</a>
@@ -396,7 +398,7 @@
     const content = document.getElementById('preview-'+id).innerHTML;
     document.getElementById('modalBody').innerHTML = content;
     document.getElementById('articleModal').style.display='flex';
-    document.body.style.overflow='hidden'; // prevent background scroll
+    document.body.style.overflow='hidden';
   }
   function closePreview(){
     document.getElementById('articleModal').style.display='none';
@@ -412,7 +414,6 @@
   });
 
   function resetFilters() {
-    document.getElementById("filterForm").reset();
-    window.location.href = "/api/admin/dashboard/articles"; // reload without filters
+    window.location.href = "/api/admin/dashboard/articles";
   }
 </script>
