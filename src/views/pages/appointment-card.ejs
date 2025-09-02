@@ -486,6 +486,7 @@ img {
                 <div class="lawyer-name"><%= appointment.lawyer.fullName || appointment.lawyer.username %></div>
                 <div class="specialization"><%= appointment.lawyer.specialization || 'Legal Counsel' %></div>
                 <div class="client">Client: <strong><%= appointment.client ? appointment.client.fullName || appointment.client.username : 'Guest' %></strong></div>
+                <div class="client_email">Email: <%= appointment.client?.email || "NA" %></div>
               </div>
             </div>
 
